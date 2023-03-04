@@ -1,33 +1,36 @@
-import { Ballot, ResultNode, CandidateMap } from 'types/types';
+import { Ballot, ResultNode, CandidateMap, CandidateId } from 'types/types';
 import { generateResultHash } from './generateResultHash';
+import { shiftBallots } from './shiftBallots';
 
 export const generateResultNode = (
   ballots: Ballot[],
-  candidates: CandidateMap
-): ResultNode | null => {
+  candidates: CandidateMap,
+  winners: CandidateId[] = []
+): ResultNode | undefined => {
+  console.log(ballots);
   const VOTES_REQUIRED = Math.ceil(ballots.length / 2);
-  const tempCandidates: Map<string, number> = new Map();
+  const candidateVotes: Map<string, number> = new Map();
 
   ballots.forEach((ballot) => {
-    tempCandidates.set(
+    candidateVotes.set(
       ballot.ranking[0],
-      (tempCandidates.get(ballot.ranking[0]) ?? 0) + 1
+      (candidateVotes.get(ballot.ranking[0]) ?? 0) + 1
     );
   });
 
+  if (candidateVotes.size < 1) {
+    console.log('No votes');
+    return;
+  }
+
   candidates.forEach((candidate) => {
-    if (!tempCandidates.has(candidate.id)) {
-      tempCandidates.set(candidate.id, 0);
+    if (!candidateVotes.has(candidate.id)) {
+      candidateVotes.set(candidate.id, 0);
     }
   });
 
-  if (tempCandidates.size < 1) {
-    console.log('No votes');
-    return null;
-  }
-
   const sortedResults = new Map(
-    [...tempCandidates].sort(([, aVotes], [, bVotes]) => bVotes - aVotes)
+    [...candidateVotes].sort(([, aVotes], [, bVotes]) => bVotes - aVotes)
   );
 
   const values = sortedResults.entries();
@@ -37,19 +40,35 @@ export const generateResultNode = (
 
   if (firstPlace[1] === secondPlace[1]) {
     console.log('tie');
-    return null;
-  }
-
-  if (firstPlace[1] >= VOTES_REQUIRED) {
     return {
       hash: generateResultHash(sortedResults),
       results: sortedResults,
       children: [],
       totalSiblings: 1,
-      winners: [firstPlace[0]],
+      winners,
       losers: null
     };
   }
 
-  return null;
+  if (firstPlace[1] >= VOTES_REQUIRED) {
+    const newCandidates = new Map(candidates);
+    newCandidates.delete(firstPlace[0]);
+
+    const childNode = generateResultNode(
+      shiftBallots(ballots, firstPlace[0]),
+      newCandidates,
+      [firstPlace[0]]
+    );
+
+    return {
+      hash: generateResultHash(sortedResults),
+      results: sortedResults,
+      children: childNode ? [childNode] : [],
+      totalSiblings: 1,
+      winners,
+      losers: null
+    };
+  }
+
+  return;
 };

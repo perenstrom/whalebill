@@ -13,7 +13,7 @@ beforeAll(() => {
 });
 
 describe('generateResultNode', () => {
-  it('Returns null if there are no votes', async () => {
+  it('Returns undefined if there are no votes', async () => {
     const candidates = generateCandidateMap([
       { name: 'Per' },
       { name: 'Jobjörn' },
@@ -22,12 +22,12 @@ describe('generateResultNode', () => {
 
     const ballots: Ballot[] = [];
 
-    const winner = generateResultNode(ballots, candidates);
+    const result = generateResultNode(ballots, candidates);
 
-    expect(winner).toBeNull();
+    expect(result).toBeUndefined();
   });
 
-  it('Returns one node with winner in first round if majority', async () => {
+  it('Returns two nodes with winner in second round if majority', async () => {
     const candidates: CandidateMap = new Map([
       ['asdf', { name: 'Per', id: 'asdf' }],
       ['qwer', { name: 'Jobjörn', id: 'qwer' }],
@@ -59,12 +59,24 @@ describe('generateResultNode', () => {
       hash: 'zxcv@2-qwer@1-asdf@1',
       results: new Map([
         ['zxcv', 2],
-        ['asdf', 1],
-        ['qwer', 1]
+        ['qwer', 1],
+        ['asdf', 1]
       ]),
-      children: [],
+      children: [
+        {
+          hash: 'asdf@2-qwer@2',
+          results: new Map([
+            ['asdf', 2],
+            ['qwer', 2]
+          ]),
+          children: [],
+          totalSiblings: 1,
+          winners: ['zxcv'],
+          losers: null
+        }
+      ],
       totalSiblings: 1,
-      winners: ['zxcv'],
+      winners: [],
       losers: null
     });
   });
