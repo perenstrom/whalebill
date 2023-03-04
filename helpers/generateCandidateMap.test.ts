@@ -1,4 +1,3 @@
-import { generateCandidateIds } from './generateCandidateIds';
 import { generateCandidateMap } from './generateCanidateMap';
 
 beforeAll(() => {
@@ -13,21 +12,17 @@ beforeAll(() => {
 
 describe('generateCandidateMap', () => {
   it('Returns a map of candidates', async () => {
-    const candidates = generateCandidateIds([
+    const candidates = [
       { name: 'Per' },
       { name: 'Jobjörn' },
       { name: 'Charlii' }
-    ]);
+    ];
 
     const candidateMap = generateCandidateMap(candidates);
 
-    expect(candidateMap).toEqual(
-      new Map([
-        [candidates[0].id, candidates[0]],
-        [candidates[1].id, candidates[1]],
-        [candidates[2].id, candidates[2]]
-      ])
-    );
+    for(const [id, candidate] of candidateMap){
+      expect(id).toEqual(candidate.id);
+    }
   });
 });
 

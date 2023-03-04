@@ -5,6 +5,7 @@ export type Candidate = {
   id: CandidateId;
   name: string;
 };
+export type CandidateMap = Map<CandidateId, Candidate>;
 
 export type Ballot = { id: number; ranking: CandidateId[] };
 
