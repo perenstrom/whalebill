@@ -22,7 +22,7 @@ describe('generateResultNode', () => {
 
     const ballots: Ballot[] = [];
 
-    const result = generateResultNode(ballots, candidates);
+    const result = generateResultNode({ ballots, candidates });
 
     expect(result).toBeUndefined();
   });
@@ -53,7 +53,11 @@ describe('generateResultNode', () => {
       }
     ];
 
-    const resultNode = generateResultNode(ballots, candidates);
+    const resultNode = generateResultNode({
+      ballots,
+      candidates,
+      positionsToFill: 10
+    });
 
     expect(resultNode).toEqual({
       hash: 'zxcv@2-qwer@1-asdf@1',
@@ -107,7 +111,11 @@ describe('generateResultNode', () => {
       }
     ];
 
-    const resultNode = generateResultNode(ballots, candidates);
+    const resultNode = generateResultNode({
+      ballots,
+      candidates,
+      positionsToFill: 10
+    });
 
     expect(resultNode).toEqual({
       hash: 'zxcv@2-qwer@1-asdf@1',
@@ -133,6 +141,64 @@ describe('generateResultNode', () => {
               losers: null
             }
           ],
+          totalSiblings: 1,
+          winners: ['zxcv'],
+          losers: null
+        }
+      ],
+      totalSiblings: 1,
+      winners: [],
+      losers: null
+    });
+  });
+
+  it('Returns two result nodes if majority is reached with limit', async () => {
+    const candidates: CandidateMap = new Map([
+      ['asdf', { name: 'Per', id: 'asdf' }],
+      ['qwer', { name: 'Jobjörn', id: 'qwer' }],
+      ['zxcv', { name: 'Charlii', id: 'zxcv' }]
+    ]);
+
+    const ballots: Ballot[] = [
+      {
+        id: 1,
+        ranking: ['zxcv', 'qwer', 'asdf']
+      },
+      {
+        id: 2,
+        ranking: ['zxcv', 'qwer', 'asdf']
+      },
+      {
+        id: 3,
+        ranking: ['qwer', 'asdf', 'zxcv']
+      },
+      {
+        id: 4,
+        ranking: ['asdf', 'zxcv', 'qwer']
+      }
+    ];
+
+    const resultNode = generateResultNode({
+      ballots,
+      candidates,
+      positionsToFill: 1
+    });
+
+    expect(resultNode).toEqual({
+      hash: 'zxcv@2-qwer@1-asdf@1',
+      results: new Map([
+        ['zxcv', 2],
+        ['qwer', 1],
+        ['asdf', 1]
+      ]),
+      children: [
+        {
+          hash: 'qwer@3-asdf@1',
+          results: new Map([
+            ['qwer', 3],
+            ['asdf', 1]
+          ]),
+          children: [],
           totalSiblings: 1,
           winners: ['zxcv'],
           losers: null

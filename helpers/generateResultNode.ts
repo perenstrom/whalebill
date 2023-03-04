@@ -2,11 +2,16 @@ import { Ballot, ResultNode, CandidateMap, CandidateId } from 'types/types';
 import { generateResultHash } from './generateResultHash';
 import { shiftBallots } from './shiftBallots';
 
+interface ResultNodeOptions {
+  ballots: Ballot[];
+  candidates: CandidateMap;
+  winners?: CandidateId[];
+  positionsToFill?: number;
+}
 export const generateResultNode = (
-  ballots: Ballot[],
-  candidates: CandidateMap,
-  winners: CandidateId[] = []
+  options: ResultNodeOptions
 ): ResultNode | undefined => {
+  const { ballots, candidates, winners = [], positionsToFill = 1 } = options;
   const VOTES_REQUIRED = Math.ceil(ballots.length / 2);
   const candidateVotes: Map<string, number> = new Map();
 
@@ -37,7 +42,10 @@ export const generateResultNode = (
   const firstPlace = values.next().value as [string, number];
   const secondPlace = values.next().value as [string, number];
 
-  if (secondPlace && firstPlace[1] === secondPlace[1]) {
+  if (
+    (secondPlace && firstPlace[1] === secondPlace[1]) ||
+    positionsToFill === 0
+  ) {
     // Tie
     return {
       hash: generateResultHash(sortedResults),
@@ -53,11 +61,12 @@ export const generateResultNode = (
     const newCandidates = new Map(candidates);
     newCandidates.delete(firstPlace[0]);
 
-    const childNode = generateResultNode(
-      shiftBallots(ballots, firstPlace[0]),
-      newCandidates,
-      [...winners, firstPlace[0]]
-    );
+    const childNode = generateResultNode({
+      ballots: shiftBallots(ballots, firstPlace[0]),
+      candidates: newCandidates,
+      winners: [...winners, firstPlace[0]],
+      positionsToFill: positionsToFill - 1
+    });
 
     return {
       hash: generateResultHash(sortedResults),
