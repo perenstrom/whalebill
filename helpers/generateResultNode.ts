@@ -7,7 +7,6 @@ export const generateResultNode = (
   candidates: CandidateMap,
   winners: CandidateId[] = []
 ): ResultNode | undefined => {
-  console.log(ballots);
   const VOTES_REQUIRED = Math.ceil(ballots.length / 2);
   const candidateVotes: Map<string, number> = new Map();
 
@@ -18,7 +17,7 @@ export const generateResultNode = (
     );
   });
 
-  if (candidateVotes.size < 1) {
+  if (candidateVotes.size < 1 || candidates.size < 1) {
     console.log('No votes');
     return;
   }
@@ -38,8 +37,8 @@ export const generateResultNode = (
   const firstPlace = values.next().value as [string, number];
   const secondPlace = values.next().value as [string, number];
 
-  if (firstPlace[1] === secondPlace[1]) {
-    console.log('tie');
+  if (secondPlace && firstPlace[1] === secondPlace[1]) {
+    // Tie
     return {
       hash: generateResultHash(sortedResults),
       results: sortedResults,
@@ -57,7 +56,7 @@ export const generateResultNode = (
     const childNode = generateResultNode(
       shiftBallots(ballots, firstPlace[0]),
       newCandidates,
-      [firstPlace[0]]
+      [...winners, firstPlace[0]]
     );
 
     return {
