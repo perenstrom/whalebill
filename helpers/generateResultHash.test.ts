@@ -22,6 +22,18 @@ describe('generateResultHash', () => {
 
     expect(rankingHash).toEqual('asdf@5-qwer@2-zxcv@1');
   });
+
+  it('Returns a string uniquely identifying a list of candidates with votes, with no 0s', async () => {
+    const result: Map<string, number> = new Map([
+      ['asdf', 5],
+      ['qwer', 2],
+      ['zxcv', 0]
+    ]);
+
+    const rankingHash = generateResultHash(result);
+
+    expect(rankingHash).toEqual('asdf@5-qwer@2');
+  });
 });
 
 export {};
