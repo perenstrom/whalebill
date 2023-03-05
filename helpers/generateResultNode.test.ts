@@ -76,12 +76,12 @@ describe('generateResultNode', () => {
           children: [],
           totalSiblings: 1,
           winners: ['zxcv'],
-          losers: null
+          losers: []
         }
       ],
       totalSiblings: 1,
       winners: [],
-      losers: null
+      losers: []
     });
   });
 
@@ -138,17 +138,17 @@ describe('generateResultNode', () => {
               children: [],
               totalSiblings: 1,
               winners: ['zxcv', 'qwer'],
-              losers: null
+              losers: []
             }
           ],
           totalSiblings: 1,
           winners: ['zxcv'],
-          losers: null
+          losers: []
         }
       ],
       totalSiblings: 1,
       winners: [],
-      losers: null
+      losers: []
     });
   });
 
@@ -201,12 +201,95 @@ describe('generateResultNode', () => {
           children: [],
           totalSiblings: 1,
           winners: ['zxcv'],
-          losers: null
+          losers: []
         }
       ],
       totalSiblings: 1,
       winners: [],
-      losers: null
+      losers: []
+    });
+  });
+
+  it("Returns two result nodes eliminating the candidate with the least votes if there's no majority", async () => {
+    const candidates: CandidateMap = new Map([
+      ['asdf', { name: 'Per', id: 'asdf' }],
+      ['qwer', { name: 'Jobjörn', id: 'qwer' }],
+      ['zxcv', { name: 'Charlii', id: 'zxcv' }]
+    ]);
+
+    const ballots: Ballot[] = [
+      {
+        id: 1,
+        ranking: ['zxcv', 'asdf', 'qwer']
+      },
+      {
+        id: 2,
+        ranking: ['zxcv', 'qwer', 'asdf']
+      },
+      {
+        id: 3,
+        ranking: ['asdf', 'qwer', 'zxcv']
+      },
+      {
+        id: 4,
+        ranking: ['asdf', 'zxcv', 'qwer']
+      },
+      {
+        id: 5,
+        ranking: ['qwer', 'zxcv', 'asdf']
+      }
+    ];
+
+    const resultNode = generateResultNode({
+      ballots,
+      candidates,
+      positionsToFill: 10
+    });
+
+    expect(resultNode).toEqual({
+      hash: 'zxcv@2-asdf@2-qwer@1',
+      results: new Map([
+        ['zxcv', 2],
+        ['asdf', 2],
+        ['qwer', 1]
+      ]),
+      totalSiblings: 1,
+      winners: [],
+      losers: [],
+      children: [
+        {
+          hash: 'zxcv@3-asdf@2',
+          results: new Map([
+            ['zxcv', 3],
+            ['asdf', 2]
+          ]),
+          totalSiblings: 1,
+          winners: [],
+          losers: ['qwer'],
+          children: [
+            {
+              hash: 'asdf@3-qwer@2',
+              results: new Map([
+                ['asdf', 3],
+                ['qwer', 2]
+              ]),
+              totalSiblings: 1,
+              winners: ['zxcv'],
+              losers: [],
+              children: [
+                {
+                  hash: 'qwer@5',
+                  results: new Map([['qwer', 5]]),
+                  totalSiblings: 1,
+                  winners: ['zxcv', 'asdf'],
+                  losers: [],
+                  children: []
+                }
+              ]
+            }
+          ]
+        }
+      ]
     });
   });
 });
