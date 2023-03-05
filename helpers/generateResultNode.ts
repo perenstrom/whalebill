@@ -54,7 +54,7 @@ export const generateResultNode = (
   if (candidateVotes.size < 1 || candidates.size < 1) {
     console.log('No votes');
     return {
-      hash: generateResultHash(sortedResults),
+      hash: generateResultHash(sortedResults, winners, losers),
       results: sortedResults,
       children: [],
       totalSiblings: 1,
@@ -67,7 +67,7 @@ export const generateResultNode = (
   if (positionsToFill < 1) {
     console.log('Voting over');
     return {
-      hash: generateResultHash(sortedResults),
+      hash: generateResultHash(sortedResults, winners, losers),
       results: sortedResults,
       children: [],
       totalSiblings: 1,
@@ -91,7 +91,7 @@ export const generateResultNode = (
     });
 
     return {
-      hash: generateResultHash(sortedResults),
+      hash: generateResultHash(sortedResults, winners, losers),
       results: sortedResults,
       children: childNode ? [childNode] : [],
       totalSiblings: 1,
@@ -120,7 +120,7 @@ export const generateResultNode = (
     });
 
     return {
-      hash: generateResultHash(sortedResults),
+      hash: generateResultHash(sortedResults, winners, losers),
       results: sortedResults,
       children: childNode ? [childNode] : [],
       totalSiblings: 1,
@@ -131,7 +131,7 @@ export const generateResultNode = (
 
   // Tie
   return {
-    hash: generateResultHash(sortedResults),
+    hash: generateResultHash(sortedResults, winners, losers),
     results: sortedResults,
     children: [],
     totalSiblings: 1,

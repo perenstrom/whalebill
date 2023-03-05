@@ -14,7 +14,7 @@ beforeAll(() => {
 });
 
 describe('generateResultNode', () => {
-  it('Returns undefined if there are no votes', async () => {
+  it('Returns empty node if there are no votes', async () => {
     const candidates = generateCandidateMap([
       { name: 'Per' },
       { name: 'Jobjörn' },
@@ -69,32 +69,32 @@ describe('generateResultNode', () => {
     console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
-      hash: 'zxcv@2-qwer@1-asdf@1',
+      hash: 'r%zxcv@2-qwer@1-asdf@1',
       results: new Map([
         ['zxcv', 2],
         ['qwer', 1],
         ['asdf', 1]
       ]),
+      totalSiblings: 1,
+      winners: [],
+      losers: [],
       children: [
         {
-          hash: 'asdf@2-qwer@2',
+          hash: 'w%zxcv-r%asdf@2-qwer@2',
           results: new Map([
             ['asdf', 2],
             ['qwer', 2]
           ]),
-          children: [],
           totalSiblings: 1,
           winners: ['zxcv'],
-          losers: []
+          losers: [],
+          children: []
         }
-      ],
-      totalSiblings: 1,
-      winners: [],
-      losers: []
+      ]
     });
   });
 
-  it('Returns three result nodes if majority is reached in both cases', async () => {
+  it('Returns four result nodes if majority is reached in both cases', async () => {
     const candidates: CandidateMap = new Map([
       ['asdf', { name: 'Per', id: 'asdf' }],
       ['qwer', { name: 'Jobjörn', id: 'qwer' }],
@@ -128,7 +128,7 @@ describe('generateResultNode', () => {
     console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
-      hash: 'zxcv@2-qwer@1-asdf@1',
+      hash: 'r%zxcv@2-qwer@1-asdf@1',
       results: new Map([
         ['zxcv', 2],
         ['qwer', 1],
@@ -139,7 +139,7 @@ describe('generateResultNode', () => {
       losers: [],
       children: [
         {
-          hash: 'qwer@3-asdf@1',
+          hash: 'w%zxcv-r%qwer@3-asdf@1',
           results: new Map([
             ['qwer', 3],
             ['asdf', 1]
@@ -149,14 +149,14 @@ describe('generateResultNode', () => {
           losers: [],
           children: [
             {
-              hash: 'asdf@4',
+              hash: 'w%zxcv-qwer-r%asdf@4',
               results: new Map([['asdf', 4]]),
               totalSiblings: 1,
               winners: ['zxcv', 'qwer'],
               losers: [],
               children: [
                 {
-                  hash: '',
+                  hash: 'w%zxcv-qwer-asdf',
                   results: new Map(),
                   children: [],
                   totalSiblings: 1,
@@ -205,15 +205,18 @@ describe('generateResultNode', () => {
     console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
-      hash: 'zxcv@2-qwer@1-asdf@1',
+      hash: 'r%zxcv@2-qwer@1-asdf@1',
       results: new Map([
         ['zxcv', 2],
         ['qwer', 1],
         ['asdf', 1]
       ]),
+      totalSiblings: 1,
+      winners: [],
+      losers: [],
       children: [
         {
-          hash: 'qwer@3-asdf@1',
+          hash: 'w%zxcv-r%qwer@3-asdf@1',
           results: new Map([
             ['qwer', 3],
             ['asdf', 1]
@@ -223,14 +226,11 @@ describe('generateResultNode', () => {
           winners: ['zxcv'],
           losers: []
         }
-      ],
-      totalSiblings: 1,
-      winners: [],
-      losers: []
+      ]
     });
   });
 
-  it("Returns two result nodes eliminating the candidate with the least votes if there's no majority", async () => {
+  it("Returns five result nodes eliminating the candidate with the least votes if there's no majority", async () => {
     const candidates: CandidateMap = new Map([
       ['asdf', { name: 'Per', id: 'asdf' }],
       ['qwer', { name: 'Jobjörn', id: 'qwer' }],
@@ -269,7 +269,7 @@ describe('generateResultNode', () => {
     console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
-      hash: 'zxcv@2-asdf@2-qwer@1',
+      hash: 'r%zxcv@2-asdf@2-qwer@1',
       results: new Map([
         ['zxcv', 2],
         ['asdf', 2],
@@ -280,7 +280,7 @@ describe('generateResultNode', () => {
       losers: [],
       children: [
         {
-          hash: 'zxcv@3-asdf@2',
+          hash: 'r%zxcv@3-asdf@2-l%qwer',
           results: new Map([
             ['zxcv', 3],
             ['asdf', 2]
@@ -290,7 +290,7 @@ describe('generateResultNode', () => {
           losers: ['qwer'],
           children: [
             {
-              hash: 'asdf@3-qwer@2',
+              hash: 'w%zxcv-r%asdf@3-qwer@2',
               results: new Map([
                 ['asdf', 3],
                 ['qwer', 2]
@@ -300,14 +300,14 @@ describe('generateResultNode', () => {
               losers: [],
               children: [
                 {
-                  hash: 'qwer@5',
+                  hash: 'w%zxcv-asdf-r%qwer@5',
                   results: new Map([['qwer', 5]]),
                   totalSiblings: 1,
                   winners: ['zxcv', 'asdf'],
                   losers: [],
                   children: [
                     {
-                      hash: '',
+                      hash: 'w%zxcv-asdf-qwer',
                       results: new Map(),
                       totalSiblings: 1,
                       winners: ['zxcv', 'asdf', 'qwer'],
