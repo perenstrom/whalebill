@@ -12,7 +12,6 @@ export const renderResultNode = (resultNode: ResultNode) => {
   let index = 0;
   resultNode.results.forEach((votes, candidate) => {
     index += 1;
-    console.log({ candidate, votes });
     renderedLines.push(`${index}. ${candidate} (${votes})`);
   });
 

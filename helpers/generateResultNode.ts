@@ -23,22 +23,21 @@ export const generateResultNode = (
     losers = [],
     positionsToFill = 1
   } = options;
+  console.log({ ballots, candidates });
   const VOTES_REQUIRED = Math.ceil(ballots.length / 2);
   const candidateVotes: Map<string, number> = new Map();
 
   ballots.forEach((ballot) => {
+    if (!ballots.length || !ballot.ranking.length) return;
+
     candidateVotes.set(
       ballot.ranking[0],
       (candidateVotes.get(ballot.ranking[0]) ?? 0) + 1
     );
   });
 
-  if (candidateVotes.size < 1 || candidates.size < 1) {
-    console.log('No votes');
-    return;
-  }
-
   candidates.forEach((candidate) => {
+    if (!ballots.length) return;
     if (!candidateVotes.has(candidate.id)) {
       candidateVotes.set(candidate.id, 0);
     }
@@ -51,6 +50,18 @@ export const generateResultNode = (
   const values = [...sortedResults];
   const firstPlace = values[0];
   const secondPlace = values[1];
+
+  if (candidateVotes.size < 1 || candidates.size < 1) {
+    console.log('No votes');
+    return {
+      hash: generateResultHash(sortedResults),
+      results: sortedResults,
+      children: [],
+      totalSiblings: 1,
+      winners,
+      losers
+    };
+  }
 
   // Voting over
   if (positionsToFill < 1) {
@@ -66,10 +77,7 @@ export const generateResultNode = (
   }
 
   // Clear winner
-  if (
-    firstPlace[1] !== secondPlace?.[1] &&
-    firstPlace[1] >= VOTES_REQUIRED
-  ) {
+  if (firstPlace[1] !== secondPlace?.[1] && firstPlace[1] >= VOTES_REQUIRED) {
     console.log('Clear winner');
     const newCandidates = new Map(savedCandidates);
     newCandidates.delete(firstPlace[0]);
@@ -97,7 +105,7 @@ export const generateResultNode = (
 
   // Clear loser
   if (secondToLastPlace && lastPlace[1] !== secondToLastPlace[1]) {
-    console.log("Clear loser");
+    console.log('Clear loser');
     const newCandidates = new Map(candidates);
     newCandidates.delete(lastPlace[0]);
 

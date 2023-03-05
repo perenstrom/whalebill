@@ -25,7 +25,14 @@ describe('generateResultNode', () => {
 
     const result = generateResultNode({ ballots, candidates });
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual({
+      hash: '',
+      results: new Map(),
+      children: [],
+      totalSiblings: 1,
+      winners: [],
+      losers: []
+    });
   });
 
   it('Returns two nodes with winner in second round if majority', async () => {
@@ -127,6 +134,9 @@ describe('generateResultNode', () => {
         ['qwer', 1],
         ['asdf', 1]
       ]),
+      totalSiblings: 1,
+      winners: [],
+      losers: [],
       children: [
         {
           hash: 'qwer@3-asdf@1',
@@ -134,24 +144,30 @@ describe('generateResultNode', () => {
             ['qwer', 3],
             ['asdf', 1]
           ]),
+          totalSiblings: 1,
+          winners: ['zxcv'],
+          losers: [],
           children: [
             {
               hash: 'asdf@4',
               results: new Map([['asdf', 4]]),
-              children: [],
               totalSiblings: 1,
               winners: ['zxcv', 'qwer'],
-              losers: []
+              losers: [],
+              children: [
+                {
+                  hash: '',
+                  results: new Map(),
+                  children: [],
+                  totalSiblings: 1,
+                  winners: ['zxcv', 'qwer', 'asdf'],
+                  losers: []
+                }
+              ]
             }
-          ],
-          totalSiblings: 1,
-          winners: ['zxcv'],
-          losers: []
+          ]
         }
-      ],
-      totalSiblings: 1,
-      winners: [],
-      losers: []
+      ]
     });
   });
 
@@ -289,7 +305,16 @@ describe('generateResultNode', () => {
                   totalSiblings: 1,
                   winners: ['zxcv', 'asdf'],
                   losers: [],
-                  children: []
+                  children: [
+                    {
+                      hash: '',
+                      results: new Map(),
+                      totalSiblings: 1,
+                      winners: ['zxcv', 'asdf', 'qwer'],
+                      losers: [],
+                      children: []
+                    }
+                  ]
                 }
               ]
             }
