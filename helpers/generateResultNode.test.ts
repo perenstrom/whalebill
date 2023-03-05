@@ -1,6 +1,7 @@
 import { Ballot, CandidateMap } from 'types/types';
 import { generateCandidateMap } from './generateCanidateMap';
 import { generateResultNode } from './generateResultNode';
+import { renderResultNode } from './renderer';
 
 beforeAll(() => {
   const crypto = require('crypto');
@@ -58,6 +59,7 @@ describe('generateResultNode', () => {
       candidates,
       positionsToFill: 10
     });
+    console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
       hash: 'zxcv@2-qwer@1-asdf@1',
@@ -116,6 +118,7 @@ describe('generateResultNode', () => {
       candidates,
       positionsToFill: 10
     });
+    console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
       hash: 'zxcv@2-qwer@1-asdf@1',
@@ -183,6 +186,7 @@ describe('generateResultNode', () => {
       candidates,
       positionsToFill: 1
     });
+    console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
       hash: 'zxcv@2-qwer@1-asdf@1',
@@ -245,6 +249,8 @@ describe('generateResultNode', () => {
       candidates,
       positionsToFill: 10
     });
+
+    console.log(resultNode && renderResultNode(resultNode));
 
     expect(resultNode).toEqual({
       hash: 'zxcv@2-asdf@2-qwer@1',

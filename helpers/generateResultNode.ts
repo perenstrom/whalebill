@@ -23,8 +23,6 @@ export const generateResultNode = (
     losers = [],
     positionsToFill = 1
   } = options;
-  console.log(ballots);
-  console.log(candidates);
   const VOTES_REQUIRED = Math.ceil(ballots.length / 2);
   const candidateVotes: Map<string, number> = new Map();
 
@@ -49,8 +47,6 @@ export const generateResultNode = (
   const sortedResults = new Map(
     [...candidateVotes].sort(([, aVotes], [, bVotes]) => bVotes - aVotes)
   );
-
-  console.log(sortedResults);
 
   const values = [...sortedResults];
   const firstPlace = values[0];

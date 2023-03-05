@@ -14,6 +14,6 @@ export type ResultNode = {
   results: Map<CandidateId, Votes>;
   children: ResultNode[];
   totalSiblings: number;
-  winners: CandidateId[] | null;
-  losers: CandidateId[] | null;
+  winners: CandidateId[];
+  losers: CandidateId[];
 };
