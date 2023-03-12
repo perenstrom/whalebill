@@ -1,4 +1,4 @@
-import { generateResultHash } from './generateResultHash';
+import { generateNodeHash } from './generateNodeHash';
 
 beforeAll(() => {
   const crypto = require('crypto');
@@ -10,7 +10,7 @@ beforeAll(() => {
   });
 });
 
-describe('generateResultHash', () => {
+describe('generateNodeHash', () => {
   it('Returns a string uniquely identifying a list of candidates with votes', async () => {
     const result: Map<string, number> = new Map([
       ['asdf', 5],
@@ -28,10 +28,10 @@ describe('generateResultHash', () => {
     const losers3 = ['tyui'];
     const losers4: string[] = [];
 
-    const rankingHash1 = generateResultHash(result, winners1, losers1);
-    const rankingHash2 = generateResultHash(result, winners2, losers2);
-    const rankingHash3 = generateResultHash(result, winners3, losers3);
-    const rankingHash4 = generateResultHash(result, winners4, losers4);
+    const rankingHash1 = generateNodeHash(result, winners1, losers1);
+    const rankingHash2 = generateNodeHash(result, winners2, losers2);
+    const rankingHash3 = generateNodeHash(result, winners3, losers3);
+    const rankingHash4 = generateNodeHash(result, winners4, losers4);
 
     expect(rankingHash1).toEqual('w%tyui-r%asdf@5-qwer@2-zxcv@1');
     expect(rankingHash2).toEqual('r%asdf@5-qwer@2-zxcv@1-l%tyui');
@@ -46,7 +46,7 @@ describe('generateResultHash', () => {
       ['zxcv', 0]
     ]);
 
-    const rankingHash = generateResultHash(result, [], []);
+    const rankingHash = generateNodeHash(result, [], []);
 
     expect(rankingHash).toEqual('r%asdf@5-qwer@2-zxcv@0');
   });

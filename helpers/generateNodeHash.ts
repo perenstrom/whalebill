@@ -1,4 +1,4 @@
-export const generateResultHash = (
+export const generateNodeHash = (
   results: Map<string, number>,
   winners: string[],
   losers: string[]
