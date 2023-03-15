@@ -10,14 +10,6 @@ export type CandidateMap = Map<CandidateId, Candidate>;
 export type Ballot = { id: number; ranking: CandidateId[] };
 
 type NodeHash = string;
-export type ResultNode = {
-  hash: NodeHash;
-  results: Map<CandidateId, Votes>;
-  children: ResultNode[];
-  totalSiblings: number;
-  winners: CandidateId[];
-  losers: CandidateId[];
-};
 export type GraphNode = {
   hash: NodeHash;
   results: Map<CandidateId, Votes>;
