@@ -9,23 +9,24 @@ export type CandidateMap = Map<CandidateId, Candidate>;
 
 export type Ballot = { id: number; ranking: CandidateId[] };
 
-type NodeHash = string;
+export type NodeHash = string;
 export type GraphNode = {
   hash: NodeHash;
   results: Map<CandidateId, Votes>;
   winners: CandidateId[];
   losers: CandidateId[];
-  children?: string[];
+  children: string[];
 };
 
 export type Graph = Map<NodeHash, GraphNode>;
 
+export type ResultHash = string;
 export interface ResultNodeOptions {
   ballots: Ballot[];
-  savedBallots?: Ballot[];
+  savedBallots: Ballot[];
   candidates: CandidateMap;
-  savedCandidates?: CandidateMap;
-  winners?: CandidateId[];
-  losers?: CandidateId[];
-  positionsToFill?: number;
+  savedCandidates: CandidateMap;
+  winners: CandidateId[];
+  losers: CandidateId[];
+  positionsToFill: number;
 }

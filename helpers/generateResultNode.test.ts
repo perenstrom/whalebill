@@ -22,7 +22,15 @@ describe('generateResultNode', () => {
 
     const ballots: Ballot[] = [];
 
-    const result = generateResultNode({ ballots, candidates });
+    const result = generateResultNode({
+      ballots,
+      candidates,
+      losers: [],
+      winners: [],
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map()
+    });
 
     expect(result).toEqual({
       hash: '',
@@ -42,7 +50,15 @@ describe('generateResultNode', () => {
       }
     ];
 
-    const result = generateResultNode({ ballots, candidates });
+    const result = generateResultNode({
+      ballots,
+      candidates,
+      losers: [],
+      winners: [],
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map()
+    });
 
     expect(result).toEqual({
       hash: '',
@@ -79,7 +95,15 @@ describe('generateResultNode', () => {
       }
     ];
 
-    const result = generateResultNode({ ballots, candidates });
+    const result = generateResultNode({
+      ballots,
+      candidates,
+      losers: [],
+      winners: [],
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map()
+    });
 
     expect(result).toEqual({
       hash: 'r%zxcv@2-qwer@1-asdf@1',
@@ -89,7 +113,8 @@ describe('generateResultNode', () => {
         ['asdf', 1]
       ]),
       winners: [],
-      losers: []
+      losers: [],
+      children: []
     } as GraphNode);
   });
 
@@ -121,7 +146,15 @@ describe('generateResultNode', () => {
 
     const winners: CandidateId[] = ['tyui'];
 
-    const result = generateResultNode({ ballots, candidates, winners });
+    const result = generateResultNode({
+      ballots,
+      candidates,
+      winners,
+      losers: [],
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map()
+    });
 
     expect(result).toEqual({
       hash: 'w%tyui-r%zxcv@2-qwer@1-asdf@1',
@@ -131,7 +164,8 @@ describe('generateResultNode', () => {
         ['asdf', 1]
       ]),
       winners: ['tyui'],
-      losers: []
+      losers: [],
+      children: []
     } as GraphNode);
   });
 
@@ -163,7 +197,15 @@ describe('generateResultNode', () => {
 
     const losers: CandidateId[] = ['tyui'];
 
-    const result = generateResultNode({ ballots, candidates, losers });
+    const result = generateResultNode({
+      ballots,
+      candidates,
+      losers,
+      winners: [],
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map()
+    });
 
     expect(result).toEqual({
       hash: 'r%zxcv@2-qwer@1-asdf@1-l%tyui',
@@ -173,7 +215,8 @@ describe('generateResultNode', () => {
         ['asdf', 1]
       ]),
       winners: [],
-      losers: ['tyui']
+      losers: ['tyui'],
+      children: []
     } as GraphNode);
   });
 
@@ -210,7 +253,10 @@ describe('generateResultNode', () => {
       ballots,
       candidates,
       losers,
-      winners
+      winners,
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -221,7 +267,8 @@ describe('generateResultNode', () => {
         ['asdf', 1]
       ]),
       winners: ['ghjk'],
-      losers: ['tyui']
+      losers: ['tyui'],
+      children: []
     } as GraphNode);
   });
 
@@ -255,14 +302,18 @@ describe('generateResultNode', () => {
       ballots,
       candidates,
       losers,
-      winners
+      winners,
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map(),
     });
 
     expect(result).toEqual({
       hash: 'w%ghjk-l%tyui',
       results: new Map([]),
       winners: ['ghjk'],
-      losers: ['tyui']
+      losers: ['tyui'],
+      children: []
     } as GraphNode);
   });
 });

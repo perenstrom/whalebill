@@ -64,11 +64,12 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       savedBallots: [],
       sortedResults: new Map([
-        ['a', 3],
+        ['a', 4],
         ['b', 2],
         ['c', 1]
       ]),
@@ -97,7 +98,8 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       savedBallots: [
         { id: 1, ranking: ['a', 'b', 'c', 'e'] },
@@ -105,10 +107,11 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['e', 'a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c', 'e'] },
         { id: 5, ranking: ['b', 'a', 'c', 'e'] },
-        { id: 6, ranking: ['c', 'b', 'a', 'e'] }
+        { id: 6, ranking: ['c', 'b', 'a', 'e'] },
+        { id: 7, ranking: ['a', 'b', 'c', 'e'] }
       ],
       sortedResults: new Map([
-        ['a', 3],
+        ['a', 4],
         ['b', 2],
         ['c', 1]
       ]),
@@ -132,7 +135,8 @@ describe('calculateResults', () => {
       { id: 3, ranking: ['e', 'b', 'c'] },
       { id: 4, ranking: ['b', 'c', 'e'] },
       { id: 5, ranking: ['b', 'c', 'e'] },
-      { id: 6, ranking: ['c', 'b', 'e'] }
+      { id: 6, ranking: ['c', 'b', 'e'] },
+      { id: 7, ranking: ['b', 'c', 'e'] }
     ]);
   });
 
@@ -144,11 +148,12 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       savedBallots: [],
       sortedResults: new Map([
-        ['a', 3],
+        ['a', 4],
         ['b', 2],
         ['c', 1]
       ]),
@@ -188,11 +193,12 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       savedBallots: [],
       sortedResults: new Map([
-        ['a', 3],
+        ['a', 4],
         ['b', 2],
         ['c', 1]
       ]),
@@ -226,7 +232,8 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       savedBallots: [
         { id: 1, ranking: ['a', 'b', 'c'] },
@@ -234,10 +241,11 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       sortedResults: new Map([
-        ['a', 3],
+        ['a', 4],
         ['b', 2],
         ['c', 1]
       ]),
@@ -271,7 +279,8 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       savedBallots: [
         { id: 1, ranking: ['a', 'b', 'c'] },
@@ -279,10 +288,11 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       sortedResults: new Map([
-        ['a', 3],
+        ['a', 4],
         ['b', 2],
         ['c', 1]
       ]),
@@ -316,11 +326,12 @@ describe('calculateResults', () => {
         { id: 3, ranking: ['a', 'b', 'c'] },
         { id: 4, ranking: ['b', 'a', 'c'] },
         { id: 5, ranking: ['b', 'a', 'c'] },
-        { id: 6, ranking: ['c', 'b', 'a'] }
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
       ],
       savedBallots: [],
       sortedResults: new Map([
-        ['a', 3],
+        ['a', 4],
         ['b', 2],
         ['c', 1]
       ]),

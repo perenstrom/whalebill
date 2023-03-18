@@ -1,9 +1,5 @@
-import {
-  GraphNode,
-  ResultNodeOptions
-} from 'types/types';
+import { GraphNode, ResultNodeOptions } from 'types/types';
 import { generateNodeHash } from './generateNodeHash';
-
 
 const getEmptyGraphNode = (): GraphNode => {
   return {
@@ -51,6 +47,7 @@ export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
     hash: generateNodeHash(sortedResults, winners, losers),
     results: sortedResults,
     winners,
-    losers
+    losers,
+    children: []
   };
 };

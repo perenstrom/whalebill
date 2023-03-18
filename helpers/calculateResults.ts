@@ -1,4 +1,10 @@
-import { Ballot, CandidateId, CandidateMap } from 'types/types';
+import {
+  Ballot,
+  CandidateId,
+  CandidateMap,
+  ResultHash,
+  ResultNodeOptions
+} from 'types/types';
 import { generateOptionsHash } from './generateOptionsHash';
 import { shiftBallots } from './shiftBallots';
 
@@ -13,7 +19,9 @@ interface ResultInput {
   previousLosers: CandidateId[];
 }
 
-export const calculateResults = (conditions: ResultInput) => {
+export const calculateResults = (
+  conditions: ResultInput
+): { options: ResultNodeOptions; hash: ResultHash }[] => {
   const {
     ballots,
     savedBallots,
@@ -27,13 +35,13 @@ export const calculateResults = (conditions: ResultInput) => {
 
   if (positionsToFill === 0 || candidates.size === 0) return [];
 
-  const VOTES_REQUIRED = Math.ceil(ballots.length / 2);
+  const VOTES_REQUIRED = ballots.length / 2;
   const values = [...sortedResults];
   const firstPlace = values[0];
   const secondPlace = values[1];
 
   // Clear winner
-  if (firstPlace[1] !== secondPlace?.[1] && firstPlace[1] >= VOTES_REQUIRED) {
+  if (firstPlace[1] !== secondPlace?.[1] && firstPlace[1] > VOTES_REQUIRED) {
     const newCandidates = new Map(savedCandidates);
     newCandidates.delete(firstPlace[0]);
 
