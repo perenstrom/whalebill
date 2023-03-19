@@ -42,13 +42,18 @@ export const calculateResults = (
 
   // Clear winner
   if (firstPlace[1] !== secondPlace?.[1] && firstPlace[1] > VOTES_REQUIRED) {
-    const newCandidates = new Map(savedCandidates);
+    const newCandidates = savedCandidates.size
+      ? new Map(savedCandidates)
+      : new Map(candidates);
     newCandidates.delete(firstPlace[0]);
 
     const childOptions = {
       winners: [...previousWinners, firstPlace[0]],
       losers: [],
-      ballots: shiftBallots(savedBallots, firstPlace[0]),
+      ballots: shiftBallots(
+        savedBallots.length ? savedBallots : ballots,
+        firstPlace[0]
+      ),
       savedBallots: [],
       candidates: newCandidates,
       savedCandidates: new Map(),
