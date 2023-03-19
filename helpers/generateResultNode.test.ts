@@ -273,7 +273,6 @@ describe('generateResultNode', () => {
   });
 
   it('Returns correct node if winners, and losers, but no votes', async () => {
-    // TODO: WHY NO WORK?!
     const candidates: CandidateMap = new Map([]);
 
     const ballots: Ballot[] = [

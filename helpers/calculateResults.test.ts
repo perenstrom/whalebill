@@ -81,7 +81,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: ['d'],
       previousLosers: [],
-      positionsToFill: 1
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -123,7 +123,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 1
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -170,7 +170,7 @@ describe('calculateResults', () => {
       ]),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 1
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -215,7 +215,7 @@ describe('calculateResults', () => {
       ]),
       previousWinners: [],
       previousLosers: ['asdf'],
-      positionsToFill: 1
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -262,7 +262,7 @@ describe('calculateResults', () => {
       ]),
       previousWinners: [],
       previousLosers: ['asdf'],
-      positionsToFill: 1
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -309,7 +309,7 @@ describe('calculateResults', () => {
       ]),
       previousWinners: [],
       previousLosers: ['asdf'],
-      positionsToFill: 1
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -350,6 +350,40 @@ describe('calculateResults', () => {
 
     expect(result?.length).toEqual(1);
     expect(result[0]?.options?.positionsToFill).toEqual(1);
+  });
+
+  it('Sets all remaining candidates as losers when last winner is selected', async () => {
+    const conditions: Parameters<typeof calculateResults>[0] = {
+      ballots: [
+        { id: 1, ranking: ['a', 'b', 'c'] },
+        { id: 2, ranking: ['a', 'b', 'c'] },
+        { id: 3, ranking: ['a', 'b', 'c'] },
+        { id: 4, ranking: ['b', 'a', 'c'] },
+        { id: 5, ranking: ['b', 'a', 'c'] },
+        { id: 6, ranking: ['c', 'b', 'a'] },
+        { id: 7, ranking: ['a', 'b', 'c'] }
+      ],
+      savedBallots: [],
+      sortedResults: new Map([
+        ['a', 4],
+        ['b', 2],
+        ['c', 1]
+      ]),
+      candidates: new Map([
+        ['a', { id: 'a', name: 'A' }],
+        ['b', { id: 'b', name: 'B' }],
+        ['c', { id: 'c', name: 'C' }]
+      ]),
+      savedCandidates: new Map(),
+      previousWinners: [],
+      previousLosers: [],
+      positionsToFill: 1
+    };
+
+    const result = calculateResults(conditions);
+
+    expect(result?.length).toEqual(1);
+    expect(result[0]?.options?.losers).toEqual(['b', 'c']);
   });
 
   it('Returns array of single elimination when clear loser, combined with input losers', async () => {

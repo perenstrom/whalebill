@@ -42,18 +42,32 @@ export const calculateResults = (
 
   // Clear winner
   if (firstPlace[1] !== secondPlace?.[1] && firstPlace[1] > VOTES_REQUIRED) {
+    const newPositionsToFill = positionsToFill - 1;
+
     const newCandidates = savedCandidates.size
       ? new Map(savedCandidates)
       : new Map(candidates);
     newCandidates.delete(firstPlace[0]);
 
+    const newLosers =
+      newPositionsToFill === 0 ? [...newCandidates].map(([id]) => id) : [];
+
+    if (newPositionsToFill === 0) {
+      newCandidates.clear();
+    }
+
+    const newBallots =
+      newPositionsToFill === 0
+        ? []
+        : shiftBallots(
+            savedBallots.length ? savedBallots : ballots,
+            firstPlace[0]
+          );
+
     const childOptions = {
       winners: [...previousWinners, firstPlace[0]],
-      losers: [],
-      ballots: shiftBallots(
-        savedBallots.length ? savedBallots : ballots,
-        firstPlace[0]
-      ),
+      losers: newLosers,
+      ballots: newBallots,
       savedBallots: [],
       candidates: newCandidates,
       savedCandidates: new Map(),

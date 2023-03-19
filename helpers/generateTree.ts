@@ -27,9 +27,6 @@ export const generateTree = (input: Input) => {
     positionsToFill: input.positionsToFill
   };
 
-  console.log('Initial options:');
-  console.log(initialOptions);
-
   const initialOptionsHash = generateOptionsHash(initialOptions);
   const queue = [{ hash: initialOptionsHash, options: initialOptions }];
   const hashMap = new Map<ResultHash, NodeHash>();
