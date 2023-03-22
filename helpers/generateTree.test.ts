@@ -98,15 +98,15 @@ describe('generateTree', () => {
           ]),
           winners: ['zxcv'],
           losers: [],
-          children: ['w%zxcv-asdf-l%qwer']
+          children: ['w%asdf-zxcv-l%qwer']
         }
       ],
       [
-        'w%zxcv-asdf-l%qwer',
+        'w%asdf-zxcv-l%qwer',
         {
-          hash: 'w%zxcv-asdf-l%qwer',
+          hash: 'w%asdf-zxcv-l%qwer',
           results: new Map(),
-          winners: ['zxcv', 'asdf'],
+          winners: ['asdf', 'zxcv'],
           losers: ['qwer'],
           children: []
         }
@@ -174,7 +174,7 @@ describe('generateTree', () => {
           ]),
           winners: [],
           losers: ['qwer'],
-          children: ['r%asdf@4-l%qwer-zxcv', 'r%zxcv@4-l%qwer-asdf']
+          children: ['r%asdf@4-l%qwer-zxcv', 'r%zxcv@4-l%asdf-qwer']
         }
       ],
       [
@@ -206,12 +206,12 @@ describe('generateTree', () => {
       [
         // barn 1-2
         // 4
-        'r%zxcv@4-l%qwer-asdf',
+        'r%zxcv@4-l%asdf-qwer',
         {
-          hash: 'r%zxcv@4-l%qwer-asdf',
+          hash: 'r%zxcv@4-l%asdf-qwer',
           results: new Map([['zxcv', 4]]),
           winners: [],
-          losers: ['qwer', 'asdf'],
+          losers: ['asdf', 'qwer' ],
           children: ['w%zxcv-l%asdf-qwer']
         }
       ],

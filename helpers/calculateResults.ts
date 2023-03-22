@@ -50,7 +50,11 @@ export const calculateResults = (
     newCandidates.delete(firstPlace[0]);
 
     const newLosers =
-      newPositionsToFill === 0 ? [...newCandidates].map(([id]) => id) : [];
+      newPositionsToFill === 0
+        ? [...newCandidates]
+            .map(([id]) => id)
+            .sort((a, b) => a.localeCompare(b))
+        : [];
 
     if (newPositionsToFill === 0) {
       newCandidates.clear();
@@ -65,7 +69,7 @@ export const calculateResults = (
           );
 
     const childOptions = {
-      winners: [...previousWinners, firstPlace[0]],
+      winners: [...previousWinners, firstPlace[0]].sort((a, b) => a.localeCompare(b)),
       losers: newLosers,
       ballots: newBallots,
       savedBallots: [],
@@ -97,7 +101,9 @@ export const calculateResults = (
 
     const childOptions = {
       winners: previousWinners,
-      losers: [...previousLosers, lastPlace[0]],
+      losers: [...previousLosers, lastPlace[0]].sort((a, b) =>
+        a.localeCompare(b)
+      ),
       ballots: shiftBallots(ballots, lastPlace[0]),
       savedBallots: newSavedBallots,
       candidates: newCandidates,
@@ -125,7 +131,7 @@ export const calculateResults = (
 
     const childOptions = {
       winners: previousWinners,
-      losers: [...previousLosers, loser],
+      losers: [...previousLosers, loser].sort((a, b) => a.localeCompare(b)),
       ballots: shiftBallots(ballots, loser),
       savedBallots: newSavedBallots,
       candidates: newCandidates,

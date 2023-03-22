@@ -87,7 +87,7 @@ describe('calculateResults', () => {
     const result = calculateResults(conditions);
 
     expect(result?.length).toEqual(1);
-    expect(result[0]?.options?.winners).toEqual(['d', 'a']);
+    expect(result[0]?.options?.winners).toEqual(['a', 'd']);
   });
 
   it('Resets all eliminated candidates in ballots after win', async () => {
