@@ -6,6 +6,7 @@ export type Candidate = {
   name: string;
 };
 export type CandidateMap = Map<CandidateId, Candidate>;
+export type SimpleCandidateMap = [CandidateId, Candidate][];
 
 export type Ballot = { id: number; ranking: CandidateId[] };
 
@@ -16,6 +17,9 @@ export type GraphNode = {
   winners: CandidateId[];
   losers: CandidateId[];
   children: string[];
+};
+export type SimpleGraphNode = Omit<GraphNode, 'results'> & {
+  results: [CandidateId, Votes][];
 };
 
 export type Graph = Map<NodeHash, GraphNode>;

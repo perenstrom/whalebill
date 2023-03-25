@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import ELK, { ElkNode } from 'elkjs';
-import { Container, Box } from '@mui/material';
 import { ReactFlow, Node, Edge, Position } from 'reactflow';
+import styled from 'styled-components';
 
 import 'reactflow/dist/style.css';
 import { CandidateMap, Ballot } from 'types/types';
 import { generateTree } from 'helpers/generateTree';
+import {
+  GraphNode,
+  GraphNodeProps,
+  NODE_TYPE_GRAPH_NODE
+} from 'components/GraphNode';
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const FlowWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 interface Props {
   nodes: Node[];
@@ -15,30 +30,31 @@ interface Props {
 }
 
 const IndexPage: NextPage<Props> = ({ nodes, edges }) => {
+  const nodeTypes = useMemo(() => ({ [NODE_TYPE_GRAPH_NODE]: GraphNode }), []);
+
   return (
-    <Container maxWidth="lg" sx={{ height: '100vh', padding: '0px' }}>
+    <Container>
       <Head>
         <title>IRV</title>
       </Head>
-      <Box sx={{ width: '100%', height: '100%' }}>
-        <ReactFlow nodes={nodes} edges={edges} />
-      </Box>
+      <FlowWrapper>
+        <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} />
+      </FlowWrapper>
     </Container>
   );
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  console.log(performance.now());
   const candidates: CandidateMap = new Map([
-    ['847', { id: '847', name: 'Candidate 1' }],
-    ['848', { id: '848', name: 'Candidate 2' }],
-    ['849', { id: '849', name: 'Candidate 3' }],
-    ['850', { id: '850', name: 'Candidate 4' }],
-    ['851', { id: '851', name: 'Candidate 5' }],
-    ['852', { id: '852', name: 'Candidate 6' }],
-    ['853', { id: '853', name: 'Candidate 7' }],
-    ['854', { id: '854', name: 'Candidate 8' }],
-    ['855', { id: '855', name: 'Candidate 9' }]
+    ['847', { id: '847', name: 'Aisha Davis' }],
+    ['848', { id: '848', name: 'Hiroshi Patel' }],
+    ['849', { id: '849', name: 'Amara Carter' }],
+    ['850', { id: '850', name: 'Ingrid Meyer' }],
+    ['851', { id: '851', name: 'Javier Ramirez' }],
+    ['852', { id: '852', name: 'Mei Kim' }],
+    ['853', { id: '853', name: 'Zainab Ali' }],
+    ['854', { id: '854', name: 'Alejandro Torres' }],
+    ['855', { id: '855', name: 'Sanaa Khan' }]
   ]);
 
   const ballots: Ballot[] = [
@@ -194,7 +210,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     positionsToFill: 6
   });
 
-  const nodes: Node[] = [];
+  const nodes: Node<GraphNodeProps>[] = [];
   const edges: Edge<{}>[] = [];
 
   tree.forEach((node) => {
@@ -203,7 +219,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
       position: { y: 0, x: 0 },
-      data: { label: node.hash }
+      data: {
+        node: { ...node, results: [...node.results] },
+        candidates: [...candidates]
+      },
+      type: NODE_TYPE_GRAPH_NODE
     });
 
     node.children.forEach((child) => {
@@ -221,7 +241,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       return {
         id: node.id,
         width: 200,
-        height: 100
+        height: candidates.size * 20 + 20 * 2,
       };
     });
 
