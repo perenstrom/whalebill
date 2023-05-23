@@ -38,7 +38,17 @@ const IndexPage: NextPage<Props> = ({ nodes, edges }) => {
         <title>IRV</title>
       </Head>
       <FlowWrapper>
-        <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} />
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          fitView={true}
+          minZoom={0.05}
+          nodesConnectable={false}
+          nodesDraggable={false}
+          edgesFocusable={false}
+          panOnScroll={true}
+        />
       </FlowWrapper>
     </Container>
   );
@@ -230,7 +240,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       edges.push({
         id: `${node.hash}-${child}`,
         source: node.hash,
-        target: child
+        target: child,
+        style: { stroke: 'black', strokeWidth: 1 },
       });
     });
   });
@@ -241,7 +252,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       return {
         id: node.id,
         width: 200,
-        height: candidates.size * 20 + 20 * 2,
+        height: candidates.size * 20 + 20 * 2
       };
     });
 

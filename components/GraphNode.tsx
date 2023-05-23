@@ -9,6 +9,10 @@ const Wrapper = styled.div`
   --padding: 0.6rem;
   border: 1px solid black;
   border-radius: var(--border-radius);
+
+  :focus {
+    background-color: red;
+  }
 `;
 
 const Reset = css`
@@ -49,7 +53,7 @@ const FlexGrow = styled.span`
 const Losers = styled(ResetUl)`
   padding: var(--padding);
   border-top: 1px solid black;
-  color: grey;
+  color: hsl(0, 0%, 75%);
   text-decoration: line-through 2px;
 `;
 
