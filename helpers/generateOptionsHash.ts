@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { ResultNodeOptions } from 'types/types';
+import { ResultNodeOptions } from 'types/graph';
 
 export const generateOptionsHash = (options: ResultNodeOptions) => {
   const {

@@ -5,7 +5,7 @@ import {
   NodeHash,
   ResultHash,
   ResultNodeOptions
-} from 'types/types';
+} from 'types/graph';
 import { calculateResults } from './calculateResults';
 import { generateOptionsHash } from './generateOptionsHash';
 import { generateResultNode } from './generateResultNode';

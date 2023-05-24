@@ -1,4 +1,4 @@
-import { Ballot } from 'types/types';
+import { Ballot } from 'types/graph';
 import { shiftBallots } from './shiftBallots';
 
 describe('shiftBallots', () => {

@@ -4,7 +4,7 @@ import {
   CandidateMap,
   ResultHash,
   ResultNodeOptions
-} from 'types/types';
+} from 'types/graph';
 import { generateOptionsHash } from './generateOptionsHash';
 import { shiftBallots } from './shiftBallots';
 

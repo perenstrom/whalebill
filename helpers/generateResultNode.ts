@@ -1,4 +1,4 @@
-import { GraphNode, ResultNodeOptions } from 'types/types';
+import { GraphNode, ResultNodeOptions } from 'types/graph';
 import { generateNodeHash } from './generateNodeHash';
 
 const getEmptyGraphNode = (): GraphNode => {

@@ -6,7 +6,7 @@ import { ReactFlow, Node, Edge, Position } from 'reactflow';
 import styled from 'styled-components';
 
 import 'reactflow/dist/style.css';
-import { CandidateMap, Ballot } from 'types/types';
+import { CandidateMap, Ballot } from 'types/graph';
 import { generateTree } from 'helpers/generateTree';
 import {
   GraphNode,

@@ -1,4 +1,4 @@
-import { CandidateMap, Ballot, ResultNodeOptions } from 'types/types';
+import { CandidateMap, Ballot, ResultNodeOptions } from 'types/graph';
 import { generateOptionsHash } from './generateOptionsHash';
 
 describe('generateOptionsHash', () => {

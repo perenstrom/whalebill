@@ -1,4 +1,4 @@
-import { CandidateMap, Ballot, GraphNode } from 'types/types';
+import { CandidateMap, Ballot, GraphNode } from 'types/graph';
 import { generateTree } from './generateTree';
 
 describe('generateTree', () => {

@@ -1,6 +1,6 @@
 import { Handle, NodeProps, Position } from 'reactflow';
 import styled, { css } from 'styled-components';
-import { CandidateMap, SimpleCandidateMap, SimpleGraphNode } from 'types/types';
+import { CandidateMap, SimpleCandidateMap, SimpleGraphNode } from 'types/graph';
 
 export const NODE_TYPE_GRAPH_NODE = 'graphNode';
 

@@ -1,4 +1,4 @@
-import { Ballot } from 'types/types';
+import { Ballot } from 'types/graph';
 
 export const shiftBallots = (ballots: Ballot[], candidateId: string) =>
   ballots.map((ballot) => {

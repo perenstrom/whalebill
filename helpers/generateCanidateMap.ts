@@ -1,4 +1,4 @@
-import { Candidate } from 'types/types';
+import { Candidate } from 'types/graph';
 
 export const generateCandidateMap = (
   candidates: Omit<Candidate, 'id'>[]

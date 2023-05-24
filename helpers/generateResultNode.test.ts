@@ -1,4 +1,4 @@
-import { Ballot, CandidateId, CandidateMap, GraphNode } from 'types/types';
+import { Ballot, CandidateId, CandidateMap, GraphNode } from 'types/graph';
 import { generateCandidateMap } from './generateCanidateMap';
 import { generateResultNode } from './generateResultNode';
 
