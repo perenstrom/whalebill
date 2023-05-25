@@ -1,3 +1,5 @@
+import { Button } from 'components/Button';
+import { Divider } from 'components/Divider';
 import { TextInput } from 'components/TextInput';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -6,11 +8,36 @@ import styled from 'styled-components';
 import { UncreatedPosition } from 'types/types';
 
 const Wrapper = styled.div`
-  padding: 2rem;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 
-const SubmitButton = styled.button`
-  display: block;
+const Card = styled.div`
+  max-width: 30rem;
+  padding: 2rem;
+  border-radius: 5px;
+
+  background: var(--color-gray-3);
+  border: 1px solid var(--color-gray-1);
+  box-shadow: var(--shadow-elevation-high);
+`;
+
+const Heading = styled.h1`
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+`;
+
+const InputWrapper = styled.div`
+  margin-top: 1rem;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
 `;
 
 const IndexPage: NextPage<{}> = () => {
@@ -35,12 +62,21 @@ const IndexPage: NextPage<{}> = () => {
 
   return (
     <Wrapper>
-      <h1>Register open position</h1>
-      <form method="post" onSubmit={onSubmit}>
-        <TextInput id="name" label="Position" />
-        <TextInput id="openSeats" label="Open seats" />
-        <SubmitButton type="submit">Save</SubmitButton>
-      </form>
+      <Card>
+        <Heading>Register open position</Heading>
+        <Divider />
+        <form method="post" onSubmit={onSubmit}>
+          <InputWrapper>
+            <TextInput id="name" label="Position" />
+          </InputWrapper>
+          <InputWrapper>
+            <TextInput id="openSeats" label="Open seats" />
+          </InputWrapper>
+          <ButtonWrapper>
+            <Button type="submit">Save</Button>
+          </ButtonWrapper>
+        </form>
+      </Card>
     </Wrapper>
   );
 };

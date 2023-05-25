@@ -4,6 +4,17 @@ const Label = styled.label`
   display: block;
 `;
 
+const Input = styled.input`
+  width: 100%;
+  border: 0;
+  border-radius: 3px;
+
+  &:focus {
+    outline: 2px solid var(--color-accent-green-light);
+    outline-offset: 2px;
+  }
+`;
+
 export const TextInput: React.FC<{ id: string; label: string }> = ({
   id,
   label
@@ -11,7 +22,7 @@ export const TextInput: React.FC<{ id: string; label: string }> = ({
   return (
     <>
       <Label htmlFor={id}>{label}</Label>
-      <input id={id} name={id} type="text" />
+      <Input id={id} name={id} type="text" />
     </>
   );
 };

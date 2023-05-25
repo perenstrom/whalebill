@@ -60,6 +60,29 @@ const GlobalStyle = createGlobalStyle`
     --color-accent-red: hsla(355, 50%, 53%, 1);
     --color-accent-yellow: hsla(29, 80%, 57%, 1);
 
+    --shadow-color: 219deg 24% 10%;
+    --shadow-elevation-low:
+      0.3px 0.5px 0.6px hsl(var(--shadow-color) / 0.4),
+      0.5px 0.8px 1px -1.6px hsl(var(--shadow-color) / 0.34),
+      1.3px 1.9px 2.3px -3.2px hsl(var(--shadow-color) / 0.29);
+    --shadow-elevation-medium:
+      0.3px 0.5px 0.6px hsl(var(--shadow-color) / 0.34),
+      0.8px 1.1px 1.4px -0.8px hsl(var(--shadow-color) / 0.31),
+      1.6px 2.2px 2.8px -1.6px hsl(var(--shadow-color) / 0.28),
+      3.3px 4.7px 5.9px -2.4px hsl(var(--shadow-color) / 0.25),
+      6.6px 9.4px 11.7px -3.2px hsl(var(--shadow-color) / 0.22);
+    --shadow-elevation-high:
+      0.3px 0.5px 0.6px hsl(var(--shadow-color) / 0.31),
+      1.2px 1.7px 2.1px -0.4px hsl(var(--shadow-color) / 0.3),
+      2.2px 3.1px 3.9px -0.7px hsl(var(--shadow-color) / 0.29),
+      3.4px 4.8px 6px -1.1px hsl(var(--shadow-color) / 0.27),
+      5.2px 7.4px 9.2px -1.4px hsl(var(--shadow-color) / 0.26),
+      7.8px 11.1px 13.8px -1.8px hsl(var(--shadow-color) / 0.25),
+      11.5px 16.4px 20.4px -2.1px hsl(var(--shadow-color) / 0.23),
+      16.6px 23.6px 29.4px -2.5px hsl(var(--shadow-color) / 0.22),
+      23.2px 33px 41.1px -2.8px hsl(var(--shadow-color) / 0.2),
+      31.7px 45.1px 56.2px -3.2px hsl(var(--shadow-color) / 0.19);
+
     font-family: 'Merriweather Sans', sans-serif;
     font-weight: 300;
     line-height: 1.75;
@@ -68,13 +91,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    margin: 3rem 0 1.38rem -0.4rem;
+    margin: 3rem 0 1.38rem 0;
     font-family: 'Catamaran', serif;
     font-weight: 500;
     line-height: 1.3;
 
     @media (max-width: 768px) {
-      margin: 1rem 0 1.38rem -0.4rem;
+      margin: 1rem 0 1.38rem 0;
     }
   }
   
