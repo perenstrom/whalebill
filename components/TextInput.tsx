@@ -15,14 +15,15 @@ const Input = styled.input`
   }
 `;
 
-export const TextInput: React.FC<{ id: string; label: string }> = ({
-  id,
-  label
-}) => {
+export const TextInput: React.FC<{
+  id: string;
+  label: string;
+  defaultValue?: string;
+}> = ({ id, label, defaultValue }) => {
   return (
     <>
       <Label htmlFor={id}>{label}</Label>
-      <Input id={id} name={id} type="text" />
+      <Input id={id} name={id} type="text" defaultValue={defaultValue} />
     </>
   );
 };
