@@ -11,3 +11,13 @@ export const createPosition = async (
 
   return result;
 };
+
+export const getAdminPosition = async (ctx: Context, adminId: string) => {
+  const result = await ctx.prisma.position.findUnique({
+    where: {
+      adminId
+    }
+  });
+
+  return result;
+};

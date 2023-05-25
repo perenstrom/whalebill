@@ -9,6 +9,7 @@ datasource db {
 
 model Position {
   id        String @id @default(uuid())
+  adminId   String @unique @default(uuid()) @map("admin_id")
   name      String
   openSeats Int    @map("open_seats")
 

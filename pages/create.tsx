@@ -54,7 +54,7 @@ const IndexPage: NextPage<{}> = () => {
     try {
       const createdPosition = await createPosition(position);
 
-      router.push(`/${createdPosition.id}`);
+      router.push(`/positions/admin/${createdPosition.adminId}`);
     } catch (error) {
       console.log('Something went wrong');
     }
