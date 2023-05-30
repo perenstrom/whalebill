@@ -1,4 +1,5 @@
 import { Position } from '@prisma/client';
+import { Card } from 'components/Card';
 import { Divider } from 'components/Divider';
 import { OpenPositionForm } from 'components/admin/OpenPositionForm';
 import { prismaContext } from 'lib/prisma';
@@ -28,8 +29,21 @@ const Heading = styled.h1`
   margin-bottom: 0.2rem;
 `;
 
+const Callout = styled.div`
+  width: 100%;
+  background: var(--color-accent-blue);
+  padding: 0.7rem 1rem;
+  border-radius: 4px;
+  line-height: 1.3;
+  border: 2px solid var(--color-accent-blue-light);
+  box-shadow: var(--shadow-elevation-medium);
+
+  margin-bottom: 2rem;
+`;
+
 const PositionAdminPage: NextPage<Props> = ({ position }) => {
   const router = useRouter();
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -49,19 +63,26 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
       console.log('Something went wrong');
     }
   };
+
   return (
     <Wrapper>
-      <FormWrapper>
-        <Heading>Open position settings</Heading>
-        <Divider />
-        <OpenPositionForm
-          onSubmit={onSubmit}
-          defaultValues={{
-            name: position.name,
-            openSeats: position.openSeats.toString()
-          }}
-        />
-      </FormWrapper>
+      <Callout>
+        <b>Save this URL!</b> You will not be able to administer this election
+        again without it.
+      </Callout>
+      <Card $variant="dark">
+        <FormWrapper>
+          <Heading>Open position settings</Heading>
+          <Divider />
+          <OpenPositionForm
+            onSubmit={onSubmit}
+            defaultValues={{
+              name: position.name,
+              openSeats: position.openSeats.toString()
+            }}
+          />
+        </FormWrapper>
+      </Card>
     </Wrapper>
   );
 };

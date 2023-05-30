@@ -49,6 +49,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     --color-text-primary: hsla(216, 8%, 75%, 1);
     --color-text-secondary: hsla(200, 6%, 47%, 1);
+    --color-text-dark: hsla(222, 18%, 14%, 1);
     --color-gray-1: hsla(222, 18%, 14%, 1);
     --color-gray-2: hsla(221, 17%, 18%, 1);
     --color-gray-3: hsla(214, 19%, 22%, 1);
@@ -57,6 +58,8 @@ const GlobalStyle = createGlobalStyle`
     --color-accent-green-light: hsla(112, 30%, 58%, 1);
     --color-accent-green-dark: hsla(112, 45%, 33%, 1);
     --color-accent-blue: hsla(182, 43%, 33%, 1);
+    --color-accent-blue-light: hsla(182, 26%, 50%, 1);
+    --color-accent-blue-dark: hsla(182, 43%, 16%, 1);
     --color-accent-red: hsla(355, 50%, 53%, 1);
     --color-accent-yellow: hsla(29, 80%, 57%, 1);
 
@@ -118,9 +121,9 @@ const GlobalStyle = createGlobalStyle`
 
   p {
     margin-bottom: 1rem;
-    b {
-      font-weight: 500;
-    }
+  }
+  b {
+    font-weight: 700;
   }
 
   a {

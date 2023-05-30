@@ -42,7 +42,7 @@ const IndexPage: NextPage<{}> = () => {
 
   return (
     <Wrapper>
-      <Card>
+      <Card $variant="light">
         <Heading>Register open position</Heading>
         <Divider />
         <OpenPositionForm onSubmit={onSubmit} />
