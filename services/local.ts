@@ -1,5 +1,8 @@
-import { Position } from '@prisma/client';
-import { UncreatedPosition } from 'types/types';
+import { Candidate, Position } from '@prisma/client';
+import {
+  UncreatedCandidate,
+  UncreatedPosition
+} from 'types/types';
 
 const defaultHeaders = {
   Accept: 'application/json',
@@ -16,7 +19,7 @@ export const createPosition = async (position: UncreatedPosition) => {
 
   const result = await fetch(url, options).then((r) => r.json());
 
-  return result;
+  return result as Position;
 };
 
 export const updatePosition = async (
@@ -32,5 +35,21 @@ export const updatePosition = async (
 
   const result = await fetch(url, options).then((r) => r.json());
 
-  return result;
+  return result as Position;
+};
+
+export const createCandidate = async (
+  positionId: string,
+  candidate: UncreatedCandidate
+) => {
+  const url = `/api/positions/${positionId}/candidates`;
+  const options: RequestInit = {
+    method: 'POST',
+    headers: defaultHeaders,
+    body: JSON.stringify(candidate)
+  };
+
+  const result = await fetch(url, options).then((r) => r.json());
+
+  return result as Candidate;
 };

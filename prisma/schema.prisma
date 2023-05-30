@@ -8,10 +8,20 @@ datasource db {
 }
 
 model Position {
-  id        String @id @default(uuid())
-  adminId   String @unique @default(uuid()) @map("admin_id")
-  name      String
-  openSeats Int    @map("open_seats")
+  id         String      @id @default(uuid())
+  adminId    String      @unique @default(uuid()) @map("admin_id")
+  name       String
+  openSeats  Int         @map("open_seats")
+  candidates Candidate[]
 
   @@map("positions")
+}
+
+model Candidate {
+  id         String   @id @default(uuid())
+  name       String
+  positionId String   @map("position_id")
+  position   Position @relation(fields: [positionId], references: [id])
+
+  @@map("candidates")
 }

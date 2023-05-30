@@ -5,9 +5,9 @@ interface Props {
 }
 
 export const Card = styled.div<Props>`
-  max-width: 30rem;
   padding: 2rem;
   border-radius: 5px;
+  width: 100%;
 
   background: ${({ $variant }) =>
     $variant === 'light' ? 'var(--color-gray-3)' : 'var(--color-gray-1)'};

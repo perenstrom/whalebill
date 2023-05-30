@@ -1,6 +1,9 @@
 import { Position } from '@prisma/client';
 import { Context } from 'lib/prisma';
-import { UncreatedPosition } from 'types/types';
+import {
+  UncreatedCandidateWithPositionId,
+  UncreatedPosition
+} from 'types/types';
 
 export const createPosition = async (
   ctx: Context,
@@ -17,6 +20,9 @@ export const getAdminPosition = async (ctx: Context, adminId: string) => {
   const result = await ctx.prisma.position.findUnique({
     where: {
       adminId
+    },
+    include: {
+      candidates: true
     }
   });
 
@@ -29,6 +35,17 @@ export const updatePosition = async (ctx: Context, position: Position) => {
       id: position.id
     },
     data: position
+  });
+
+  return result;
+};
+
+export const createCandidate = async (
+  ctx: Context,
+  candidate: UncreatedCandidateWithPositionId
+) => {
+  const result = await ctx.prisma.candidate.create({
+    data: candidate
   });
 
   return result;

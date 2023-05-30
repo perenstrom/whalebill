@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 export const UncreatedPositionSchema = z.object({
@@ -13,3 +14,20 @@ export const PositionSchema = z.object({
   openSeats: z.number(),
   adminId: z.string()
 });
+
+export type AdminPosition = Prisma.PositionGetPayload<{
+  include: {
+    candidates: true;
+  };
+}>;
+
+export const UncreatedCandidateSchema = z.object({
+  name: z.string(),
+});
+export const UncreatedCandidateWithPositionIdSchema = z.object({
+  name: z.string(),
+  positionId: z.string()
+});
+
+export type UncreatedCandidate = z.infer<typeof UncreatedCandidateSchema>;
+export type UncreatedCandidateWithPositionId = z.infer<typeof UncreatedCandidateWithPositionIdSchema>;

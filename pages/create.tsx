@@ -20,6 +20,10 @@ const Heading = styled.h1`
   margin-bottom: 0.2rem;
 `;
 
+const CreateCard = styled(Card)`
+  max-width: 30rem;
+`;
+
 const IndexPage: NextPage<{}> = () => {
   const router = useRouter();
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -42,11 +46,11 @@ const IndexPage: NextPage<{}> = () => {
 
   return (
     <Wrapper>
-      <Card $variant="light">
+      <CreateCard $variant="light">
         <Heading>Register open position</Heading>
         <Divider />
         <OpenPositionForm onSubmit={onSubmit} />
-      </Card>
+      </CreateCard>
     </Wrapper>
   );
 };
