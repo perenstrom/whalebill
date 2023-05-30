@@ -25,3 +25,20 @@ model Candidate {
 
   @@map("candidates")
 }
+
+model Ballot {
+  id         String       @id @default(uuid())
+  BallotItem BallotItem[]
+
+  @@map("ballots")
+}
+
+model BallotItem {
+  id       String @id @default(uuid())
+  ballotId String @map("ballot_id")
+  order    Int
+  ballot   Ballot @relation(fields: [ballotId], references: [id])
+
+  @@unique([ballotId, order])
+  @@map("ballot_items")
+}

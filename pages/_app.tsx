@@ -127,11 +127,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: hsl(0 0% 15%);
+    color: var(--color-text-dark);
   }
 
   a:hover {
-    color: hsl(320 70% 35%);
+    color: var(--color-text-dark);
   }
 
   @media (max-width: 768px) {

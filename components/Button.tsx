@@ -13,6 +13,7 @@ export const Button = styled.button`
   border-radius: 3px;
   background: var(--color-accent-green);
   min-width: 8rem;
+  text-decoration: none;
 
   &:hover {
     background: var(--color-accent-green-dark);

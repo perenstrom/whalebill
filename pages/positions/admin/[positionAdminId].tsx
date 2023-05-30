@@ -84,7 +84,7 @@ const CandidateWrapper = styled.li`
 `;
 
 const CandidateHeading = styled.h3`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 1;
   margin: 0;
 `;
@@ -177,6 +177,8 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
             </ButtonWrapper>
           </form>
         </DashBoardCard>
+
+        <Button as="a" href={`./${position.adminId}/ballots`}>Move on &gt;&gt;</Button>
       </CardWrapper>
     </Wrapper>
   );
