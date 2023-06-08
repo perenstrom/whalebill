@@ -3,6 +3,7 @@ import { Button } from 'components/Button';
 import { Card } from 'components/Card';
 import { Divider } from 'components/Divider';
 import { TextInput } from 'components/TextInput';
+import { ListItem } from 'components/admin/ListItem';
 import { OpenPositionForm } from 'components/admin/OpenPositionForm';
 import { getShortId } from 'helpers/copy';
 import { prismaContext } from 'lib/prisma';
@@ -71,30 +72,6 @@ const CandidateList = styled.ul`
   padding: 0;
 `;
 
-const CandidateWrapper = styled.li`
-  margin-left: -2rem;
-  margin-right: -2rem;
-  padding: 1rem 2rem;
-
-  background: var(--color-gray-3);
-
-  &:nth-child(odd) {
-    background: var(--color-gray-2);
-  }
-`;
-
-const CandidateHeading = styled.h3`
-  font-size: 1.2rem;
-  line-height: 1;
-  margin: 0;
-`;
-
-const CandidateId = styled.span`
-  display: block;
-  font-size: 0.8rem;
-  color: var(--color-text-secondary);
-`;
-
 const PositionAdminPage: NextPage<Props> = ({ position }) => {
   const router = useRouter();
 
@@ -161,10 +138,11 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
             {position.candidates
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((candidate) => (
-                <CandidateWrapper key={candidate.id}>
-                  <CandidateHeading>{candidate.name}</CandidateHeading>
-                  <CandidateId>{getShortId(candidate.id)}</CandidateId>
-                </CandidateWrapper>
+                <ListItem
+                  key={candidate.id}
+                  heading={candidate.name}
+                  subHeading={getShortId(candidate.id)}
+                />
               ))}
           </CandidateList>
           <form onSubmit={onSubmitCandidate}>
@@ -178,7 +156,9 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
           </form>
         </DashBoardCard>
 
-        <Button as="a" href={`./${position.adminId}/ballots`}>Move on &gt;&gt;</Button>
+        <Button as="a" href={`./${position.adminId}/ballots`}>
+          Move on &gt;&gt;
+        </Button>
       </CardWrapper>
     </Wrapper>
   );

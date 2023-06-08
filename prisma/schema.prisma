@@ -18,26 +18,29 @@ model Position {
 }
 
 model Candidate {
-  id         String   @id @default(uuid())
-  name       String
-  positionId String   @map("position_id")
-  position   Position @relation(fields: [positionId], references: [id])
+  id          String       @id @default(uuid())
+  name        String
+  positionId  String       @map("position_id")
+  position    Position     @relation(fields: [positionId], references: [id])
+  ballotItems BallotItem[]
 
   @@map("candidates")
 }
 
 model Ballot {
-  id         String       @id @default(uuid())
-  BallotItem BallotItem[]
+  id          String       @id @default(uuid())
+  ballotItems BallotItem[]
 
   @@map("ballots")
 }
 
 model BallotItem {
-  id       String @id @default(uuid())
-  ballotId String @map("ballot_id")
-  order    Int
-  ballot   Ballot @relation(fields: [ballotId], references: [id])
+  id          String    @id @default(uuid())
+  ballotId    String    @map("ballot_id")
+  candidateId String    @map("candidate_id")
+  order       Int
+  ballot      Ballot    @relation(fields: [ballotId], references: [id])
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
 
   @@unique([ballotId, order])
   @@map("ballot_items")

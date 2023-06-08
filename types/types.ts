@@ -22,7 +22,7 @@ export type AdminPosition = Prisma.PositionGetPayload<{
 }>;
 
 export const UncreatedCandidateSchema = z.object({
-  name: z.string(),
+  name: z.string()
 });
 export const UncreatedCandidateWithPositionIdSchema = z.object({
   name: z.string(),
@@ -30,4 +30,14 @@ export const UncreatedCandidateWithPositionIdSchema = z.object({
 });
 
 export type UncreatedCandidate = z.infer<typeof UncreatedCandidateSchema>;
-export type UncreatedCandidateWithPositionId = z.infer<typeof UncreatedCandidateWithPositionIdSchema>;
+export type UncreatedCandidateWithPositionId = z.infer<
+  typeof UncreatedCandidateWithPositionIdSchema
+>;
+
+export const UncreatedBallotItemSchema = z.object({
+  ballotId: z.string(),
+  candidateId: z.string(),
+  order: z.number()
+});
+
+export type UncreatedBallotItem = z.infer<typeof UncreatedBallotItemSchema>;
