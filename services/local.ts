@@ -1,5 +1,7 @@
 import { Candidate, Position } from '@prisma/client';
 import {
+  BallotWithItems,
+  UncreatedBallotItem,
   UncreatedCandidate,
   UncreatedPosition
 } from 'types/types';
@@ -52,4 +54,20 @@ export const createCandidate = async (
   const result = await fetch(url, options).then((r) => r.json());
 
   return result as Candidate;
+};
+
+export const createBallot = async (
+  positionId: string,
+  ballotItems: UncreatedBallotItem[]
+) => {
+  const url = `/api/positions/${positionId}/ballots`;
+  const options: RequestInit = {
+    method: 'POST',
+    headers: defaultHeaders,
+    body: JSON.stringify(ballotItems)
+  };
+
+  const result = await fetch(url, options).then((r) => r.json());
+
+  return result as BallotWithItems;
 };

@@ -13,6 +13,7 @@ model Position {
   name       String
   openSeats  Int         @map("open_seats")
   candidates Candidate[]
+  ballots    Ballot[]
 
   @@map("positions")
 }
@@ -29,6 +30,8 @@ model Candidate {
 
 model Ballot {
   id          String       @id @default(uuid())
+  positionId  String       @map("position_id")
+  position    Position     @relation(fields: [positionId], references: [id])
   ballotItems BallotItem[]
 
   @@map("ballots")

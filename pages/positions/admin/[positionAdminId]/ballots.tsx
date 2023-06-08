@@ -5,11 +5,13 @@ import { ListItem } from 'components/admin/ListItem';
 import { getShortId } from 'helpers/copy';
 import { prismaContext } from 'lib/prisma';
 import { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { MouseEventHandler, useState } from 'react';
+import { createBallot } from 'services/local';
 import { getAdminPosition } from 'services/prisma';
 import styled from 'styled-components';
-import { AdminPosition } from 'types/types';
+import { AdminPosition, UncreatedBallotItem } from 'types/types';
 
 interface Props {
   position: AdminPosition;
@@ -59,26 +61,29 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
     position.candidates.find((candidate) => candidate.id === candidateId);
   const candidateIsSelected = (candidateId: string) =>
     ballot.includes(candidateId);
-  //const router = useRouter();
+
+  const router = useRouter();
 
   const onSubmitBallot: MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
     event.preventDefault();
-    /*     const form = event.currentTarget;
-    const formData = new FormData(form);
-    const newCandidate: UncreatedCandidate = {
-      name: formData.get('candidateName') as string
-    };
+
+    const newBallotItems: UncreatedBallotItem[] = ballot.map(
+      (candidateId, index) => ({
+        candidateId,
+        order: index
+      })
+    );
 
     try {
-      await createCandidate(position.id, newCandidate);
+      await createBallot(position.id, newBallotItems);
 
-      form.reset();
+      setBallot([]);
       router.replace(router.asPath);
     } catch (error) {
       console.log('Something went wrong');
-    } */
+    }
   };
 
   return (

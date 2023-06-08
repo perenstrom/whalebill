@@ -34,10 +34,16 @@ export type UncreatedCandidateWithPositionId = z.infer<
   typeof UncreatedCandidateWithPositionIdSchema
 >;
 
-export const UncreatedBallotItemSchema = z.object({
-  ballotId: z.string(),
+const UncreatedBallotItemSchema = z.object({
   candidateId: z.string(),
   order: z.number()
 });
+export const UncreatedBallotItemsSchema = z.array(UncreatedBallotItemSchema);
 
 export type UncreatedBallotItem = z.infer<typeof UncreatedBallotItemSchema>;
+
+export type BallotWithItems = Prisma.BallotGetPayload<{
+  include: {
+    ballotItems: true;
+  };
+}>;

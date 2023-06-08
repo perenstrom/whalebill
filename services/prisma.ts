@@ -1,6 +1,7 @@
 import { Position } from '@prisma/client';
 import { Context } from 'lib/prisma';
 import {
+  UncreatedBallotItem,
   UncreatedCandidateWithPositionId,
   UncreatedPosition
 } from 'types/types';
@@ -46,6 +47,25 @@ export const createCandidate = async (
 ) => {
   const result = await ctx.prisma.candidate.create({
     data: candidate
+  });
+
+  return result;
+};
+
+export const createBallot = async (
+  ctx: Context,
+  positionId: string,
+  ballotItems: UncreatedBallotItem[]
+) => {
+  const result = await ctx.prisma.ballot.create({
+    data: {
+      positionId,
+      ballotItems: {
+        createMany: {
+          data: ballotItems
+        }
+      }
+    }
   });
 
   return result;
