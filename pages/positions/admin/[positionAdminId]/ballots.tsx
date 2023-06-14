@@ -8,7 +8,7 @@ import { prismaContext } from 'lib/prisma';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import { createBallot, deleteBallot } from 'services/local';
 import { getAdminPosition } from 'services/prisma';
 import styled from 'styled-components';
@@ -70,13 +70,27 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
   const candidateIsSelected = (candidateId: string) =>
     ballot.includes(candidateId);
 
+  const addCandidate = useCallback(
+    (candidateId: string) => {
+      const newBallot = [...ballot];
+      newBallot.push(candidateId);
+      setBallot(newBallot);
+    },
+    [ballot]
+  );
+
+  const removeCandidate = useCallback(
+    (index: number) => {
+      const newBallot = [...ballot];
+      newBallot.splice(index, 1);
+      setBallot(newBallot);
+    },
+    [ballot]
+  );
+
   const router = useRouter();
 
-  const onSubmitBallot: MouseEventHandler<HTMLButtonElement> = async (
-    event
-  ) => {
-    event.preventDefault();
-
+  const saveBallot = useCallback(async () => {
     const newBallotItems: UncreatedBallotItem[] = ballot.map(
       (candidateId, index) => ({
         candidateId,
@@ -92,6 +106,50 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
     } catch (error) {
       console.log('Something went wrong');
     }
+  }, [ballot, position.id, router]);
+
+  const candidatesLength = position.candidates.length;
+  const keyboardHandler = useCallback(
+    (event: KeyboardEvent) => {
+      const digitKeyRegex = /Digit([0-9])/;
+      const digitMatch = event.code.match(digitKeyRegex);
+      const isDigit = !!digitMatch;
+      const digit = digitMatch ? parseInt(digitMatch[1], 10) : undefined;
+
+      if (isDigit && digit && digit <= candidatesLength) {
+        event.shiftKey
+          ? removeCandidate(digit - 1)
+          : addCandidate(position.candidates[digit - 1].id);
+        return;
+      }
+
+      if (event.code === 'Enter' && ballot.length > 0) {
+        saveBallot();
+      }
+    },
+    [
+      addCandidate,
+      ballot.length,
+      candidatesLength,
+      position.candidates,
+      removeCandidate,
+      saveBallot
+    ]
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyboardHandler, false);
+
+    return () => {
+      document.removeEventListener('keydown', keyboardHandler, false);
+    };
+  }, [keyboardHandler]);
+
+  const onSubmitBallot: MouseEventHandler<HTMLButtonElement> = async (
+    event
+  ) => {
+    event.preventDefault();
+    saveBallot();
   };
 
   const handleDeleteBallot = async (ballotId: string) => {
@@ -122,11 +180,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                   onClick={
                     candidateIsSelected(candidate.id)
                       ? undefined
-                      : () => {
-                          const newBallot = [...ballot];
-                          newBallot.push(candidate.id);
-                          setBallot(newBallot);
-                        }
+                      : () => addCandidate(candidate.id)
                   }
                   dimmed={candidateIsSelected(candidate.id)}
                 />
@@ -146,11 +200,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                       getCandidate(ballotItemCandidateId)?.name || ''
                     }`}
                     subHeading={getShortId(ballotItemCandidateId)}
-                    onClick={() => {
-                      const newBallot = [...ballot];
-                      newBallot.splice(index, 1);
-                      setBallot(newBallot);
-                    }}
+                    onClick={() => removeCandidate(index)}
                   />
                 ))}
               </CandidateList>
