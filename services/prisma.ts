@@ -23,7 +23,12 @@ export const getAdminPosition = async (ctx: Context, adminId: string) => {
       adminId
     },
     include: {
-      candidates: true
+      candidates: true,
+      ballots: {
+        include: {
+          ballotItems: true
+        }
+      }
     }
   });
 
@@ -65,6 +70,16 @@ export const createBallot = async (
           data: ballotItems
         }
       }
+    }
+  });
+
+  return result;
+};
+
+export const deleteBallot = async (ctx: Context, ballotId: string) => {
+  const result = await ctx.prisma.ballot.delete({
+    where: {
+      id: ballotId
     }
   });
 

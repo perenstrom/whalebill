@@ -18,6 +18,11 @@ export const PositionSchema = z.object({
 export type AdminPosition = Prisma.PositionGetPayload<{
   include: {
     candidates: true;
+    ballots: {
+      include: {
+        ballotItems: true;
+      };
+    };
   };
 }>;
 

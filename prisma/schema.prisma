@@ -42,7 +42,7 @@ model BallotItem {
   ballotId    String    @map("ballot_id")
   candidateId String    @map("candidate_id")
   order       Int
-  ballot      Ballot    @relation(fields: [ballotId], references: [id])
+  ballot      Ballot    @relation(fields: [ballotId], references: [id], onDelete: Cascade)
   candidate   Candidate @relation(fields: [candidateId], references: [id])
 
   @@unique([ballotId, order])

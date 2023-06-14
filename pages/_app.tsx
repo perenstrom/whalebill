@@ -61,6 +61,8 @@ const GlobalStyle = createGlobalStyle`
     --color-accent-blue-light: hsla(182, 26%, 50%, 1);
     --color-accent-blue-dark: hsla(182, 43%, 16%, 1);
     --color-accent-red: hsla(355, 50%, 53%, 1);
+    --color-accent-red-light: hsla(355, 48%, 62%, 1);
+    --color-accent-red-dark: hsla(355, 55%, 42%, 1);
     --color-accent-yellow: hsla(29, 80%, 57%, 1);
 
     --shadow-color: 219deg 24% 10%;

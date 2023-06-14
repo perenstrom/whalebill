@@ -1,4 +1,4 @@
-import { Candidate, Position } from '@prisma/client';
+import { Ballot, Candidate, Position } from '@prisma/client';
 import {
   BallotWithItems,
   UncreatedBallotItem,
@@ -70,4 +70,16 @@ export const createBallot = async (
   const result = await fetch(url, options).then((r) => r.json());
 
   return result as BallotWithItems;
+};
+
+export const deleteBallot = async (positionId: string, ballotId: string) => {
+  const url = `/api/positions/${positionId}/ballots/${ballotId}`;
+  const options: RequestInit = {
+    method: 'DELETE',
+    headers: defaultHeaders
+  };
+
+  const result = await fetch(url, options).then((r) => r.json());
+
+  return result as Ballot;
 };

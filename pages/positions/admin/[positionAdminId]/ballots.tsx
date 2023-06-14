@@ -1,3 +1,4 @@
+import { AlertButton } from 'components/AlertButton';
 import { Button } from 'components/Button';
 import { Card } from 'components/Card';
 import { Divider } from 'components/Divider';
@@ -8,14 +9,10 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { MouseEventHandler, useState } from 'react';
-import { createBallot } from 'services/local';
+import { createBallot, deleteBallot } from 'services/local';
 import { getAdminPosition } from 'services/prisma';
 import styled from 'styled-components';
 import { AdminPosition, UncreatedBallotItem } from 'types/types';
-
-interface Props {
-  position: AdminPosition;
-}
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,8 +51,14 @@ const CandidateList = styled.ul`
   padding: 0;
 `;
 
+interface Props {
+  position: AdminPosition;
+}
+
 const PositionAdminPage: NextPage<Props> = ({ position }) => {
   const [ballot, setBallot] = useState<string[]>([]);
+  const { ballots } = position;
+  const latestBallot = ballots[ballots.length - 1];
 
   const getCandidate = (candidateId: string) =>
     position.candidates.find((candidate) => candidate.id === candidateId);
@@ -80,6 +83,16 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
       await createBallot(position.id, newBallotItems);
 
       setBallot([]);
+      router.replace(router.asPath);
+    } catch (error) {
+      console.log('Something went wrong');
+    }
+  };
+
+  const handleDeleteBallot = async (ballotId: string) => {
+    try {
+      await deleteBallot(position.id, ballotId);
+
       router.replace(router.asPath);
     } catch (error) {
       console.log('Something went wrong');
@@ -133,6 +146,28 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
             <Button onClick={onSubmitBallot}>Save ballot</Button>
           </ButtonWrapper>
         </DashBoardCard>
+        {ballots.length > 0 && (
+          <DashBoardCard $variant="dark">
+            <Heading>Latest ballot ({ballots.length} total)</Heading>
+            <Divider />
+            <CandidateList>
+              {latestBallot.ballotItems.map((ballotItem) => (
+                <ListItem
+                  key={ballotItem.id}
+                  heading={`${(ballotItem.order + 1).toString()}. ${
+                    getCandidate(ballotItem.candidateId)?.name || ''
+                  }`}
+                  subHeading={getShortId(ballotItem.candidateId)}
+                />
+              ))}
+            </CandidateList>
+            <ButtonWrapper>
+              <AlertButton onClick={() => handleDeleteBallot(latestBallot.id)}>
+                Delete ballot
+              </AlertButton>
+            </ButtonWrapper>
+          </DashBoardCard>
+        )}
 
         <Button as="a" href={`./${position.adminId}/ballots`}>
           Move on &gt;&gt;
