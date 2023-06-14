@@ -38,6 +38,11 @@ const Heading = styled.h2`
   margin-top: 0;
 `;
 
+const EmptyText = styled.p`
+  margin: 0;
+  margin-top: 1rem;
+`;
+
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -131,20 +136,26 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
         <DashBoardCard $variant="dark">
           <Heading>New Ballot</Heading>
           <Divider />
-          <CandidateList>
-            {ballot.map((ballotItemCandidateId, index) => (
-              <ListItem
-                key={ballotItemCandidateId}
-                heading={`${(index + 1).toString()}. ${
-                  getCandidate(ballotItemCandidateId)?.name || ''
-                }`}
-                subHeading={getShortId(ballotItemCandidateId)}
-              />
-            ))}
-          </CandidateList>
-          <ButtonWrapper>
-            <Button onClick={onSubmitBallot}>Save ballot</Button>
-          </ButtonWrapper>
+          {ballot.length > 0 ? (
+            <>
+              <CandidateList>
+                {ballot.map((ballotItemCandidateId, index) => (
+                  <ListItem
+                    key={ballotItemCandidateId}
+                    heading={`${(index + 1).toString()}. ${
+                      getCandidate(ballotItemCandidateId)?.name || ''
+                    }`}
+                    subHeading={getShortId(ballotItemCandidateId)}
+                  />
+                ))}
+              </CandidateList>
+              <ButtonWrapper>
+                <Button onClick={onSubmitBallot}>Save ballot</Button>
+              </ButtonWrapper>
+            </>
+          ) : (
+            <EmptyText>Click the candidates in the list to the left in order of first choice first.</EmptyText>
+          )}
         </DashBoardCard>
         {ballots.length > 0 && (
           <DashBoardCard $variant="dark">
