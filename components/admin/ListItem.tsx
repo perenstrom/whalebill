@@ -2,11 +2,13 @@ import styled from 'styled-components';
 
 interface WrapperProps {
   $dimmed?: boolean;
+  $interactive?: boolean;
 }
 const Wrapper = styled.li<WrapperProps>`
   margin-left: -2rem;
   margin-right: -2rem;
   padding: 1rem 2rem;
+  cursor: ${({ $interactive = false }) => ($interactive ? 'pointer' : 'auto')};
 
   display: flex;
   align-items: center;
@@ -59,7 +61,7 @@ export const ListItem: React.FC<{
   onClick?: () => void;
 }> = ({ heading, subHeading, keyIcon, dimmed, onClick }) => {
   return (
-    <Wrapper onClick={onClick} $dimmed={dimmed}>
+    <Wrapper onClick={onClick} $dimmed={dimmed} $interactive={!!onClick}>
       {keyIcon && <KeyIcon $dimmed={dimmed}>{keyIcon}</KeyIcon>}
       <div>
         <Heading>{heading}</Heading>

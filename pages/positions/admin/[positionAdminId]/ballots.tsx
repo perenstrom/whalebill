@@ -146,6 +146,11 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                       getCandidate(ballotItemCandidateId)?.name || ''
                     }`}
                     subHeading={getShortId(ballotItemCandidateId)}
+                    onClick={() => {
+                      const newBallot = [...ballot];
+                      newBallot.splice(index, 1);
+                      setBallot(newBallot);
+                    }}
                   />
                 ))}
               </CandidateList>
@@ -154,7 +159,10 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
               </ButtonWrapper>
             </>
           ) : (
-            <EmptyText>Click the candidates in the list to the left in order of first choice first.</EmptyText>
+            <EmptyText>
+              Click the candidates in the list to the left in order of first
+              choice first.
+            </EmptyText>
           )}
         </DashBoardCard>
         {ballots.length > 0 && (
