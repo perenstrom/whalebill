@@ -238,7 +238,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
           </DashBoardCard>
         )}
 
-        <Button as="a" href={`./${position.adminId}/ballots`}>
+        <Button as="a" href={`./graph`}>
           Move on &gt;&gt;
         </Button>
       </CardWrapper>

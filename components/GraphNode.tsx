@@ -10,6 +10,9 @@ const Wrapper = styled.div`
   border: 1px solid black;
   border-radius: var(--border-radius);
 
+  background-color: var(--color-gray-4);
+  box-shadow: var(--shadow-elevation-medium);
+
   :focus {
     background-color: red;
   }

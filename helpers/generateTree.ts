@@ -1,6 +1,4 @@
 import {
-  Ballot,
-  CandidateMap,
   GraphNode,
   NodeHash,
   ResultHash,
@@ -9,22 +7,29 @@ import {
 import { calculateResults } from './calculateResults';
 import { generateOptionsHash } from './generateOptionsHash';
 import { generateResultNode } from './generateResultNode';
+import { AdminPosition } from 'types/types';
+import { GraphNodeProps, NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
+import { Edge, Position, Node } from 'reactflow';
 
-interface Input {
-  candidates: CandidateMap;
-  ballots: Ballot[];
-  positionsToFill: number;
-}
+export const generateTree = (position: AdminPosition) => {
+  const { candidates, ballots, openSeats } = position;
+  const parsedBallots = ballots.map((ballot) => ({
+    id: ballot.id,
+    ranking: ballot.ballotItems.map((item) => item.candidateId)
+  }));
 
-export const generateTree = (input: Input) => {
+  const candidatesMap = new Map(
+    candidates.map((candidate) => [candidate.id, candidate])
+  );
+
   const initialOptions: ResultNodeOptions = {
-    ballots: input.ballots,
+    ballots: parsedBallots,
     savedBallots: [],
-    candidates: input.candidates,
+    candidates: candidatesMap,
     savedCandidates: new Map(),
     winners: [],
     losers: [],
-    positionsToFill: input.positionsToFill
+    positionsToFill: openSeats
   };
 
   const initialOptionsHash = generateOptionsHash(initialOptions);
@@ -40,7 +45,7 @@ export const generateTree = (input: Input) => {
 
     // Generate node
     const node = generateResultNode(currentOptions.options);
-    
+
     // Save options-hash -> node-hash
     hashMap.set(currentOptions.hash, node.hash);
 
@@ -78,5 +83,33 @@ export const generateTree = (input: Input) => {
     });
   });
 
-  return nodes;
+  const newNodes: Node<GraphNodeProps>[] = [];
+  const edges: Edge<{}>[] = [];
+  nodes.forEach((node) => {
+    newNodes.push({
+      id: node.hash,
+      sourcePosition: Position.Right,
+      targetPosition: Position.Left,
+      position: { y: 0, x: 0 },
+      data: {
+        node: { ...node, results: [...node.results] },
+        candidates: [...candidatesMap]
+      },
+      type: NODE_TYPE_GRAPH_NODE
+    });
+
+    node.children.forEach((child) => {
+      edges.push({
+        id: `${node.hash}-${child}`,
+        source: node.hash,
+        target: child,
+        style: { stroke: 'white', strokeWidth: 1 }
+      });
+    });
+  });
+
+  return {
+    nodes: newNodes,
+    edges
+  };
 };

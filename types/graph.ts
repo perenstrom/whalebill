@@ -8,7 +8,7 @@ export type Candidate = {
 export type CandidateMap = Map<CandidateId, Candidate>;
 export type SimpleCandidateMap = [CandidateId, Candidate][];
 
-export type Ballot = { id: number; ranking: CandidateId[] };
+export type Ballot = { id: string; ranking: CandidateId[] };
 
 export type NodeHash = string;
 export type GraphNode = {
