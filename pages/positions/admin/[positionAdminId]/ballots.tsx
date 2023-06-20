@@ -119,7 +119,8 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
       if (isDigit && digit && digit <= candidatesLength) {
         event.shiftKey
           ? removeCandidate(digit - 1)
-          : addCandidate(position.candidates[digit - 1].id);
+          : !candidateIsSelected(position.candidates[digit - 1].id) &&
+            addCandidate(position.candidates[digit - 1].id);
         return;
       }
 
@@ -130,6 +131,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
     [
       addCandidate,
       ballot.length,
+      candidateIsSelected,
       candidatesLength,
       position.candidates,
       removeCandidate,
