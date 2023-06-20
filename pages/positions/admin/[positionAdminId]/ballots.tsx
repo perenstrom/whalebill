@@ -67,8 +67,10 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
 
   const getCandidate = (candidateId: string) =>
     position.candidates.find((candidate) => candidate.id === candidateId);
-  const candidateIsSelected = (candidateId: string) =>
-    ballot.includes(candidateId);
+  const candidateIsSelected = useCallback(
+    (candidateId: string) => ballot.includes(candidateId),
+    [ballot]
+  );
 
   const addCandidate = useCallback(
     (candidateId: string) => {
