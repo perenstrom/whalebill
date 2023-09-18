@@ -60,6 +60,14 @@ const Losers = styled(ResetUl)`
   text-decoration: line-through 2px;
 `;
 
+const TEMP = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: -1.7rem;
+  color: red;
+  background: white;
+`;
+
 export interface GraphNodeProps {
   node: SimpleGraphNode;
   candidates: SimpleCandidateMap;
@@ -72,6 +80,7 @@ export function GraphNode({ data }: NodeProps<GraphNodeProps>) {
     <>
       <Handle type="target" position={Position.Left} />
       <Wrapper>
+        <TEMP>{data.node.percentageOutcome}</TEMP>
         {data.node.winners.length > 0 && (
           <Winners>
             {data.node.winners.map((winner) => (

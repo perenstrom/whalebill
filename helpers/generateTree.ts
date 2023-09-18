@@ -29,6 +29,7 @@ export const generateTree = (position: AdminPosition) => {
     savedCandidates: new Map(),
     winners: [],
     losers: [],
+    incomingNodePercentage: 100,
     positionsToFill: openSeats
   };
 
@@ -50,7 +51,13 @@ export const generateTree = (position: AdminPosition) => {
     hashMap.set(currentOptions.hash, node.hash);
 
     // Check if node exists
-    if (nodes.has(node.hash)) continue;
+    const existingNode = nodes.get(node.hash);
+    if (existingNode) {
+      existingNode.percentageOutcome +=
+        currentOptions.options.incomingNodePercentage;
+
+      continue;
+    }
 
     nodes.set(node.hash, node);
 
@@ -63,7 +70,8 @@ export const generateTree = (position: AdminPosition) => {
       sortedResults: node.results,
       positionsToFill: currentOptions.options.positionsToFill,
       previousWinners: node.winners,
-      previousLosers: node.losers
+      previousLosers: node.losers,
+      incomingNodePercentage: currentOptions.options.incomingNodePercentage
     });
 
     // Save options-hash on current node

@@ -7,7 +7,8 @@ const getEmptyGraphNode = (): GraphNode => {
     results: new Map(),
     winners: [],
     losers: [],
-    children: []
+    children: [],
+    percentageOutcome: 100
   };
 };
 export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
@@ -48,6 +49,7 @@ export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
     results: sortedResults,
     winners,
     losers,
-    children: []
+    children: [],
+    percentageOutcome: options.incomingNodePercentage || 0
   };
 };

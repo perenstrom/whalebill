@@ -17,6 +17,7 @@ export type GraphNode = {
   winners: CandidateId[];
   losers: CandidateId[];
   children: string[];
+  percentageOutcome: number;
 };
 export type SimpleGraphNode = Omit<GraphNode, 'results'> & {
   results: [CandidateId, Votes][];
@@ -32,5 +33,6 @@ export interface ResultNodeOptions {
   savedCandidates: CandidateMap;
   winners: CandidateId[];
   losers: CandidateId[];
+  incomingNodePercentage: number;
   positionsToFill: number;
 }
