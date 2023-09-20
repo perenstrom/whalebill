@@ -81,11 +81,18 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
 
   const elk = new ELK();
   const generateElkLayout = <T,>(nodes: Node[], edges: Edge<T>[]) => {
+    const CANDIDATE_HEIGHT = 20;
+    const PADDING_HEIGHT = 20;
+    const PERCENTAGE_HEIGHT = 50;
+
     const nodesForElk: ElkNode[] = nodes.map((node) => {
       return {
         id: node.id,
         width: 200,
-        height: position.candidates.length * 20 + 20 * 2
+        height:
+          position.candidates.length * CANDIDATE_HEIGHT +
+          PADDING_HEIGHT * 2 +
+          PERCENTAGE_HEIGHT
       };
     });
 
@@ -107,12 +114,15 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
   };
 
   const layout = await generateElkLayout(nodes, edges);
+  const edgeSources = layout.edges?.flatMap((edge) => edge.sources);
 
   layout?.children?.forEach((elkNode) => {
     const node = nodes.find((n) => n.id === elkNode.id);
+    const isLeaf = !edgeSources?.includes(elkNode.id);
 
     if (node) {
       node.position = { x: elkNode.x || 0, y: elkNode.y || 0 };
+      node.data.node.isLeaf = isLeaf;
     }
   });
 

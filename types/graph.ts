@@ -18,6 +18,7 @@ export type GraphNode = {
   losers: CandidateId[];
   children: string[];
   percentageOutcome: number;
+  isLeaf?: boolean;
 };
 export type SimpleGraphNode = Omit<GraphNode, 'results'> & {
   results: [CandidateId, Votes][];

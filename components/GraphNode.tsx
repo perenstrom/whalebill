@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   --padding: 0.6rem;
   border: 1px solid black;
   border-radius: var(--border-radius);
+  overflow: hidden;
 
   background-color: var(--color-gray-4);
   box-shadow: var(--shadow-elevation-medium);
@@ -60,12 +61,20 @@ const Losers = styled(ResetUl)`
   text-decoration: line-through 2px;
 `;
 
-const TEMP = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: -1.7rem;
-  color: red;
-  background: white;
+interface PercentageProps {
+  $isLeaf: boolean;
+}
+const Percentage = styled.div<PercentageProps>`
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 0.4rem var(--padding);
+  border-top: 1px solid black;
+  line-height: 1;
+  background: var(--color-gray-1);
+  color: ${({ $isLeaf }) =>
+    $isLeaf ? 'inherit' : 'var(--color-text-secondary)'};
+  font-weight: ${({ $isLeaf }) =>
+    $isLeaf ? 'bold' : 'inherit'};
 `;
 
 export interface GraphNodeProps {
@@ -80,7 +89,6 @@ export function GraphNode({ data }: NodeProps<GraphNodeProps>) {
     <>
       <Handle type="target" position={Position.Left} />
       <Wrapper>
-        <TEMP>{data.node.percentageOutcome}</TEMP>
         {data.node.winners.length > 0 && (
           <Winners>
             {data.node.winners.map((winner) => (
@@ -108,6 +116,9 @@ export function GraphNode({ data }: NodeProps<GraphNodeProps>) {
             ))}
           </Losers>
         )}
+        <Percentage $isLeaf={data.node.isLeaf || false}>
+          {data.node.percentageOutcome} %
+        </Percentage>
       </Wrapper>
       <Handle type="source" position={Position.Right} />
     </>
