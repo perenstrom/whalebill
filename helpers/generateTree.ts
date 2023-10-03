@@ -1,6 +1,8 @@
 import {
   GraphNode,
+  GraphNodeData,
   NodeHash,
+  OverflowData,
   ResultHash,
   ResultNodeOptions
 } from 'types/graph';
@@ -8,7 +10,9 @@ import { calculateResults } from './calculateResults';
 import { generateOptionsHash } from './generateOptionsHash';
 import { generateResultNode } from './generateResultNode';
 import { AdminPosition } from 'types/types';
-import { GraphNodeProps, NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
+import {
+  NODE_TYPE_GRAPH_NODE,
+} from 'components/GraphNode';
 import { Edge, Position, Node } from 'reactflow';
 
 export const generateTree = (position: AdminPosition) => {
@@ -91,7 +95,7 @@ export const generateTree = (position: AdminPosition) => {
     });
   });
 
-  const newNodes: Node<GraphNodeProps>[] = [];
+  const newNodes: Node<GraphNodeData | OverflowData>[] = [];
   const edges: Edge<{}>[] = [];
   nodes.forEach((node) => {
     newNodes.push({
@@ -100,6 +104,7 @@ export const generateTree = (position: AdminPosition) => {
       targetPosition: Position.Left,
       position: { y: 0, x: 0 },
       data: {
+        type: 'graphNode',
         node: { ...node, results: [...node.results] },
         candidates: [...candidatesMap]
       },

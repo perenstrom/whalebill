@@ -1,6 +1,6 @@
 import { Handle, NodeProps, Position } from 'reactflow';
 import styled, { css } from 'styled-components';
-import { CandidateMap, SimpleCandidateMap, SimpleGraphNode } from 'types/graph';
+import { CandidateMap, GraphNodeData } from 'types/graph';
 
 export const NODE_TYPE_GRAPH_NODE = 'graphNode';
 
@@ -73,16 +73,10 @@ const Percentage = styled.div<PercentageProps>`
   background: var(--color-gray-1);
   color: ${({ $isLeaf }) =>
     $isLeaf ? 'inherit' : 'var(--color-text-secondary)'};
-  font-weight: ${({ $isLeaf }) =>
-    $isLeaf ? 'bold' : 'inherit'};
+  font-weight: ${({ $isLeaf }) => ($isLeaf ? 'bold' : 'inherit')};
 `;
 
-export interface GraphNodeProps {
-  node: SimpleGraphNode;
-  candidates: SimpleCandidateMap;
-}
-
-export function GraphNode({ data }: NodeProps<GraphNodeProps>) {
+export function GraphNode({ data }: NodeProps<GraphNodeData>) {
   const candidateMap: CandidateMap = new Map(data.candidates);
 
   return (

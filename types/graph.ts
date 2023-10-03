@@ -1,3 +1,5 @@
+import { GraphNode } from 'components/GraphNode';
+
 export type CandidateId = string;
 type Votes = number;
 
@@ -23,6 +25,24 @@ export type GraphNode = {
 export type SimpleGraphNode = Omit<GraphNode, 'results'> & {
   results: [CandidateId, Votes][];
 };
+
+export interface GraphNodeData {
+  type: 'graphNode';
+  node: SimpleGraphNode;
+  candidates: SimpleCandidateMap;
+}
+
+export interface OverflowData {
+  type: 'overflow';
+}
+
+export const isGraphNodeData = (
+  data: GraphNodeData | OverflowData
+): data is GraphNodeData => data.type === 'graphNode';
+
+export const isOverflowData = (
+  data: GraphNodeData | OverflowData
+): data is OverflowData => data.type === 'overflow';
 
 export type Graph = Map<NodeHash, GraphNode>;
 
