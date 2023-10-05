@@ -20,6 +20,7 @@ import {
   SimpleCandidateMap,
   isGraphNodeData
 } from 'types/graph';
+import { selectWinner } from 'services/local';
 import { NODE_TYPE_OVERFLOW_NODE, OverflowNode } from 'components/OverflowNode';
 import { Prisma } from '@prisma/client';
 
@@ -33,10 +34,17 @@ const FlowWrapper = styled.div`
   height: 100%;
 `;
 
+const WinnerButton = styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
 interface Props {
   nodes: Node[];
   edges: Edge[];
   candidates: SimpleCandidateMap;
+  positionAdminId: string;
 }
 
 const graphNodeWithCandidates = (candidates: SimpleCandidateMap) =>
@@ -52,6 +60,12 @@ const IndexPage: NextPage<Props> = ({ nodes, edges, candidates }) => {
     }),
     [candidates]
   );
+
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = async () => {
+    const result = await selectWinner(positionAdminId);
+
+    console.log(result);
+  };
 
   return (
     <Container>
@@ -74,6 +88,7 @@ const IndexPage: NextPage<Props> = ({ nodes, edges, candidates }) => {
           panOnScroll={true}
         />
       </FlowWrapper>
+      <WinnerButton onClick={handleClick}>Select winner</WinnerButton>
     </Container>
   );
 };
@@ -233,6 +248,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
         style: { stroke: 'white', strokeWidth: 1 }
       })),
       candidates: candidatesMap
+      positionAdminId: position.adminId
     }
   };
 };
