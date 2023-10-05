@@ -50,6 +50,9 @@ const IndexPage: NextPage<Props> = ({ nodes, edges }) => {
           edges={edges}
           nodeTypes={nodeTypes}
           fitView={true}
+          fitViewOptions={{
+            minZoom: 1
+          }}
           minZoom={0.05}
           nodesConnectable={false}
           nodesDraggable={false}
