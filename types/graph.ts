@@ -29,7 +29,6 @@ export type SimpleGraphNode = Omit<GraphNode, 'results'> & {
 export interface GraphNodeData {
   type: 'graphNode';
   node: SimpleGraphNode;
-  candidates: SimpleCandidateMap;
 }
 
 export interface OverflowData {

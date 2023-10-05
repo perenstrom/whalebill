@@ -1,6 +1,6 @@
-import { Handle, NodeProps, Position } from 'reactflow';
+import { Handle, Position } from 'reactflow';
 import styled, { css } from 'styled-components';
-import { CandidateMap, GraphNodeData } from 'types/graph';
+import { CandidateMap, SimpleCandidateMap, SimpleGraphNode } from 'types/graph';
 
 export const NODE_TYPE_GRAPH_NODE = 'graphNode';
 
@@ -76,24 +76,29 @@ const Percentage = styled.div<PercentageProps>`
   font-weight: ${({ $isLeaf }) => ($isLeaf ? 'bold' : 'inherit')};
 `;
 
-export function GraphNode({ data }: NodeProps<GraphNodeData>) {
-  const candidateMap: CandidateMap = new Map(data.candidates);
+interface Props {
+  node: SimpleGraphNode;
+  candidates: SimpleCandidateMap;
+}
+
+export const GraphNode: React.FC<Props> = ({ node, candidates }) => {
+  const candidateMap: CandidateMap = new Map(candidates);
 
   return (
     <>
       <Handle type="target" position={Position.Left} />
       <Wrapper>
-        {data.node.winners.length > 0 && (
+        {node.winners.length > 0 && (
           <Winners>
-            {data.node.winners.map((winner) => (
+            {node.winners.map((winner) => (
               <li key={winner}>{candidateMap.get(winner)?.name}</li>
             ))}
           </Winners>
         )}
 
-        {data.node.results.length > 0 && (
+        {node.results.length > 0 && (
           <Results type="1">
-            {data.node.results.map(([candidateId, numberOfVotes], index) => (
+            {node.results.map(([candidateId, numberOfVotes], index) => (
               <ResultItem key={candidateId}>
                 <span>{index + 1}.</span>
                 <FlexGrow>{candidateMap.get(candidateId)?.name}</FlexGrow>
@@ -103,18 +108,18 @@ export function GraphNode({ data }: NodeProps<GraphNodeData>) {
           </Results>
         )}
 
-        {data.node.losers.length > 0 && (
+        {node.losers.length > 0 && (
           <Losers>
-            {data.node.losers.map((loser) => (
+            {node.losers.map((loser) => (
               <li key={loser}>{candidateMap.get(loser)?.name}</li>
             ))}
           </Losers>
         )}
-        <Percentage $isLeaf={data.node.isLeaf || false}>
-          {data.node.percentageOutcome} %
+        <Percentage $isLeaf={node.isLeaf || false}>
+          {node.percentageOutcome} %
         </Percentage>
       </Wrapper>
       <Handle type="source" position={Position.Right} />
     </>
   );
-}
+};

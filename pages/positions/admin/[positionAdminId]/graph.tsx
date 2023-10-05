@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import ELK, { ElkNode } from 'elkjs';
-import { ReactFlow, Node, Edge, Position } from 'reactflow';
+import { ReactFlow, Node, Edge, Position, NodeProps } from 'reactflow';
 import styled from 'styled-components';
 
 import 'reactflow/dist/style.css';
@@ -12,7 +12,13 @@ import { GraphNode, NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
 import { prismaContext } from 'lib/prisma';
 import { getAdminPosition } from 'services/prisma';
 import { ParsedUrlQuery } from 'querystring';
-import { OverflowData, isGraphNodeData } from 'types/graph';
+import {
+  Candidate,
+  GraphNodeData,
+  OverflowData,
+  SimpleCandidateMap,
+  isGraphNodeData
+} from 'types/graph';
 import { NODE_TYPE_OVERFLOW_NODE, OverflowNode } from 'components/OverflowNode';
 
 const Container = styled.div`
@@ -28,15 +34,21 @@ const FlowWrapper = styled.div`
 interface Props {
   nodes: Node[];
   edges: Edge[];
+  candidates: SimpleCandidateMap;
 }
 
-const IndexPage: NextPage<Props> = ({ nodes, edges }) => {
+const graphNodeWithCandidates = (candidates: SimpleCandidateMap) =>
+  function ExtendedGraphNode(props: NodeProps<GraphNodeData>) {
+    return <GraphNode node={props.data.node} candidates={candidates} />;
+  };
+
+const IndexPage: NextPage<Props> = ({ nodes, edges, candidates }) => {
   const nodeTypes = useMemo(
     () => ({
-      [NODE_TYPE_GRAPH_NODE]: GraphNode,
+      [NODE_TYPE_GRAPH_NODE]: graphNodeWithCandidates(candidates),
       [NODE_TYPE_OVERFLOW_NODE]: OverflowNode
     }),
-    []
+    [candidates]
   );
 
   return (
@@ -88,6 +100,9 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
     };
   }
 
+  const candidatesMap = position.candidates.map(
+    (candidate) => [candidate.id, candidate] as [string, Candidate]
+  );
   const { nodes: calculatedNodes, edges: calculatedEdges } =
     generateTree(position);
 
@@ -180,7 +195,8 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
   return {
     props: {
       nodes,
-      edges
+      edges,
+      candidates: candidatesMap
     }
   };
 };

@@ -110,7 +110,6 @@ export const generateTree = (position: AdminPosition) => {
       data: {
         type: 'graphNode',
         node: { ...node, results: [...node.results] },
-        candidates: [...candidatesMap]
       },
       type: NODE_TYPE_GRAPH_NODE
     });
