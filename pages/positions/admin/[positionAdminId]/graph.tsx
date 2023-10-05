@@ -88,7 +88,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
   const { nodes: calculatedNodes, edges: calculatedEdges } =
     generateTree(position);
 
-  const NODE_CUTOFF = 100;
+  const NODE_CUTOFF = 2000;
 
   const edgeSources = calculatedEdges.map((edge) => edge.source);
   const leafNodes = calculatedNodes.filter(

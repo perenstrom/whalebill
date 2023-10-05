@@ -42,7 +42,10 @@ export const calculateResults = (
   const secondPlace = values[1];
 
   // Clear winner
-  if (firstPlace[1] !== secondPlace?.[1] && firstPlace[1] > VOTES_REQUIRED) {
+  if (
+    values.length === 1 ||
+    (firstPlace[1] !== secondPlace?.[1] && firstPlace[1] > VOTES_REQUIRED)
+  ) {
     const newPositionsToFill = positionsToFill - 1;
 
     const newCandidates = savedCandidates.size
@@ -69,7 +72,7 @@ export const calculateResults = (
             firstPlace[0]
           );
 
-    const childOptions = {
+    const childOptions: ResultNodeOptions = {
       winners: [...previousWinners, firstPlace[0]].sort((a, b) =>
         a.localeCompare(b)
       ),
@@ -103,7 +106,7 @@ export const calculateResults = (
       ? savedCandidates
       : candidates;
 
-    const childOptions = {
+    const childOptions: ResultNodeOptions = {
       winners: previousWinners,
       losers: [...previousLosers, lastPlace[0]].sort((a, b) =>
         a.localeCompare(b)
@@ -124,7 +127,45 @@ export const calculateResults = (
   const losers = [...sortedResults].filter(
     ([, votes]) => votes === lastPlaceVotes
   );
+  const loserIds = losers.map(([id]) => id);
 
+  // If all last places are tied on 0 votes, eliminate them all in batch
+  if (lastPlaceVotes === 0) {
+    const newCandidates = new Map(candidates);
+    loserIds.forEach((loserId) => newCandidates.delete(loserId));
+
+    const newSavedBallots = savedBallots.length ? savedBallots : ballots;
+    const newSavedCandidates = savedCandidates.size
+      ? savedCandidates
+      : candidates;
+
+    const shiftedBallots = loserIds.reduce(
+      (accBallots, loserId) => shiftBallots(accBallots, loserId),
+      ballots
+    );
+
+    const childOptions: ResultNodeOptions = {
+      winners: previousWinners,
+      losers: [...previousLosers, ...loserIds].sort((a, b) =>
+        a.localeCompare(b)
+      ),
+      ballots: shiftedBallots,
+      savedBallots: newSavedBallots,
+      candidates: newCandidates,
+      savedCandidates: newSavedCandidates,
+      positionsToFill: positionsToFill,
+      incomingNodePercentage: conditions.incomingNodePercentage / losers.length
+    };
+
+    return [
+      {
+        options: childOptions,
+        hash: generateOptionsHash(childOptions)
+      }
+    ];
+  }
+
+  // Else, split the tree
   return losers.map(([loser]) => {
     const newCandidates = new Map(candidates);
     newCandidates.delete(loser);

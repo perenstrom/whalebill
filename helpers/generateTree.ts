@@ -10,9 +10,7 @@ import { calculateResults } from './calculateResults';
 import { generateOptionsHash } from './generateOptionsHash';
 import { generateResultNode } from './generateResultNode';
 import { AdminPosition } from 'types/types';
-import {
-  NODE_TYPE_GRAPH_NODE,
-} from 'components/GraphNode';
+import { NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
 import { Edge, Position, Node } from 'reactflow';
 
 export const generateTree = (position: AdminPosition) => {
@@ -43,7 +41,13 @@ export const generateTree = (position: AdminPosition) => {
   const nodes = new Map<NodeHash, GraphNode>();
 
   // While queue is not empty
+  let iterator = 0;
   while (queue.length > 0) {
+    iterator += 1;
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Iteration ${iterator}, queue length: ${queue.length}`);
+    }
+    
     // Shift array
     const currentOptions = queue.shift();
     if (!currentOptions) continue;
