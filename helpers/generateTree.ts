@@ -11,7 +11,7 @@ import { generateOptionsHash } from './generateOptionsHash';
 import { generateResultNode } from './generateResultNode';
 import { AdminPosition } from 'types/types';
 import { NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
-import { Edge, Position, Node } from 'reactflow';
+import { Edge, Node } from 'reactflow';
 
 export const generateTree = (position: AdminPosition) => {
   const { candidates, ballots, openSeats } = position;
@@ -47,7 +47,7 @@ export const generateTree = (position: AdminPosition) => {
     if (process.env.NODE_ENV === 'development') {
       console.log(`Iteration ${iterator}, queue length: ${queue.length}`);
     }
-    
+
     // Shift array
     const currentOptions = queue.shift();
     if (!currentOptions) continue;
@@ -104,22 +104,19 @@ export const generateTree = (position: AdminPosition) => {
   nodes.forEach((node) => {
     newNodes.push({
       id: node.hash,
-      sourcePosition: Position.Right,
-      targetPosition: Position.Left,
       position: { y: 0, x: 0 },
       data: {
         type: 'graphNode',
-        node: { ...node, results: [...node.results] },
+        node: { ...node, results: [...node.results] }
       },
       type: NODE_TYPE_GRAPH_NODE
     });
 
-    node.children.forEach((child) => {
+    node.children.forEach((child, i) => {
       edges.push({
-        id: `${node.hash}-${child}`,
+        id: `${node.hash}-${i}`,
         source: node.hash,
-        target: child,
-        style: { stroke: 'white', strokeWidth: 1 }
+        target: child
       });
     });
   });

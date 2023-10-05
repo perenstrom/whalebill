@@ -188,14 +188,17 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
 
     if (node) {
       node.position = { x: elkNode.x || 0, y: elkNode.y || 0 };
-      if (isGraphNodeData(node.data)) node.data.node.isLeaf = isLeaf;
+      if (isGraphNodeData(node.data) && isLeaf) node.data.node.isLeaf = isLeaf;
     }
   });
 
   return {
     props: {
       nodes,
-      edges,
+      edges: edges.map((edge) => ({
+        ...edge,
+        style: { stroke: 'white', strokeWidth: 1 }
+      })),
       candidates: candidatesMap
     }
   };
