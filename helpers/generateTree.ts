@@ -1,4 +1,5 @@
 import {
+  Ballot,
   GraphNode,
   GraphNodeData,
   NodeHash,
@@ -15,13 +16,13 @@ import { Edge, Node } from 'reactflow';
 
 export const generateTree = (position: AdminPosition) => {
   const { candidates, ballots, openSeats } = position;
-  const parsedBallots = ballots.map((ballot) => ({
+  const parsedBallots: Ballot[] = ballots.map((ballot) => ({
     id: ballot.id,
-    ranking: ballot.ballotItems.map((item) => item.candidateId)
+    ranking: ballot.ballotItems.map((item) => item.candidateSmallId || 0)
   }));
 
   const candidatesMap = new Map(
-    candidates.map((candidate) => [candidate.id, candidate])
+    candidates.map((candidate) => [candidate.smallId, candidate])
   );
 
   const initialOptions: ResultNodeOptions = {
@@ -41,11 +42,11 @@ export const generateTree = (position: AdminPosition) => {
   const nodes = new Map<NodeHash, GraphNode>();
 
   // While queue is not empty
-  let iterator = 0;
+  //let iterator = 0;
   while (queue.length > 0) {
-    iterator += 1;
+    //iterator += 1;
     if (process.env.NODE_ENV === 'development') {
-      console.log(`Iteration ${iterator}, queue length: ${queue.length}`);
+      // console.log(`Iteration ${iterator}, queue length: ${queue.length}`);
     }
 
     // Shift array
@@ -54,6 +55,8 @@ export const generateTree = (position: AdminPosition) => {
 
     // Generate node
     const node = generateResultNode(currentOptions.options);
+    console.log('Generated node');
+    console.log(`${node.hash}: ${node.percentageOutcome}`);
 
     // Save options-hash -> node-hash
     hashMap.set(currentOptions.hash, node.hash);
@@ -61,9 +64,13 @@ export const generateTree = (position: AdminPosition) => {
     // Check if node exists
     const existingNode = nodes.get(node.hash);
     if (existingNode) {
-      existingNode.percentageOutcome +=
-        currentOptions.options.incomingNodePercentage;
+      console.log('Found existing node');
+      console.log(existingNode.hash);
+      console.log(existingNode.percentageOutcome);
+      console.log(node.percentageOutcome);
+      existingNode.percentageOutcome += node.percentageOutcome;
 
+      console.log(existingNode.percentageOutcome);
       continue;
     }
 

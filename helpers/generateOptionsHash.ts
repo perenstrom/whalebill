@@ -19,7 +19,7 @@ export const generateOptionsHash = (options: ResultNodeOptions) => {
     `sb-${savedBallots
       .map((ballot) => `${ballot.id}@${ballot.ranking.join('-')}`)
       .join('-')}`,
-    `c-${[...candidates].map(([id, { name }]) => `${id}@${name}`).join('-')}`,
+    `c-${[...candidates].map(([, { name, smallId }]) => `${smallId}@${name}`).join('-')}`,
     `sc-${[...savedCandidates]
       .map(([id, { name }]) => `${id}@${name}`)
       .join('-')}`,

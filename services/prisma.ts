@@ -35,6 +35,22 @@ export const getAdminPosition = async (ctx: Context, adminId: string) => {
   return result;
 };
 
+export const getIncrementedCandidateId = async (
+  ctx: Context,
+  positionId: string
+) => {
+  const result = await ctx.prisma.candidate.findFirst({
+    where: {
+      positionId
+    },
+    orderBy: {
+      smallId: 'desc'
+    }
+  });
+
+  return (result?.smallId || 0) + 1;
+};
+
 export const updatePosition = async (ctx: Context, position: Position) => {
   const result = await ctx.prisma.position.update({
     where: {
@@ -50,8 +66,18 @@ export const createCandidate = async (
   ctx: Context,
   candidate: UncreatedCandidateWithPositionId
 ) => {
+  const incrementedId = await getIncrementedCandidateId(
+    ctx,
+    candidate.positionId
+  );
+
+  const newCandidate = {
+    ...candidate,
+    smallId: incrementedId
+  };
+
   const result = await ctx.prisma.candidate.create({
-    data: candidate
+    data: newCandidate
   });
 
   return result;

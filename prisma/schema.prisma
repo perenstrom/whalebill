@@ -20,6 +20,7 @@ model Position {
 
 model Candidate {
   id          String       @id @default(uuid())
+  smallId     Int          @map("small_id")
   name        String
   positionId  String       @map("position_id")
   position    Position     @relation(fields: [positionId], references: [id])
@@ -38,12 +39,13 @@ model Ballot {
 }
 
 model BallotItem {
-  id          String    @id @default(uuid())
-  ballotId    String    @map("ballot_id")
-  candidateId String    @map("candidate_id")
-  order       Int
-  ballot      Ballot    @relation(fields: [ballotId], references: [id], onDelete: Cascade)
-  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  id               String    @id @default(uuid())
+  ballotId         String    @map("ballot_id")
+  candidateId      String    @map("candidate_id")
+  candidateSmallId Int       @map("candidate_small_id")
+  order            Int
+  ballot           Ballot    @relation(fields: [ballotId], references: [id], onDelete: Cascade)
+  candidate        Candidate @relation(fields: [candidateId], references: [id])
 
   @@unique([ballotId, order])
   @@map("ballot_items")

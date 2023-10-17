@@ -41,6 +41,7 @@ export type UncreatedCandidateWithPositionId = z.infer<
 
 const UncreatedBallotItemSchema = z.object({
   candidateId: z.string(),
+  candidateSmallId: z.number(),
   order: z.number()
 });
 export const UncreatedBallotItemsSchema = z.array(UncreatedBallotItemSchema);

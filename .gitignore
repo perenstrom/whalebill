@@ -34,3 +34,7 @@ yarn-error.log*
 .vercel
 
 V-Dala-personval.html
+
+tsconfig.tsbuildinfo
+
+backup

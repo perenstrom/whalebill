@@ -1,5 +1,9 @@
-import { Ballot, CandidateId, CandidateMap, GraphNode } from 'types/graph';
-import { generateCandidateMap } from './generateCanidateMap';
+import {
+  Ballot,
+  CandidateMap,
+  GraphNode,
+  ResultNodeOptions
+} from 'types/graph';
 import { generateResultNode } from './generateResultNode';
 
 beforeAll(() => {
@@ -14,10 +18,10 @@ beforeAll(() => {
 
 describe('generateResultNode', () => {
   it('Returns empty node if there are no votes', async () => {
-    const candidates = generateCandidateMap([
-      { name: 'Per' },
-      { name: 'Jobjörn' },
-      { name: 'Charlii' }
+    const candidates: CandidateMap = new Map([
+      [1, { id: '1', smallId: 1, name: 'Per' }],
+      [2, { id: '2', smallId: 2, name: 'Jobjörn' }],
+      [3, { id: '3', smallId: 3, name: 'Charlii' }]
     ]);
 
     const ballots: Ballot[] = [];
@@ -29,7 +33,8 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map()
+      savedCandidates: new Map(),
+      incomingNodePercentage: 100
     });
 
     expect(result).toEqual({
@@ -37,15 +42,16 @@ describe('generateResultNode', () => {
       results: new Map(),
       winners: [],
       losers: [],
-      children: []
+      children: [],
+      percentageOutcome: 100
     } as GraphNode);
   });
 
   it('Returns empty node if there are no candidates', async () => {
-    const candidates = generateCandidateMap([]);
+    const candidates: CandidateMap = new Map([]);
     const ballots: Ballot[] = [
       {
-        id: 1,
+        id: '1',
         ranking: []
       }
     ];
@@ -57,7 +63,8 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map()
+      savedCandidates: new Map(),
+      incomingNodePercentage: 100
     });
 
     expect(result).toEqual({
@@ -65,33 +72,34 @@ describe('generateResultNode', () => {
       results: new Map(),
       winners: [],
       losers: [],
-      children: []
+      children: [],
+      percentageOutcome: 100
     } as GraphNode);
   });
 
   it('Returns correct node if only votes', async () => {
     const candidates: CandidateMap = new Map([
-      ['asdf', { name: 'Per', id: 'asdf' }],
-      ['qwer', { name: 'Jobjörn', id: 'qwer' }],
-      ['zxcv', { name: 'Charlii', id: 'zxcv' }]
+      [1, { name: 'Per', id: '1', smallId: 1 }],
+      [2, { name: 'Jobjörn', id: '2', smallId: 2 }],
+      [3, { name: 'Charlii', id: '3', smallId: 3 }]
     ]);
 
     const ballots: Ballot[] = [
       {
-        id: 1,
-        ranking: ['zxcv', 'asdf', 'qwer']
+        id: '1',
+        ranking: [3, 1, 2]
       },
       {
-        id: 2,
-        ranking: ['zxcv', 'qwer', 'asdf']
+        id: '2',
+        ranking: [3, 2, 1]
       },
       {
-        id: 3,
-        ranking: ['qwer', 'asdf', 'zxcv']
+        id: '3',
+        ranking: [2, 1, 3]
       },
       {
-        id: 4,
-        ranking: ['asdf', 'zxcv', 'qwer']
+        id: '4',
+        ranking: [1, 3, 2]
       }
     ];
 
@@ -102,49 +110,51 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map()
+      savedCandidates: new Map(),
+      incomingNodePercentage: 100
     });
 
     expect(result).toEqual({
-      hash: 'r%zxcv@2-qwer@1-asdf@1',
+      hash: 'r%3@2&2@1&1@1',
       results: new Map([
-        ['zxcv', 2],
-        ['qwer', 1],
-        ['asdf', 1]
+        [3, 2],
+        [2, 1],
+        [1, 1]
       ]),
       winners: [],
       losers: [],
-      children: []
+      children: [],
+      percentageOutcome: 100
     } as GraphNode);
   });
 
   it('Returns correct node if votes, and winners', async () => {
     const candidates: CandidateMap = new Map([
-      ['asdf', { name: 'Per', id: 'asdf' }],
-      ['qwer', { name: 'Jobjörn', id: 'qwer' }],
-      ['zxcv', { name: 'Charlii', id: 'zxcv' }]
+      [1, { name: 'Per', smallId: 1, id: '1' }],
+      [2, { name: 'Jobjörn', smallId: 2, id: '2' }],
+      [3, { name: 'Charlii', smallId: 3, id: '3' }]
     ]);
 
     const ballots: Ballot[] = [
       {
-        id: 1,
-        ranking: ['zxcv', 'asdf', 'qwer']
+        id: '1',
+        ranking: [3, 1, 2]
       },
       {
-        id: 2,
-        ranking: ['zxcv', 'qwer', 'asdf']
+        id: '2',
+        ranking: [3, 2, 1]
       },
       {
-        id: 3,
-        ranking: ['qwer', 'asdf', 'zxcv']
+        id: '3',
+        ranking: [2, 1, 3]
       },
       {
-        id: 4,
-        ranking: ['asdf', 'zxcv', 'qwer']
+        id: '4',
+        ranking: [1, 3, 2]
       }
     ];
 
-    const winners: CandidateId[] = ['tyui'];
+    const winners: ResultNodeOptions['winners'] = [4];
 
     const result = generateResultNode({
       ballots,
@@ -153,49 +163,51 @@ describe('generateResultNode', () => {
       losers: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map()
+      savedCandidates: new Map(),
+      incomingNodePercentage: 100
     });
 
     expect(result).toEqual({
-      hash: 'w%tyui-r%zxcv@2-qwer@1-asdf@1',
+      hash: 'w%4-r%3@2&2@1&1@1',
       results: new Map([
-        ['zxcv', 2],
-        ['qwer', 1],
-        ['asdf', 1]
+        [3, 2],
+        [2, 1],
+        [1, 1]
       ]),
-      winners: ['tyui'],
+      winners: [4],
       losers: [],
-      children: []
+      children: [],
+      percentageOutcome: 100
     } as GraphNode);
   });
 
   it('Returns correct node if votes, and losers', async () => {
     const candidates: CandidateMap = new Map([
-      ['asdf', { name: 'Per', id: 'asdf' }],
-      ['qwer', { name: 'Jobjörn', id: 'qwer' }],
-      ['zxcv', { name: 'Charlii', id: 'zxcv' }]
+      [1, { name: 'Per', smallId: 1, id: '1' }],
+      [2, { name: 'Jobjörn', smallId: 2, id: '2' }],
+      [3, { name: 'Charlii', smallId: 3, id: '3' }]
     ]);
 
     const ballots: Ballot[] = [
       {
-        id: 1,
-        ranking: ['zxcv', 'asdf', 'qwer']
+        id: '1',
+        ranking: [3, 1, 2]
       },
       {
-        id: 2,
-        ranking: ['zxcv', 'qwer', 'asdf']
+        id: '2',
+        ranking: [3, 2, 1]
       },
       {
-        id: 3,
-        ranking: ['qwer', 'asdf', 'zxcv']
+        id: '3',
+        ranking: [2, 1, 3]
       },
       {
-        id: 4,
-        ranking: ['asdf', 'zxcv', 'qwer']
+        id: '4',
+        ranking: [1, 3, 2]
       }
     ];
 
-    const losers: CandidateId[] = ['tyui'];
+    const losers: ResultNodeOptions['losers'] = [4];
 
     const result = generateResultNode({
       ballots,
@@ -204,98 +216,52 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map()
+      savedCandidates: new Map(),
+      incomingNodePercentage: 100
     });
 
     expect(result).toEqual({
-      hash: 'r%zxcv@2-qwer@1-asdf@1-l%tyui',
+      hash: 'r%3@2&2@1&1@1-l%4',
       results: new Map([
-        ['zxcv', 2],
-        ['qwer', 1],
-        ['asdf', 1]
+        [3, 2],
+        [2, 1],
+        [1, 1]
       ]),
       winners: [],
-      losers: ['tyui'],
-      children: []
+      losers: [4],
+      children: [],
+      percentageOutcome: 100
     } as GraphNode);
   });
 
   it('Returns correct node if votes, winners, and losers', async () => {
     const candidates: CandidateMap = new Map([
-      ['asdf', { name: 'Per', id: 'asdf' }],
-      ['qwer', { name: 'Jobjörn', id: 'qwer' }],
-      ['zxcv', { name: 'Charlii', id: 'zxcv' }]
+      [1, { name: 'Per', smallId: 1, id: '1' }],
+      [2, { name: 'Jobjörn', smallId: 2, id: '2' }],
+      [3, { name: 'Charlii', smallId: 3, id: '3' }]
     ]);
 
     const ballots: Ballot[] = [
       {
-        id: 1,
-        ranking: ['zxcv', 'asdf', 'qwer']
+        id: '1',
+        ranking: [3, 1, 2]
       },
       {
-        id: 2,
-        ranking: ['zxcv', 'qwer', 'asdf']
+        id: '2',
+        ranking: [3, 2, 1]
       },
       {
-        id: 3,
-        ranking: ['qwer', 'asdf', 'zxcv']
+        id: '3',
+        ranking: [2, 1, 3]
       },
       {
-        id: 4,
-        ranking: ['asdf', 'zxcv', 'qwer']
+        id: '4',
+        ranking: [1, 3, 2]
       }
     ];
 
-    const winners: CandidateId[] = ['ghjk'];
-    const losers: CandidateId[] = ['tyui'];
-
-    const result = generateResultNode({
-      ballots,
-      candidates,
-      losers,
-      winners,
-      positionsToFill: 1,
-      savedBallots: [],
-      savedCandidates: new Map()
-    });
-
-    expect(result).toEqual({
-      hash: 'w%ghjk-r%zxcv@2-qwer@1-asdf@1-l%tyui',
-      results: new Map([
-        ['zxcv', 2],
-        ['qwer', 1],
-        ['asdf', 1]
-      ]),
-      winners: ['ghjk'],
-      losers: ['tyui'],
-      children: []
-    } as GraphNode);
-  });
-
-  it('Returns correct node if winners, and losers, but no votes', async () => {
-    const candidates: CandidateMap = new Map([]);
-
-    const ballots: Ballot[] = [
-      {
-        id: 1,
-        ranking: []
-      },
-      {
-        id: 2,
-        ranking: []
-      },
-      {
-        id: 3,
-        ranking: []
-      },
-      {
-        id: 4,
-        ranking: []
-      }
-    ];
-
-    const winners: CandidateId[] = ['ghjk'];
-    const losers: CandidateId[] = ['tyui'];
+    const winners: ResultNodeOptions['winners'] = [5];
+    const losers: ResultNodeOptions['losers'] = [4];
 
     const result = generateResultNode({
       ballots,
@@ -305,14 +271,66 @@ describe('generateResultNode', () => {
       positionsToFill: 1,
       savedBallots: [],
       savedCandidates: new Map(),
+      incomingNodePercentage: 100
     });
 
     expect(result).toEqual({
-      hash: 'w%ghjk-l%tyui',
+      hash: 'w%5-r%3@2&2@1&1@1-l%4',
+      results: new Map([
+        [3, 2],
+        [2, 1],
+        [1, 1]
+      ]),
+      winners: [5],
+      losers: [4],
+      children: [],
+      percentageOutcome: 100
+    } as GraphNode);
+  });
+
+  it('Returns correct node if winners, and losers, but no votes', async () => {
+    const candidates: CandidateMap = new Map([]);
+
+    const ballots: Ballot[] = [
+      {
+        id: '1',
+        ranking: []
+      },
+      {
+        id: '2',
+        ranking: []
+      },
+      {
+        id: '3',
+        ranking: []
+      },
+      {
+        id: '4',
+        ranking: []
+      }
+    ];
+
+    const winners: ResultNodeOptions['winners'] = [5];
+    const losers: ResultNodeOptions['losers'] = [4];
+
+    const result = generateResultNode({
+      ballots,
+      candidates,
+      losers,
+      winners,
+      positionsToFill: 1,
+      savedBallots: [],
+      savedCandidates: new Map(),
+      incomingNodePercentage: 100
+    });
+
+    expect(result).toEqual({
+      hash: 'w%5-l%4',
       results: new Map([]),
-      winners: ['ghjk'],
-      losers: ['tyui'],
-      children: []
+      winners: [5],
+      losers: [4],
+      children: [],
+      percentageOutcome: 100
     } as GraphNode);
   });
 });

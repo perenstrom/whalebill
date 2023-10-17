@@ -22,7 +22,7 @@ export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
     return getEmptyGraphNode();
   }
 
-  const candidateVotes: Map<string, number> = new Map();
+  const candidateVotes: Map<number, number> = new Map();
 
   ballots.forEach((ballot) => {
     if (!ballot.ranking.length) return;
@@ -35,8 +35,8 @@ export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
 
   candidates.forEach((candidate) => {
     if (!ballots.length) return;
-    if (!candidateVotes.has(candidate.id)) {
-      candidateVotes.set(candidate.id, 0);
+    if (!candidateVotes.has(candidate.smallId)) {
+      candidateVotes.set(candidate.smallId, 0);
     }
   });
 
@@ -50,6 +50,6 @@ export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
     winners,
     losers,
     children: [],
-    percentageOutcome: options.incomingNodePercentage || 0
+    percentageOutcome: options.incomingNodePercentage || 100
   };
 };

@@ -5,41 +5,41 @@ describe('shiftBallots', () => {
   it('Removes a candidate from all rankings', async () => {
     const ballots: Ballot[] = [
       {
-        id: 1,
-        ranking: ['asdf', 'qwer', 'zxcv']
+        id: '1',
+        ranking: [1, 2, 3]
       },
       {
-        id: 2,
-        ranking: ['asdf', 'zxcv', 'qwer']
+        id: '2',
+        ranking: [1, 3, 2]
       },
       {
-        id: 3,
-        ranking: ['qwer', 'asdf', 'zxcv']
+        id: '3',
+        ranking: [2, 1, 3]
       },
       {
-        id: 4,
-        ranking: ['asdf', 'zxcv', 'qwer']
+        id: '4',
+        ranking: [1, 3, 2]
       }
     ];
 
-    const shiftedBallots = shiftBallots(ballots, 'asdf');
+    const shiftedBallots = shiftBallots(ballots, 1);
 
     expect(shiftedBallots).toEqual([
       {
-        id: 1,
-        ranking: ['qwer', 'zxcv']
+        id: '1',
+        ranking: [2, 3]
       },
       {
-        id: 2,
-        ranking: ['zxcv', 'qwer']
+        id: '2',
+        ranking: [3, 2]
       },
       {
-        id: 3,
-        ranking: ['qwer', 'zxcv']
+        id: '3',
+        ranking: [2, 3]
       },
       {
-        id: 4,
-        ranking: ['zxcv', 'qwer']
+        id: '4',
+        ranking: [3, 2]
       }
     ]);
   });

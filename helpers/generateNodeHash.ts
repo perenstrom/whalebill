@@ -1,7 +1,9 @@
+import { CandidateSmallId } from 'types/graph';
+
 export const generateNodeHash = (
-  results: Map<string, number>,
-  winners: string[],
-  losers: string[]
+  results: Map<CandidateSmallId, number>,
+  winners: CandidateSmallId[],
+  losers: CandidateSmallId[]
 ) => {
   const winnerPart = winners.length ? `w%${winners.join('&')}` : '';
   const convertedResults = [...results];

@@ -3,55 +3,55 @@ import { generateOptionsHash } from './generateOptionsHash';
 
 describe('generateOptionsHash', () => {
   const candidates: CandidateMap = new Map([
-    ['asdf', { name: 'Per', id: 'asdf' }],
-    ['qwer', { name: 'Jobjörn', id: 'qwer' }]
+    [1, { name: 'Per', id: '1', smallId: 1 }],
+    [2, { name: 'Jobjörn', id: '2', smallId: 2 }]
   ]);
   const savedCandidates: CandidateMap = new Map([
-    ['asdf', { name: 'Per', id: 'asdf' }],
-    ['qwer', { name: 'Jobjörn', id: 'qwer' }],
-    ['zxcv', { name: 'Charlii', id: 'zxcv' }]
+    [1, { name: 'Per', id: '1', smallId: 1 }],
+    [2, { name: 'Jobjörn', id: '2', smallId: 2 }],
+    [3, { name: 'Charlii', id: '3', smallId: 3 }]
   ]);
 
   const ballots: Ballot[] = [
     {
-      id: 1,
-      ranking: ['asdf', 'qwer']
+      id: '1',
+      ranking: [1, 2]
     },
     {
-      id: 2,
-      ranking: ['qwer', 'asdf']
+      id: '2',
+      ranking: [2, 1]
     },
     {
-      id: 3,
-      ranking: ['qwer', 'asdf']
+      id: '3',
+      ranking: [2, 1]
     },
     {
-      id: 4,
-      ranking: ['asdf', 'qwer']
+      id: '4',
+      ranking: [1, 2]
     }
   ];
 
   const savedBallots: Ballot[] = [
     {
-      id: 1,
-      ranking: ['zxcv', 'asdf', 'qwer']
+      id: '1',
+      ranking: [3, 1, 2]
     },
     {
-      id: 2,
-      ranking: ['zxcv', 'qwer', 'asdf']
+      id: '2',
+      ranking: [3, 2, 1]
     },
     {
-      id: 3,
-      ranking: ['qwer', 'asdf', 'zxcv']
+      id: '3',
+      ranking: [2, 1, 3]
     },
     {
-      id: 4,
-      ranking: ['asdf', 'zxcv', 'qwer']
+      id: '4',
+      ranking: [1, 3, 2]
     }
   ];
 
-  const winners: string[] = ['tyui'];
-  const losers: string[] = ['ghjk'];
+  const winners: ResultNodeOptions['winners'] = [4];
+  const losers: ResultNodeOptions['winners'] = [5];
   const positionsToFill = 5;
 
   const options: ResultNodeOptions = {
@@ -61,7 +61,8 @@ describe('generateOptionsHash', () => {
     savedCandidates,
     winners,
     losers,
-    positionsToFill
+    positionsToFill,
+    incomingNodePercentage: 100
   };
 
   it('Is a non-empty string', async () => {

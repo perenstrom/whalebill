@@ -12,6 +12,7 @@ import { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import { createBallot, deleteBallot } from 'services/local';
 import { getAdminPosition } from 'services/prisma';
 import styled from 'styled-components';
+import { CandidateId } from 'types/graph';
 import { AdminPosition, UncreatedBallotItem } from 'types/types';
 
 const Wrapper = styled.div`
@@ -61,19 +62,22 @@ interface Props {
 }
 
 const PositionAdminPage: NextPage<Props> = ({ position }) => {
-  const [ballot, setBallot] = useState<string[]>([]);
+  const [ballot, setBallot] = useState<CandidateId[]>([]);
   const { ballots } = position;
   const latestBallot = ballots[ballots.length - 1];
 
-  const getCandidate = (candidateId: string) =>
-    position.candidates.find((candidate) => candidate.id === candidateId);
+  const getCandidate = useCallback(
+    (candidateId: CandidateId) =>
+      position.candidates.find((candidate) => candidate.id === candidateId),
+    [position.candidates]
+  );
   const candidateIsSelected = useCallback(
-    (candidateId: string) => ballot.includes(candidateId),
+    (candidateId: CandidateId) => ballot.includes(candidateId),
     [ballot]
   );
 
   const addCandidate = useCallback(
-    (candidateId: string) => {
+    (candidateId: CandidateId) => {
       const newBallot = [...ballot];
       newBallot.push(candidateId);
       setBallot(newBallot);
@@ -96,6 +100,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
     const newBallotItems: UncreatedBallotItem[] = ballot.map(
       (candidateId, index) => ({
         candidateId,
+        candidateSmallId: getCandidate(candidateId)?.smallId || 0,
         order: index
       })
     );
@@ -108,7 +113,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
     } catch (error) {
       console.log('Something went wrong');
     }
-  }, [ballot, position.id, router]);
+  }, [ballot, position.id, router, getCandidate]);
 
   const candidatesLength = position.candidates.length;
   const keyboardHandler = useCallback(

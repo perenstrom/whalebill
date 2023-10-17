@@ -14,6 +14,7 @@ import { getAdminPosition } from 'services/prisma';
 import { ParsedUrlQuery } from 'querystring';
 import {
   Candidate,
+  CandidateSmallId,
   GraphNodeData,
   OverflowData,
   SimpleCandidateMap,
@@ -101,7 +102,8 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
   }
 
   const candidatesMap = position.candidates.map(
-    (candidate) => [candidate.id, candidate] as [string, Candidate]
+    (candidate) =>
+      [candidate.smallId, candidate] as [CandidateSmallId, Candidate]
   );
   const { nodes: calculatedNodes, edges: calculatedEdges } =
     generateTree(position);
@@ -191,6 +193,16 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
       if (isGraphNodeData(node.data) && isLeaf) node.data.node.isLeaf = isLeaf;
     }
   });
+
+  /*   const size = Buffer.byteLength(
+    JSON.stringify({
+      nodes,
+      edges
+    })
+  );
+
+  console.log(JSON.stringify(nodes[400], null, 2));
+  console.log(size); */
 
   return {
     props: {

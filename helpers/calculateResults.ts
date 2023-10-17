@@ -1,7 +1,7 @@
 import {
   Ballot,
-  CandidateId,
   CandidateMap,
+  CandidateSmallId,
   ResultHash,
   ResultNodeOptions
 } from 'types/graph';
@@ -13,10 +13,10 @@ interface ResultInput {
   savedBallots: Ballot[];
   candidates: CandidateMap;
   savedCandidates: CandidateMap;
-  sortedResults: Map<CandidateId, number>;
+  sortedResults: Map<CandidateSmallId, number>;
   positionsToFill: number;
-  previousWinners: CandidateId[];
-  previousLosers: CandidateId[];
+  previousWinners: CandidateSmallId[];
+  previousLosers: CandidateSmallId[];
   incomingNodePercentage: number;
 }
 
@@ -31,8 +31,12 @@ export const calculateResults = (
     positionsToFill,
     sortedResults,
     previousWinners,
-    previousLosers
+    previousLosers,
+    incomingNodePercentage
   } = conditions;
+
+  console.log('calculating results');
+  console.log(incomingNodePercentage);
 
   if (positionsToFill === 0 || candidates.size === 0) return [];
 
@@ -55,9 +59,7 @@ export const calculateResults = (
 
     const newLosers =
       newPositionsToFill === 0
-        ? [...newCandidates]
-            .map(([id]) => id)
-            .sort((a, b) => a.localeCompare(b))
+        ? [...newCandidates].map(([id]) => id).sort((a, b) => a - b)
         : [];
 
     if (newPositionsToFill === 0) {
@@ -73,9 +75,7 @@ export const calculateResults = (
           );
 
     const childOptions: ResultNodeOptions = {
-      winners: [...previousWinners, firstPlace[0]].sort((a, b) =>
-        a.localeCompare(b)
-      ),
+      winners: [...previousWinners, firstPlace[0]].sort((a, b) => a - b),
       losers: newLosers,
       ballots: newBallots,
       savedBallots: [],
@@ -108,9 +108,7 @@ export const calculateResults = (
 
     const childOptions: ResultNodeOptions = {
       winners: previousWinners,
-      losers: [...previousLosers, lastPlace[0]].sort((a, b) =>
-        a.localeCompare(b)
-      ),
+      losers: [...previousLosers, lastPlace[0]].sort((a, b) => a - b),
       ballots: shiftBallots(ballots, lastPlace[0]),
       savedBallots: newSavedBallots,
       candidates: newCandidates,
@@ -146,15 +144,13 @@ export const calculateResults = (
 
     const childOptions: ResultNodeOptions = {
       winners: previousWinners,
-      losers: [...previousLosers, ...loserIds].sort((a, b) =>
-        a.localeCompare(b)
-      ),
+      losers: [...previousLosers, ...loserIds].sort((a, b) => a - b),
       ballots: shiftedBallots,
       savedBallots: newSavedBallots,
       candidates: newCandidates,
       savedCandidates: newSavedCandidates,
       positionsToFill: positionsToFill,
-      incomingNodePercentage: conditions.incomingNodePercentage / losers.length
+      incomingNodePercentage: conditions.incomingNodePercentage
     };
 
     return [
@@ -175,9 +171,9 @@ export const calculateResults = (
       ? savedCandidates
       : candidates;
 
-    const childOptions = {
+    const childOptions: ResultNodeOptions = {
       winners: previousWinners,
-      losers: [...previousLosers, loser].sort((a, b) => a.localeCompare(b)),
+      losers: [...previousLosers, loser].sort((a, b) => a - b),
       ballots: shiftBallots(ballots, loser),
       savedBallots: newSavedBallots,
       candidates: newCandidates,

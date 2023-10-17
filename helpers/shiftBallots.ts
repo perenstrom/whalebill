@@ -1,7 +1,10 @@
-import { Ballot } from 'types/graph';
+import { Ballot, CandidateSmallId } from 'types/graph';
 
-export const shiftBallots = (ballots: Ballot[], candidateId: string): Ballot[] =>
+export const shiftBallots = (
+  ballots: Ballot[],
+  candidateSmallId: CandidateSmallId
+): Ballot[] =>
   ballots.map((ballot) => {
-    const ranking = ballot.ranking.filter((id) => id !== candidateId);
+    const ranking = ballot.ranking.filter((id) => id !== candidateSmallId);
     return { ...ballot, ranking };
   });

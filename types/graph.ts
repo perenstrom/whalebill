@@ -1,29 +1,31 @@
 import { GraphNode } from 'components/GraphNode';
 
 export type CandidateId = string;
+export type CandidateSmallId = number;
 type Votes = number;
 
 export type Candidate = {
   id: CandidateId;
+  smallId: number;
   name: string;
 };
-export type CandidateMap = Map<CandidateId, Candidate>;
-export type SimpleCandidateMap = [CandidateId, Candidate][];
+export type CandidateMap = Map<CandidateSmallId, Candidate>;
+export type SimpleCandidateMap = [CandidateSmallId, Candidate][];
 
-export type Ballot = { id: string; ranking: CandidateId[] };
+export type Ballot = { id: string; ranking: CandidateSmallId[] };
 
 export type NodeHash = string;
 export type GraphNode = {
   hash: NodeHash;
-  results: Map<CandidateId, Votes>;
-  winners: CandidateId[];
-  losers: CandidateId[];
+  results: Map<CandidateSmallId, Votes>;
+  winners: CandidateSmallId[];
+  losers: CandidateSmallId[];
   children: string[];
   percentageOutcome: number;
   isLeaf?: boolean;
 };
 export type SimpleGraphNode = Omit<GraphNode, 'results'> & {
-  results: [CandidateId, Votes][];
+  results: [CandidateSmallId, Votes][];
 };
 
 export interface GraphNodeData {
@@ -51,8 +53,8 @@ export interface ResultNodeOptions {
   savedBallots: Ballot[];
   candidates: CandidateMap;
   savedCandidates: CandidateMap;
-  winners: CandidateId[];
-  losers: CandidateId[];
+  winners: CandidateSmallId[];
+  losers: CandidateSmallId[];
   incomingNodePercentage: number;
   positionsToFill: number;
 }
