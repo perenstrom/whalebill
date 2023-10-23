@@ -1,4 +1,4 @@
-import { GraphNode, ResultNodeOptions } from 'types/graph';
+import { CandidateSmallId, GraphNode, ResultNodeOptions } from 'types/graph';
 import { generateNodeHash } from './generateNodeHash';
 
 const getEmptyGraphNode = (): GraphNode => {
@@ -8,7 +8,7 @@ const getEmptyGraphNode = (): GraphNode => {
     winners: [],
     losers: [],
     children: [],
-    percentageOutcome: 100
+    percentageOutcome: 0
   };
 };
 export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
@@ -22,7 +22,7 @@ export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
     return getEmptyGraphNode();
   }
 
-  const candidateVotes: Map<number, number> = new Map();
+  const candidateVotes: Map<CandidateSmallId, number> = new Map();
 
   ballots.forEach((ballot) => {
     if (!ballot.ranking.length) return;
@@ -50,6 +50,6 @@ export const generateResultNode = (options: ResultNodeOptions): GraphNode => {
     winners,
     losers,
     children: [],
-    percentageOutcome: options.incomingNodePercentage || 100
+    percentageOutcome: 0
   };
 };

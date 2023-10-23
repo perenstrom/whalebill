@@ -61,8 +61,7 @@ describe('generateOptionsHash', () => {
     savedCandidates,
     winners,
     losers,
-    positionsToFill,
-    incomingNodePercentage: 100
+    positionsToFill
   };
 
   it('Is a non-empty string', async () => {

@@ -55,6 +55,5 @@ export interface ResultNodeOptions {
   savedCandidates: CandidateMap;
   winners: CandidateSmallId[];
   losers: CandidateSmallId[];
-  incomingNodePercentage: number;
   positionsToFill: number;
 }

@@ -36,8 +36,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 0,
-      incomingNodePercentage: 100
+      positionsToFill: 0
     };
 
     const result = calculateResults(conditions);
@@ -60,8 +59,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -94,8 +92,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [4],
       previousLosers: [],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -133,8 +130,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -172,8 +168,7 @@ describe('calculateResults', () => {
       savedCandidates: getSavedCandidates(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -209,8 +204,7 @@ describe('calculateResults', () => {
       savedCandidates: getSavedCandidates(),
       previousWinners: [],
       previousLosers: [9],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -248,8 +242,7 @@ describe('calculateResults', () => {
       savedCandidates: getSavedCandidates(),
       previousWinners: [],
       previousLosers: [9],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -287,8 +280,7 @@ describe('calculateResults', () => {
       savedCandidates: getSavedCandidates(),
       previousWinners: [],
       previousLosers: [9],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -318,8 +310,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -349,8 +340,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -378,8 +368,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -407,8 +396,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -441,8 +429,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [9],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -470,8 +457,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [9],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -505,8 +491,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [9],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -546,8 +531,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [9],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -581,8 +565,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [9],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -615,8 +598,7 @@ describe('calculateResults', () => {
       ]),
       previousWinners: [9],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -651,8 +633,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [9],
       previousLosers: [],
-      positionsToFill: 2,
-      incomingNodePercentage: 100
+      positionsToFill: 2
     };
 
     const result = calculateResults(conditions);
@@ -687,8 +668,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [4],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -734,8 +714,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [4],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);
@@ -790,8 +769,7 @@ describe('calculateResults', () => {
       savedCandidates: new Map(),
       previousWinners: [4],
       previousLosers: [],
-      positionsToFill: 1,
-      incomingNodePercentage: 100
+      positionsToFill: 1
     };
 
     const result = calculateResults(conditions);

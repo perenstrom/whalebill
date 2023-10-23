@@ -32,7 +32,6 @@ export const generateTree = (position: AdminPosition) => {
     savedCandidates: new Map(),
     winners: [],
     losers: [],
-    incomingNodePercentage: 100,
     positionsToFill: openSeats
   };
 
@@ -55,8 +54,6 @@ export const generateTree = (position: AdminPosition) => {
 
     // Generate node
     const node = generateResultNode(currentOptions.options);
-    console.log('Generated node');
-    console.log(`${node.hash}: ${node.percentageOutcome}`);
 
     // Save options-hash -> node-hash
     hashMap.set(currentOptions.hash, node.hash);
@@ -64,13 +61,7 @@ export const generateTree = (position: AdminPosition) => {
     // Check if node exists
     const existingNode = nodes.get(node.hash);
     if (existingNode) {
-      console.log('Found existing node');
-      console.log(existingNode.hash);
-      console.log(existingNode.percentageOutcome);
-      console.log(node.percentageOutcome);
       existingNode.percentageOutcome += node.percentageOutcome;
-
-      console.log(existingNode.percentageOutcome);
       continue;
     }
 
@@ -86,7 +77,6 @@ export const generateTree = (position: AdminPosition) => {
       positionsToFill: currentOptions.options.positionsToFill,
       previousWinners: node.winners,
       previousLosers: node.losers,
-      incomingNodePercentage: currentOptions.options.incomingNodePercentage
     });
 
     // Save options-hash on current node
@@ -96,14 +86,32 @@ export const generateTree = (position: AdminPosition) => {
     queue.push(...childOptions);
   }
 
-  // Loop through and replace options-hashes with node-hashes
+  // Loop through and
+  // 1. replace options-hashes with node-hashes
+  // 2. calculate percentages
+  const nodePercentageMap = new Map<string, number>();
+  const firstResultHash = (nodes.entries().next().value[1] as GraphNode).hash;
+  if (!firstResultHash) throw new Error('Invalid options hash');
+
+  nodePercentageMap.set(firstResultHash, 100);
+
   nodes.forEach((node) => {
-    node.children = node.children.map((optionsHash) => {
-      const resultHash = hashMap.get(optionsHash);
+    const newChildren: string[] = [];
+    node.children.forEach((childOptionsHash) => {
+      const resultHash = hashMap.get(childOptionsHash);
       if (!resultHash) throw new Error('Invalid options hash');
 
-      return resultHash;
+      newChildren.push(resultHash);
+
+      const percentage = nodePercentageMap.get(node.hash) ?? 100;
+      const childPercentage = nodePercentageMap.get(resultHash) ?? 0;
+      nodePercentageMap.set(
+        resultHash,
+        childPercentage + percentage / node.children.length
+      );
     });
+
+    node.children = newChildren;
   });
 
   const newNodes: Node<GraphNodeData | OverflowData>[] = [];
@@ -114,7 +122,11 @@ export const generateTree = (position: AdminPosition) => {
       position: { y: 0, x: 0 },
       data: {
         type: 'graphNode',
-        node: { ...node, results: [...node.results] }
+        node: {
+          ...node,
+          results: [...node.results],
+          percentageOutcome: nodePercentageMap.get(node.hash) ?? 100
+        }
       },
       type: NODE_TYPE_GRAPH_NODE
     });

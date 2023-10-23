@@ -33,8 +33,7 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map(),
-      incomingNodePercentage: 100
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -43,7 +42,7 @@ describe('generateResultNode', () => {
       winners: [],
       losers: [],
       children: [],
-      percentageOutcome: 100
+      percentageOutcome: 0
     } as GraphNode);
   });
 
@@ -63,8 +62,7 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map(),
-      incomingNodePercentage: 100
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -73,7 +71,7 @@ describe('generateResultNode', () => {
       winners: [],
       losers: [],
       children: [],
-      percentageOutcome: 100
+      percentageOutcome: 0
     } as GraphNode);
   });
 
@@ -110,8 +108,7 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map(),
-      incomingNodePercentage: 100
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -124,7 +121,7 @@ describe('generateResultNode', () => {
       winners: [],
       losers: [],
       children: [],
-      percentageOutcome: 100
+      percentageOutcome: 0
     } as GraphNode);
   });
 
@@ -163,8 +160,7 @@ describe('generateResultNode', () => {
       losers: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map(),
-      incomingNodePercentage: 100
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -177,7 +173,7 @@ describe('generateResultNode', () => {
       winners: [4],
       losers: [],
       children: [],
-      percentageOutcome: 100
+      percentageOutcome: 0
     } as GraphNode);
   });
 
@@ -216,8 +212,7 @@ describe('generateResultNode', () => {
       winners: [],
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map(),
-      incomingNodePercentage: 100
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -230,7 +225,7 @@ describe('generateResultNode', () => {
       winners: [],
       losers: [4],
       children: [],
-      percentageOutcome: 100
+      percentageOutcome: 0
     } as GraphNode);
   });
 
@@ -270,8 +265,7 @@ describe('generateResultNode', () => {
       winners,
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map(),
-      incomingNodePercentage: 100
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -284,7 +278,7 @@ describe('generateResultNode', () => {
       winners: [5],
       losers: [4],
       children: [],
-      percentageOutcome: 100
+      percentageOutcome: 0
     } as GraphNode);
   });
 
@@ -320,8 +314,7 @@ describe('generateResultNode', () => {
       winners,
       positionsToFill: 1,
       savedBallots: [],
-      savedCandidates: new Map(),
-      incomingNodePercentage: 100
+      savedCandidates: new Map()
     });
 
     expect(result).toEqual({
@@ -330,7 +323,7 @@ describe('generateResultNode', () => {
       winners: [5],
       losers: [4],
       children: [],
-      percentageOutcome: 100
+      percentageOutcome: 0
     } as GraphNode);
   });
 });

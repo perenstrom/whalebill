@@ -17,7 +17,6 @@ interface ResultInput {
   positionsToFill: number;
   previousWinners: CandidateSmallId[];
   previousLosers: CandidateSmallId[];
-  incomingNodePercentage: number;
 }
 
 export const calculateResults = (
@@ -31,12 +30,8 @@ export const calculateResults = (
     positionsToFill,
     sortedResults,
     previousWinners,
-    previousLosers,
-    incomingNodePercentage
+    previousLosers
   } = conditions;
-
-  console.log('calculating results');
-  console.log(incomingNodePercentage);
 
   if (positionsToFill === 0 || candidates.size === 0) return [];
 
@@ -81,8 +76,7 @@ export const calculateResults = (
       savedBallots: [],
       candidates: newCandidates,
       savedCandidates: new Map(),
-      positionsToFill: positionsToFill - 1,
-      incomingNodePercentage: conditions.incomingNodePercentage
+      positionsToFill: positionsToFill - 1
     };
 
     return [
@@ -113,8 +107,7 @@ export const calculateResults = (
       savedBallots: newSavedBallots,
       candidates: newCandidates,
       savedCandidates: newSavedCandidates,
-      positionsToFill: positionsToFill,
-      incomingNodePercentage: conditions.incomingNodePercentage
+      positionsToFill: positionsToFill
     };
 
     return [{ options: childOptions, hash: generateOptionsHash(childOptions) }];
@@ -149,8 +142,7 @@ export const calculateResults = (
       savedBallots: newSavedBallots,
       candidates: newCandidates,
       savedCandidates: newSavedCandidates,
-      positionsToFill: positionsToFill,
-      incomingNodePercentage: conditions.incomingNodePercentage
+      positionsToFill: positionsToFill
     };
 
     return [
@@ -178,8 +170,7 @@ export const calculateResults = (
       savedBallots: newSavedBallots,
       candidates: newCandidates,
       savedCandidates: newSavedCandidates,
-      positionsToFill: positionsToFill,
-      incomingNodePercentage: conditions.incomingNodePercentage / losers.length
+      positionsToFill: positionsToFill
     };
 
     return {
