@@ -116,7 +116,7 @@ export const GraphNode: React.FC<Props> = ({ node, candidates }) => {
           </Losers>
         )}
         <Percentage $isLeaf={node.isLeaf || false}>
-          {node.percentageOutcome} %
+          {+node.percentageOutcome.toFixed(2)} %
         </Percentage>
       </Wrapper>
       <Handle type="source" position={Position.Right} />
