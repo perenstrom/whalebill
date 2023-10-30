@@ -10,7 +10,7 @@ import 'reactflow/dist/style.css';
 import { generateTree } from 'helpers/generateTree';
 import { GraphNode, NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
 import { prismaContext } from 'lib/prisma';
-import { getAdminPosition } from 'services/prisma';
+import { createGraph, getAdminPosition } from 'services/prisma';
 import { ParsedUrlQuery } from 'querystring';
 import {
   Candidate,
@@ -21,6 +21,7 @@ import {
   isGraphNodeData
 } from 'types/graph';
 import { NODE_TYPE_OVERFLOW_NODE, OverflowNode } from 'components/OverflowNode';
+import { Prisma } from '@prisma/client';
 
 const Container = styled.div`
   width: 100%;
@@ -77,6 +78,34 @@ const IndexPage: NextPage<Props> = ({ nodes, edges, candidates }) => {
   );
 };
 
+const getGraph = async (
+  position: Awaited<ReturnType<typeof getAdminPosition>>
+) => {
+  if (!position) throw new Error('No position');
+
+  if (position.graph) {
+    const storedGraph = position.graph?.graph as Prisma.JsonObject;
+    const parsedGraph = JSON.parse(storedGraph as unknown as string);
+    const nodes = parsedGraph['nodes'] as ReturnType<
+      typeof generateTree
+    >['nodes'];
+    const edges = parsedGraph['edges'] as ReturnType<
+      typeof generateTree
+    >['edges'];
+
+    return { nodes, edges };
+  } else {
+    const { nodes, edges } = generateTree(position);
+    await createGraph(
+      prismaContext,
+      position.id,
+      JSON.stringify({ nodes, edges })
+    );
+
+    return { nodes, edges };
+  }
+};
+
 interface Params extends ParsedUrlQuery {
   positionAdminId: string;
 }
@@ -101,12 +130,9 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
     };
   }
 
-  const candidatesMap = position.candidates.map(
-    (candidate) =>
-      [candidate.smallId, candidate] as [CandidateSmallId, Candidate]
+  const { nodes: calculatedNodes, edges: calculatedEdges } = await getGraph(
+    position
   );
-  const { nodes: calculatedNodes, edges: calculatedEdges } =
-    generateTree(position);
 
   const NODE_CUTOFF = 2000;
 
@@ -194,15 +220,10 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
     }
   });
 
-  /*   const size = Buffer.byteLength(
-    JSON.stringify({
-      nodes,
-      edges
-    })
+  const candidatesMap = position.candidates.map(
+    (candidate) =>
+      [candidate.smallId, candidate] as [CandidateSmallId, Candidate]
   );
-
-  console.log(JSON.stringify(nodes[400], null, 2));
-  console.log(size); */
 
   return {
     props: {

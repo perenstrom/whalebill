@@ -28,7 +28,8 @@ export const getAdminPosition = async (ctx: Context, adminId: string) => {
         include: {
           ballotItems: true
         }
-      }
+      },
+      graph: true
     }
   });
 
@@ -106,6 +107,21 @@ export const deleteBallot = async (ctx: Context, ballotId: string) => {
   const result = await ctx.prisma.ballot.delete({
     where: {
       id: ballotId
+    }
+  });
+
+  return result;
+};
+
+export const createGraph = async (
+  ctx: Context,
+  positionId: string,
+  graph: string
+) => {
+  const result = await ctx.prisma.graph.create({
+    data: {
+      positionId,
+      graph
     }
   });
 
