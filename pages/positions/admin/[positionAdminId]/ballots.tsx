@@ -281,7 +281,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
 
   return {
     props: {
-      position
+      position: { ...position, graph: null }
     }
   };
 };

@@ -127,3 +127,13 @@ export const createGraph = async (
 
   return result;
 };
+
+export const invalidateGraph = async (ctx: Context, positionId: string) => {
+  await ctx.prisma.graph.delete({
+    where: {
+      positionId
+    }
+  });
+
+  return true;
+};

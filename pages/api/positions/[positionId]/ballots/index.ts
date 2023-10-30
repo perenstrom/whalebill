@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prismaContext } from 'lib/prisma';
 import { UncreatedBallotItemsSchema } from 'types/types';
-import { createBallot } from 'services/prisma';
+import { createBallot, invalidateGraph } from 'services/prisma';
 import { z } from 'zod';
 
 const ballots = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -25,7 +25,8 @@ const ballots = async (req: NextApiRequest, res: NextApiResponse) => {
           parsedQuery.data.positionId,
           parsedBallotItems.data
         )
-          .then((ballot) => {
+          .then(async (ballot) => {
+            await invalidateGraph(prismaContext, parsedQuery.data.positionId);
             res.status(200).json(ballot);
             resolve('');
           })
