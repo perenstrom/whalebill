@@ -1,8 +1,9 @@
+import { Position } from '@prisma/client';
 import { getGraph } from 'helpers/getGraph';
 import { prismaContext } from 'lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Node } from 'reactflow';
-import { getAdminPosition } from 'services/prisma';
+import { getAdminPosition, updatePosition } from 'services/prisma';
 import { GraphNodeData } from 'types/graph';
 import { z } from 'zod';
 
@@ -30,10 +31,15 @@ const selectWinner = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
+    if (position.winnerPath) {
+      res.json(position.winnerPath);
+      return;
+    }
+
     const { nodes } = await getGraph(position);
 
     let currentNode: Node<GraphNodeData> | null = nodes[0];
-    const winnerPath: string[] = [];
+    const winnerPath: string[] = [currentNode.data.node.hash];
     while (currentNode) {
       const multipleChildren = currentNode.data.node.children.length > 1;
       const isLeaf = currentNode.data.node.children.length === 0;
@@ -65,6 +71,15 @@ const selectWinner = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!newNode) throw new Error('No node found from child');
       currentNode = newNode;
     }
+
+    const updatedPosition: Position = {
+      adminId: position.adminId,
+      id: position.id,
+      name: position.name,
+      openSeats: position.openSeats,
+      winnerPath
+    };
+    await updatePosition(prismaContext, updatedPosition);
 
     res.json(winnerPath);
   } else {

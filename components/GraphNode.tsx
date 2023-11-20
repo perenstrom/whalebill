@@ -4,7 +4,10 @@ import { CandidateMap, SimpleCandidateMap, SimpleGraphNode } from 'types/graph';
 
 export const NODE_TYPE_GRAPH_NODE = 'graphNode';
 
-const Wrapper = styled.div`
+interface WrapperProps {
+  $winner: boolean;
+}
+const Wrapper = styled.div<WrapperProps>`
   --border-radius: 5px;
   --padding: 0.6rem;
   border: 1px solid black;
@@ -13,6 +16,7 @@ const Wrapper = styled.div`
 
   background-color: var(--color-gray-4);
   box-shadow: var(--shadow-elevation-medium);
+  outline: ${({ $winner }) => $winner && '5px solid hsla(29, 80%, 57%, 1)'};
 
   :focus {
     background-color: red;
@@ -79,15 +83,21 @@ const Percentage = styled.div<PercentageProps>`
 interface Props {
   node: SimpleGraphNode;
   candidates: SimpleCandidateMap;
+  winnerPath: string[];
 }
 
-export const GraphNode: React.FC<Props> = ({ node, candidates }) => {
+export const GraphNode: React.FC<Props> = ({
+  node,
+  candidates,
+  winnerPath
+}) => {
   const candidateMap: CandidateMap = new Map(candidates);
+  const isWinner = winnerPath.includes(node.hash);
 
   return (
     <>
       <Handle type="target" position={Position.Left} />
-      <Wrapper>
+      <Wrapper $winner={isWinner}>
         {node.winners.length > 0 && (
           <Winners>
             {node.winners.map((winner) => (

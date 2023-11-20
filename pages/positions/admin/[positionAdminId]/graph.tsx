@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import ELK, { ElkNode } from 'elkjs';
@@ -45,9 +45,18 @@ interface Props {
   positionAdminId: string;
 }
 
-const graphNodeWithCandidates = (candidates: SimpleCandidateMap) =>
+const extendedGraphNode = (
+  candidates: SimpleCandidateMap,
+  winnerPath: string[]
+) =>
   function ExtendedGraphNode(props: NodeProps<GraphNodeData>) {
-    return <GraphNode node={props.data.node} candidates={candidates} />;
+    return (
+      <GraphNode
+        node={props.data.node}
+        candidates={candidates}
+        winnerPath={winnerPath}
+      />
+    );
   };
 
 const IndexPage: NextPage<Props> = ({
@@ -56,18 +65,18 @@ const IndexPage: NextPage<Props> = ({
   candidates,
   positionAdminId
 }) => {
+  const [winnerPath, setWinnerPath] = useState<string[]>([]);
   const nodeTypes = useMemo(
     () => ({
-      [NODE_TYPE_GRAPH_NODE]: graphNodeWithCandidates(candidates),
+      [NODE_TYPE_GRAPH_NODE]: extendedGraphNode(candidates, winnerPath),
       [NODE_TYPE_OVERFLOW_NODE]: OverflowNode
     }),
-    [candidates]
+    [candidates, winnerPath]
   );
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = async () => {
     const result = await selectWinner(positionAdminId);
-
-    console.log(result);
+    setWinnerPath(result);
   };
 
   return (

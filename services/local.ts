@@ -93,5 +93,5 @@ export const selectWinner = async (positionId: string) => {
 
   const result = await fetch(url, options).then((r) => r.json());
 
-  return result as Ballot;
+  return result as string[];
 }
