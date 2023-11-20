@@ -6,11 +6,9 @@ import { ReactFlow, Node, Edge, Position, NodeProps } from 'reactflow';
 import styled from 'styled-components';
 
 import 'reactflow/dist/style.css';
-// import { CandidateMap, Ballot } from 'types/graph';
-import { generateTree } from 'helpers/generateTree';
 import { GraphNode, NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
 import { prismaContext } from 'lib/prisma';
-import { createGraph, getAdminPosition } from 'services/prisma';
+import { getAdminPosition } from 'services/prisma';
 import { ParsedUrlQuery } from 'querystring';
 import {
   Candidate,
@@ -22,7 +20,7 @@ import {
 } from 'types/graph';
 import { selectWinner } from 'services/local';
 import { NODE_TYPE_OVERFLOW_NODE, OverflowNode } from 'components/OverflowNode';
-import { Prisma } from '@prisma/client';
+import { getGraph } from 'helpers/getGraph';
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +50,12 @@ const graphNodeWithCandidates = (candidates: SimpleCandidateMap) =>
     return <GraphNode node={props.data.node} candidates={candidates} />;
   };
 
-const IndexPage: NextPage<Props> = ({ nodes, edges, candidates }) => {
+const IndexPage: NextPage<Props> = ({
+  nodes,
+  edges,
+  candidates,
+  positionAdminId
+}) => {
   const nodeTypes = useMemo(
     () => ({
       [NODE_TYPE_GRAPH_NODE]: graphNodeWithCandidates(candidates),
@@ -93,34 +96,6 @@ const IndexPage: NextPage<Props> = ({ nodes, edges, candidates }) => {
   );
 };
 
-const getGraph = async (
-  position: Awaited<ReturnType<typeof getAdminPosition>>
-) => {
-  if (!position) throw new Error('No position');
-
-  if (position.graph) {
-    const storedGraph = position.graph?.graph as Prisma.JsonObject;
-    const parsedGraph = JSON.parse(storedGraph as unknown as string);
-    const nodes = parsedGraph['nodes'] as ReturnType<
-      typeof generateTree
-    >['nodes'];
-    const edges = parsedGraph['edges'] as ReturnType<
-      typeof generateTree
-    >['edges'];
-
-    return { nodes, edges };
-  } else {
-    const { nodes, edges } = generateTree(position);
-    await createGraph(
-      prismaContext,
-      position.id,
-      JSON.stringify({ nodes, edges })
-    );
-
-    return { nodes, edges };
-  }
-};
-
 interface Params extends ParsedUrlQuery {
   positionAdminId: string;
 }
@@ -155,7 +130,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
   const leafNodes = calculatedNodes.filter(
     (node) => !edgeSources.includes(node.id)
   );
-  const nodes: typeof calculatedNodes = [];
+  const nodes: Node<GraphNodeData | OverflowData>[] = [];
   const edges: typeof calculatedEdges = [];
 
   if (calculatedNodes.length > NODE_CUTOFF) {
@@ -247,7 +222,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (
         ...edge,
         style: { stroke: 'white', strokeWidth: 1 }
       })),
-      candidates: candidatesMap
+      candidates: candidatesMap,
       positionAdminId: position.adminId
     }
   };
