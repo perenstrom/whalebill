@@ -29,7 +29,11 @@ export const getAdminPosition = async (ctx: Context, adminId: string) => {
           ballotItems: true
         }
       },
-      graph: true
+      graph: {
+        select: {
+          graph: true,
+        }
+      }
     }
   });
 
