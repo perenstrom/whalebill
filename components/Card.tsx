@@ -1,16 +1,19 @@
-import styled from 'styled-components';
+import { ComponentProps } from 'react';
+import styles from './Card.module.scss';
+import clsx from 'clsx';
 
-interface Props {
-  $variant: 'light' | 'dark';
+export interface CardProps extends ComponentProps<'div'> {
+  variant: 'light' | 'dark';
 }
-
-export const Card = styled.div<Props>`
-  padding: 2rem;
-  border-radius: 5px;
-  width: 100%;
-
-  background: ${({ $variant }) =>
-    $variant === 'light' ? 'var(--color-gray-3)' : 'var(--color-gray-1)'};
-  border: 1px solid var(--color-gray-1);
-  box-shadow: var(--shadow-elevation-high);
-`;
+export const Card: React.FC<CardProps> = ({ variant, ...props }) => (
+  <div
+    className={clsx([
+      styles.card,
+      {
+        [styles.light]: variant === 'light',
+        [styles.dark]: variant === 'dark'
+      }
+    ])}
+    {...props}
+  />
+);

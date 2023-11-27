@@ -1,10 +1,6 @@
-import styled from 'styled-components';
+import { ComponentProps } from 'react';
+import styles from './Divider.module.scss';
 
-export const Divider = styled.hr`
-  height: 4px;
-  background: var(--color-accent-green);
-  border: 0;
-  border-radius: 2px;
-
-  box-shadow: var(--shadow-elevation-high);
-`;
+export const Divider: React.FC<ComponentProps<'hr'>> = ({ ...props }) => (
+  <hr className={styles.divider} {...props} />
+);

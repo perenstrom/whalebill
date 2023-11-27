@@ -1,84 +1,9 @@
+import clsx from 'clsx';
 import { Handle, Position } from 'reactflow';
-import styled, { css } from 'styled-components';
 import { CandidateMap, SimpleCandidateMap, SimpleGraphNode } from 'types/graph';
+import styles from './GraphNode.module.scss';
 
 export const NODE_TYPE_GRAPH_NODE = 'graphNode';
-
-interface WrapperProps {
-  $winner: boolean;
-}
-const Wrapper = styled.div<WrapperProps>`
-  --border-radius: 5px;
-  --padding: 0.6rem;
-  border: 1px solid black;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-
-  background-color: var(--color-gray-4);
-  box-shadow: var(--shadow-elevation-medium);
-  outline: ${({ $winner }) => $winner && '5px solid hsla(29, 80%, 57%, 1)'};
-
-  :focus {
-    background-color: red;
-  }
-`;
-
-const Reset = css`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  line-height: 1.1;
-`;
-
-const ResetUl = styled.ul`
-  ${Reset}
-`;
-
-const Winners = styled(ResetUl)`
-  padding: var(--padding);
-  border-bottom: 1px solid black;
-  color: white;
-  background-color: green;
-  border-top-left-radius: calc(var(--border-radius) - 1px);
-  border-top-right-radius: calc(var(--border-radius) - 1px);
-`;
-
-const Results = styled.ol`
-  ${Reset}
-  padding: var(--padding);
-`;
-
-const ResultItem = styled.li`
-  display: flex;
-  justify-content: space-between;
-  gap: 0.7rem;
-`;
-
-const FlexGrow = styled.span`
-  flex-grow: 1;
-`;
-
-const Losers = styled(ResetUl)`
-  padding: var(--padding);
-  border-top: 1px solid black;
-  color: hsl(0, 0%, 75%);
-  text-decoration: line-through 2px;
-`;
-
-interface PercentageProps {
-  $isLeaf: boolean;
-}
-const Percentage = styled.div<PercentageProps>`
-  font-size: 0.7rem;
-  text-align: center;
-  padding: 0.4rem var(--padding);
-  border-top: 1px solid black;
-  line-height: 1;
-  background: var(--color-gray-1);
-  color: ${({ $isLeaf }) =>
-    $isLeaf ? 'inherit' : 'var(--color-text-secondary)'};
-  font-weight: ${({ $isLeaf }) => ($isLeaf ? 'bold' : 'inherit')};
-`;
 
 interface Props {
   node: SimpleGraphNode;
@@ -97,38 +22,45 @@ export const GraphNode: React.FC<Props> = ({
   return (
     <>
       <Handle type="target" position={Position.Left} />
-      <Wrapper $winner={isWinner}>
+      <div className={clsx([styles.wrapper, { [styles.winner]: isWinner }])}>
         {node.winners.length > 0 && (
-          <Winners>
+          <ul className={clsx([styles.reset, styles.winners])}>
             {node.winners.map((winner) => (
               <li key={winner}>{candidateMap.get(winner)?.name}</li>
             ))}
-          </Winners>
+          </ul>
         )}
 
         {node.results.length > 0 && (
-          <Results type="1">
+          <ol className={clsx([styles.reset, styles.results])} type="1">
             {node.results.map(([candidateId, numberOfVotes], index) => (
-              <ResultItem key={candidateId}>
+              <li className={styles.resultItem} key={candidateId}>
                 <span>{index + 1}.</span>
-                <FlexGrow>{candidateMap.get(candidateId)?.name}</FlexGrow>
+                <div className={styles.flexGrow}>
+                  {candidateMap.get(candidateId)?.name}
+                </div>
                 <span>{numberOfVotes}</span>
-              </ResultItem>
+              </li>
             ))}
-          </Results>
+          </ol>
         )}
 
         {node.losers.length > 0 && (
-          <Losers>
+          <ul className={clsx([styles.reset, styles.losers])}>
             {node.losers.map((loser) => (
               <li key={loser}>{candidateMap.get(loser)?.name}</li>
             ))}
-          </Losers>
+          </ul>
         )}
-        <Percentage $isLeaf={node.isLeaf || false}>
+        <div
+          className={clsx([
+            styles.percentage,
+            { [styles.leaf]: node.isLeaf || false }
+          ])}
+        >
           {+node.percentageOutcome.toFixed(2)} %
-        </Percentage>
-      </Wrapper>
+        </div>
+      </div>
       <Handle type="source" position={Position.Right} />
     </>
   );

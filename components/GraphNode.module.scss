@@ -1,0 +1,71 @@
+.wrapper {
+  --border-radius: 5px;
+  --padding: 0.6rem;
+  border: 1px solid black;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+
+  background-color: var(--color-gray-4);
+  box-shadow: var(--shadow-elevation-medium);
+
+  :focus {
+    background-color: red;
+  }
+}
+
+.winner {
+  outline: 5px solid hsla(29, 80%, 57%, 1);
+}
+
+.reset {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+}
+
+.winners {
+  padding: var(--padding);
+  border-bottom: 1px solid black;
+  color: white;
+  background-color: green;
+  border-top-left-radius: calc(var(--border-radius) - 1px);
+  border-top-right-radius: calc(var(--border-radius) - 1px);
+}
+
+.results {
+  padding: var(--padding);
+}
+
+.losers {
+  padding: var(--padding);
+  border-top: 1px solid black;
+  color: hsl(0, 0%, 75%);
+  text-decoration: line-through 2px;
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.flexGrow {
+  flex-grow: 1;
+}
+
+.percentage {
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 0.4rem var(--padding);
+  border-top: 1px solid black;
+  line-height: 1;
+  background: var(--color-gray-1);
+  color: var(--color-text-secondary);
+  font-weight: inherit;
+}
+
+.leaf {
+  color: inherit;
+  font-weight: bold;
+}

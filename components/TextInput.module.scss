@@ -1,0 +1,14 @@
+.label {
+  display: block;
+}
+
+.input {
+  width: 100%;
+  border: 0;
+  border-radius: 3px;
+
+  &:focus {
+    outline: 2px solid var(--color-accent-green-light);
+    outline-offset: 2px;
+  }
+}

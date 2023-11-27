@@ -1,19 +1,4 @@
-import styled from 'styled-components';
-
-const Label = styled.label`
-  display: block;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  border: 0;
-  border-radius: 3px;
-
-  &:focus {
-    outline: 2px solid var(--color-accent-green-light);
-    outline-offset: 2px;
-  }
-`;
+import styles from './TextInput.module.scss';
 
 export const TextInput: React.FC<{
   id: string;
@@ -22,8 +7,16 @@ export const TextInput: React.FC<{
 }> = ({ id, label, defaultValue }) => {
   return (
     <>
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} name={id} type="text" defaultValue={defaultValue} />
+      <label className={styles.label} htmlFor={id}>
+        {label}
+      </label>
+      <input
+        className={styles.input}
+        id={id}
+        name={id}
+        type="text"
+        defaultValue={defaultValue}
+      />
     </>
   );
 };

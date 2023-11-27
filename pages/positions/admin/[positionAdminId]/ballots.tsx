@@ -2,6 +2,7 @@ import { AlertButton } from 'components/AlertButton';
 import { Button } from 'components/Button';
 import { Card } from 'components/Card';
 import { Divider } from 'components/Divider';
+import { LinkButton } from 'components/LinkButton';
 import { ListItem } from 'components/admin/ListItem';
 import { getShortId } from 'helpers/copy';
 import { prismaContext } from 'lib/prisma';
@@ -27,10 +28,6 @@ const CardWrapper = styled.div`
   gap: 2rem;
   align-items: flex-start;
   flex-wrap: wrap;
-`;
-
-const DashBoardCard = styled(Card)`
-  max-width: 25rem;
 `;
 
 const Heading = styled.h2`
@@ -118,6 +115,8 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
   const candidatesLength = position.candidates.length;
   const keyboardHandler = useCallback(
     (event: KeyboardEvent) => {
+      if (position.candidates.length > 10) return;
+
       const digitKeyRegex = /Digit([0-9])/;
       const digitMatch = event.code.match(digitKeyRegex);
       const isDigit = !!digitMatch;
@@ -174,7 +173,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
   return (
     <Wrapper>
       <CardWrapper>
-        <DashBoardCard $variant="dark">
+        <Card variant="dark">
           <Heading>Candidates</Heading>
           <Divider />
           <CandidateList>
@@ -185,7 +184,11 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                   key={candidate.id}
                   heading={candidate.name}
                   subHeading={getShortId(candidate.id)}
-                  keyIcon={(index + 1).toString()}
+                  keyIcon={
+                    position.candidates.length <= 10
+                      ? (index + 1).toString()
+                      : undefined
+                  }
                   onClick={
                     candidateIsSelected(candidate.id)
                       ? undefined
@@ -195,8 +198,8 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                 />
               ))}
           </CandidateList>
-        </DashBoardCard>
-        <DashBoardCard $variant="dark">
+        </Card>
+        <Card variant="dark">
           <Heading>New Ballot</Heading>
           <Divider />
           {ballot.length > 0 ? (
@@ -223,9 +226,9 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
               choice first.
             </EmptyText>
           )}
-        </DashBoardCard>
+        </Card>
         {ballots.length > 0 && (
-          <DashBoardCard $variant="dark">
+          <Card variant="dark">
             <Heading>Latest ballot ({ballots.length} total)</Heading>
             <Divider />
             <CandidateList>
@@ -244,12 +247,10 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                 Delete ballot
               </AlertButton>
             </ButtonWrapper>
-          </DashBoardCard>
+          </Card>
         )}
 
-        <Button as="a" href={`./graph`}>
-          Move on &gt;&gt;
-        </Button>
+        <LinkButton href={`./graph`}>Move on &gt;&gt;</LinkButton>
       </CardWrapper>
     </Wrapper>
   );

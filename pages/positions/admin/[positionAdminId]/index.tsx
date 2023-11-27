@@ -2,6 +2,7 @@ import { Position } from '@prisma/client';
 import { Button } from 'components/Button';
 import { Card } from 'components/Card';
 import { Divider } from 'components/Divider';
+import { LinkButton } from 'components/LinkButton';
 import { TextInput } from 'components/TextInput';
 import { ListItem } from 'components/admin/ListItem';
 import { OpenPositionForm } from 'components/admin/OpenPositionForm';
@@ -31,10 +32,6 @@ const CardWrapper = styled.div`
   gap: 2rem;
   align-items: flex-start;
   flex-wrap: wrap;
-`;
-
-const DashBoardCard = styled(Card)`
-  max-width: 25rem;
 `;
 
 const Heading = styled.h2`
@@ -121,7 +118,7 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
         again without it.
       </Callout>
       <CardWrapper>
-        <DashBoardCard $variant="dark">
+        <Card variant="dark">
           <Heading>Open position settings</Heading>
           <Divider />
           <OpenPositionForm
@@ -131,8 +128,8 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
               openSeats: position.openSeats.toString()
             }}
           />
-        </DashBoardCard>
-        <DashBoardCard $variant="dark">
+        </Card>
+        <Card variant="dark">
           <Heading>Candidates</Heading>
           <Divider />
           <CandidateList>
@@ -155,11 +152,11 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
               <Button type="submit">Add candidate</Button>
             </ButtonWrapper>
           </form>
-        </DashBoardCard>
+        </Card>
 
-        <Button as="a" href={`./${position.adminId}/ballots`}>
+        <LinkButton href={`./${position.adminId}/ballots`}>
           Move on &gt;&gt;
-        </Button>
+        </LinkButton>
       </CardWrapper>
     </Wrapper>
   );
