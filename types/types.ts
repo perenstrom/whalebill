@@ -12,7 +12,8 @@ export const PositionSchema = z.object({
   id: z.string(),
   name: z.string(),
   openSeats: z.number(),
-  adminId: z.string()
+  adminId: z.string(),
+  winnerPath: z.string().nullable()
 });
 
 export type AdminPosition = Prisma.PositionGetPayload<{

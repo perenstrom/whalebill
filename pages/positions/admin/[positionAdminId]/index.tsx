@@ -83,7 +83,8 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
       id: position.id,
       adminId: position.adminId,
       name: formData.get('name') as string,
-      openSeats: parseInt(formData.get('openSeats') as string, 10)
+      openSeats: parseInt(formData.get('openSeats') as string, 10),
+      winnerPath: null
     };
 
     try {

@@ -4,7 +4,7 @@ import { updatePosition } from 'services/prisma';
 import { PositionSchema } from 'types/types';
 import { z } from 'zod';
 
-const segmentTeamStates = async (req: NextApiRequest, res: NextApiResponse) => {
+const position = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
     return new Promise((resolve) => {
       const parsedBody = PositionSchema.safeParse(req.body);
@@ -24,8 +24,8 @@ const segmentTeamStates = async (req: NextApiRequest, res: NextApiResponse) => {
           ...parsedBody.data,
           id: parsedQuery.data.positionId
         })
-          .then(async (segmentTeamState) => {
-            res.status(200).json(segmentTeamState);
+          .then(async (position) => {
+            res.status(200).json(position);
             resolve('');
           })
           .catch((error) => {
@@ -40,4 +40,4 @@ const segmentTeamStates = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default segmentTeamStates;
+export default position;
