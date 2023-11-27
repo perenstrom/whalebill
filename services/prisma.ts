@@ -31,7 +31,7 @@ export const getAdminPosition = async (ctx: Context, adminId: string) => {
       },
       graph: {
         select: {
-          graph: true,
+          graph: true
         }
       }
     }
@@ -61,7 +61,7 @@ export const updatePosition = async (ctx: Context, position: Position) => {
     where: {
       id: position.id
     },
-    data: position
+    data: { ...position, winnerPath: position.winnerPath || undefined }
   });
 
   return result;

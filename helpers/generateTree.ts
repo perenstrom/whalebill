@@ -3,7 +3,6 @@ import {
   GraphNode,
   GraphNodeData,
   NodeHash,
-  OverflowData,
   ResultHash,
   ResultNodeOptions
 } from 'types/graph';
@@ -172,7 +171,7 @@ export const generateTree = (position: AdminPosition) => {
     }
   }
 
-  const newNodes: Node<GraphNodeData | OverflowData>[] = [];
+  const newNodes: Node<GraphNodeData>[] = [];
   nodes.forEach((node) => {
     newNodes.push({
       id: node.hash,

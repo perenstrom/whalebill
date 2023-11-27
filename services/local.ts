@@ -83,3 +83,15 @@ export const deleteBallot = async (positionId: string, ballotId: string) => {
 
   return result as Ballot;
 };
+
+export const selectWinner = async (positionId: string) => {
+  const url = `/api/positions/${positionId}/actions/select-winner`;
+  const options: RequestInit = {
+    method: 'POST',
+    headers: defaultHeaders
+  };
+
+  const result = await fetch(url, options).then((r) => r.json());
+
+  return result as string[];
+}

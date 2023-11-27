@@ -12,6 +12,7 @@ model Position {
   adminId    String      @unique @default(uuid()) @map("admin_id")
   name       String
   openSeats  Int         @map("open_seats")
+  winnerPath Json?       @map("winner_path")
   candidates Candidate[]
   ballots    Ballot[]
   graph      Graph?
