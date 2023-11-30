@@ -4,21 +4,8 @@ import { OpenPositionForm } from 'components/admin/OpenPositionForm';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createPosition } from 'services/local';
-import styled from 'styled-components';
 import { UncreatedPosition } from 'types/types';
-
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Heading = styled.h1`
-  font-size: 2rem;
-  margin-bottom: 0.2rem;
-`;
+import styles from './create.module.scss';
 
 const IndexPage: NextPage<{}> = () => {
   const router = useRouter();
@@ -41,13 +28,13 @@ const IndexPage: NextPage<{}> = () => {
   };
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <Card variant="light">
-        <Heading>Register open position</Heading>
+        <h1 className={styles.heading}>Register open position</h1>
         <Divider />
         <OpenPositionForm onSubmit={onSubmit} />
       </Card>
-    </Wrapper>
+    </div>
   );
 };
 

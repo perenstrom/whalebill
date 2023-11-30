@@ -1,0 +1,52 @@
+.heading {
+  font-size: 1.2rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.wrapper {
+  margin-left: -2rem;
+  margin-right: -2rem;
+  padding: 1rem 2rem;
+
+  display: flex;
+  align-items: center;
+
+  background: var(--color-gray-3);
+
+  &:nth-child(odd) {
+    background: var(--color-gray-2);
+  }
+}
+
+.dimmed {
+  color: var(--color-text-dark);
+}
+
+.interactive {
+  cursor: pointer;
+}
+
+.subHeading {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1;
+  margin-top: 0.2rem;
+  color: var(--color-text-secondary);
+}
+
+.keyIcon {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 2px solid var(--color-accent-blue);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+  margin-left: -0.5rem;
+}
+
+.keyIconDimmed {
+  border: 2px solid var(--color-accent-blue-dark);
+}

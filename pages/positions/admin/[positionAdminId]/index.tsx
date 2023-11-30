@@ -13,61 +13,12 @@ import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { createCandidate, updatePosition } from 'services/local';
 import { getAdminPosition } from 'services/prisma';
-import styled from 'styled-components';
 import { AdminPosition, UncreatedCandidate } from 'types/types';
+import styles from './index.module.scss';
 
 interface Props {
   position: AdminPosition;
 }
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 2rem;
-`;
-
-const CardWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  gap: 2rem;
-  align-items: flex-start;
-  flex-wrap: wrap;
-`;
-
-const Heading = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 0.2rem;
-  margin-top: 0;
-`;
-
-const Callout = styled.div`
-  width: 100%;
-  background: var(--color-accent-blue);
-  padding: 0.7rem 1rem;
-  border-radius: 4px;
-  line-height: 1.3;
-  border: 2px solid var(--color-accent-blue-light);
-  box-shadow: var(--shadow-elevation-medium);
-
-  margin-bottom: 2rem;
-`;
-
-const InputWrapper = styled.div`
-  margin-top: 1rem;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-`;
-
-const CandidateList = styled.ul`
-  list-style: none;
-  margin: 0;
-  margin-top: 1rem;
-  padding: 0;
-`;
 
 const PositionAdminPage: NextPage<Props> = ({ position }) => {
   const router = useRouter();
@@ -112,14 +63,14 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
   };
 
   return (
-    <Wrapper>
-      <Callout>
+    <div className={styles.wrapper}>
+      <div className={styles.callout}>
         <b>Save this URL!</b> You will not be able to administer this election
         again without it.
-      </Callout>
-      <CardWrapper>
+      </div>
+      <div className={styles.cardWrapper}>
         <Card variant="dark">
-          <Heading>Open position settings</Heading>
+          <h2 className={styles.heading}>Open position settings</h2>
           <Divider />
           <OpenPositionForm
             onSubmit={onSubmitSettings}
@@ -130,9 +81,9 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
           />
         </Card>
         <Card variant="dark">
-          <Heading>Candidates</Heading>
+          <h2 className={styles.heading}>Candidates</h2>
           <Divider />
-          <CandidateList>
+          <ul className={styles.candidateList}>
             {position.candidates
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((candidate) => (
@@ -142,23 +93,23 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                   subHeading={getShortId(candidate.id)}
                 />
               ))}
-          </CandidateList>
+          </ul>
           <form onSubmit={onSubmitCandidate}>
-            <InputWrapper>
+            <div className={styles.inputWrapper}>
               <TextInput id="candidateName" label="Name" />
-            </InputWrapper>
+            </div>
 
-            <ButtonWrapper>
+            <div className={styles.buttonWrapper}>
               <Button type="submit">Add candidate</Button>
-            </ButtonWrapper>
+            </div>
           </form>
         </Card>
 
         <LinkButton href={`./${position.adminId}/ballots`}>
           Move on &gt;&gt;
         </LinkButton>
-      </CardWrapper>
-    </Wrapper>
+      </div>
+    </div>
   );
 };
 

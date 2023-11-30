@@ -3,7 +3,8 @@ import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import ELK, { ElkNode } from 'elkjs';
 import { ReactFlow, Node, Edge, Position, NodeProps } from 'reactflow';
-import styled from 'styled-components';
+
+import styles from './graph.module.scss';
 
 import 'reactflow/dist/style.css';
 import { GraphNode, NODE_TYPE_GRAPH_NODE } from 'components/GraphNode';
@@ -21,22 +22,6 @@ import {
 import { selectWinner } from 'services/local';
 import { NODE_TYPE_OVERFLOW_NODE, OverflowNode } from 'components/OverflowNode';
 import { getGraph } from 'helpers/getGraph';
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const FlowWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const WinnerButton = styled.button`
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
 
 interface Props {
   nodes: Node[];
@@ -80,11 +65,11 @@ const IndexPage: NextPage<Props> = ({
   };
 
   return (
-    <Container>
+    <div className={styles.fullSize}>
       <Head>
         <title>IRV</title>
       </Head>
-      <FlowWrapper>
+      <div className={styles.fullSize}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -99,9 +84,11 @@ const IndexPage: NextPage<Props> = ({
           edgesFocusable={false}
           panOnScroll={true}
         />
-      </FlowWrapper>
-      <WinnerButton onClick={handleClick}>Select winner</WinnerButton>
-    </Container>
+      </div>
+      <button className={styles.winnerButton} onClick={handleClick}>
+        Select winner
+      </button>
+    </div>
   );
 };
 

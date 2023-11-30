@@ -1,17 +1,7 @@
 import { Button } from 'components/Button';
 import { TextInput } from 'components/TextInput';
 import { FormEventHandler } from 'react';
-import styled from 'styled-components';
-
-const InputWrapper = styled.div`
-  margin-top: 1rem;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-`;
+import styles from './OpenPositionForm.module.scss';
 
 export const OpenPositionForm: React.FC<{
   defaultValues?: {
@@ -22,23 +12,23 @@ export const OpenPositionForm: React.FC<{
 }> = ({ defaultValues, onSubmit }) => {
   return (
     <form method="post" onSubmit={onSubmit}>
-      <InputWrapper>
+      <div className={styles.inputWrapper}>
         <TextInput
           id="name"
           label="Position"
           defaultValue={defaultValues?.name}
         />
-      </InputWrapper>
-      <InputWrapper>
+      </div>
+      <div className={styles.inputWrapper}>
         <TextInput
           id="openSeats"
           label="Open seats"
           defaultValue={defaultValues?.openSeats}
         />
-      </InputWrapper>
-      <ButtonWrapper>
+      </div>
+      <div className={styles.buttonWrapper}>
         <Button type="submit">Save</Button>
-      </ButtonWrapper>
+      </div>
     </form>
   );
 };

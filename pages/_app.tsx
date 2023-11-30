@@ -1,158 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import './global.scss';
 
 import { AppProps } from 'next/dist/shared/lib/router/router';
-import { createGlobalStyle } from 'styled-components';
-
-const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@500&family=Merriweather+Sans:ital,wght@0,300;0,700;1,300;1,700&display=swap');
-
-  // RESET
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-
-  * {
-    margin: 0;
-  }
-  
-  html, body {
-    height: 100%;
-  }
-  
-  body {
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  img, picture, video, canvas, svg {
-    display: block;
-    max-width: 100%;
-  }
-  
-  input, button, textarea, select {
-    font: inherit;
-  }
-  
-  p, h1, h2, h3, h4, h5, h6 {
-    overflow-wrap: break-word;
-  }
-  
-  #root, #__next {
-    isolation: isolate;
-    height: 100%;
-  }
-  // END RESET
-
-  // GLOBAL STYLES
-  body {
-    --color-text-primary: hsla(216, 8%, 75%, 1);
-    --color-text-secondary: hsla(200, 6%, 47%, 1);
-    --color-text-dark: hsla(222, 18%, 14%, 1);
-    --color-gray-1: hsla(222, 18%, 14%, 1);
-    --color-gray-2: hsla(221, 17%, 18%, 1);
-    --color-gray-3: hsla(214, 19%, 22%, 1);
-    --color-gray-4: hsla(213, 20%, 24%, 1);
-    --color-accent-green: hsla(111, 34%, 44%, 1);
-    --color-accent-green-light: hsla(112, 30%, 58%, 1);
-    --color-accent-green-dark: hsla(112, 45%, 33%, 1);
-    --color-accent-blue: hsla(182, 43%, 33%, 1);
-    --color-accent-blue-light: hsla(182, 26%, 50%, 1);
-    --color-accent-blue-dark: hsla(182, 43%, 16%, 1);
-    --color-accent-red: hsla(355, 50%, 53%, 1);
-    --color-accent-red-light: hsla(355, 48%, 62%, 1);
-    --color-accent-red-dark: hsla(355, 55%, 42%, 1);
-    --color-accent-yellow: hsla(29, 80%, 57%, 1);
-
-    --shadow-color: 219deg 24% 10%;
-    --shadow-elevation-low:
-      0.3px 0.5px 0.6px hsl(var(--shadow-color) / 0.4),
-      0.5px 0.8px 1px -1.6px hsl(var(--shadow-color) / 0.34),
-      1.3px 1.9px 2.3px -3.2px hsl(var(--shadow-color) / 0.29);
-    --shadow-elevation-medium:
-      0.3px 0.5px 0.6px hsl(var(--shadow-color) / 0.34),
-      0.8px 1.1px 1.4px -0.8px hsl(var(--shadow-color) / 0.31),
-      1.6px 2.2px 2.8px -1.6px hsl(var(--shadow-color) / 0.28),
-      3.3px 4.7px 5.9px -2.4px hsl(var(--shadow-color) / 0.25),
-      6.6px 9.4px 11.7px -3.2px hsl(var(--shadow-color) / 0.22);
-    --shadow-elevation-high:
-      0.3px 0.5px 0.6px hsl(var(--shadow-color) / 0.31),
-      1.2px 1.7px 2.1px -0.4px hsl(var(--shadow-color) / 0.3),
-      2.2px 3.1px 3.9px -0.7px hsl(var(--shadow-color) / 0.29),
-      3.4px 4.8px 6px -1.1px hsl(var(--shadow-color) / 0.27),
-      5.2px 7.4px 9.2px -1.4px hsl(var(--shadow-color) / 0.26),
-      7.8px 11.1px 13.8px -1.8px hsl(var(--shadow-color) / 0.25),
-      11.5px 16.4px 20.4px -2.1px hsl(var(--shadow-color) / 0.23),
-      16.6px 23.6px 29.4px -2.5px hsl(var(--shadow-color) / 0.22),
-      23.2px 33px 41.1px -2.8px hsl(var(--shadow-color) / 0.2),
-      31.7px 45.1px 56.2px -3.2px hsl(var(--shadow-color) / 0.19);
-
-    font-family: 'Merriweather Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.75;
-    color: var(--color-text-primary);
-    background-color: var(--color-gray-2);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    margin: 3rem 0 1.38rem 0;
-    font-family: 'Catamaran', serif;
-    font-weight: 500;
-    line-height: 1.3;
-
-    @media (max-width: 768px) {
-      margin: 1rem 0 1.38rem 0;
-    }
-  }
-  
-  h1 {
-    margin-top: 0;
-    font-size: 4.209rem;
-  }
-
-  h2 { font-size: 3.157rem; }
-
-  h3 { font-size: 2.369rem; }
-
-  h4 { font-size: 1.777rem; }
-
-  h5 { font-size: 1.333rem; }
-
-  small { font-size: 0.75rem; }
-
-  p {
-    margin-bottom: 1rem;
-  }
-  b {
-    font-weight: 700;
-  }
-
-  a {
-    color: var(--color-text-dark);
-  }
-
-  a:hover {
-    color: var(--color-text-dark);
-  }
-
-  @media (max-width: 768px) {
-    h1 {
-      margin-top: 0;
-      font-size: 1.802rem;
-    }
-
-    h2 {font-size: 1.602rem;}
-
-    h3 {font-size: 1.424rem;}
-
-    h4 {font-size: 1.266rem;}
-
-    h5 {font-size: 1.125rem;}
-
-    small {font-size: 0.889rem;}
-  }
-`;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -165,7 +16,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
         />
       </Head>
-      <GlobalStyle />
       <Component {...pageProps} key={router.asPath} />
     </>
   );

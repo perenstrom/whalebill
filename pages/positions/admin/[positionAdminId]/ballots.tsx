@@ -12,47 +12,9 @@ import { ParsedUrlQuery } from 'querystring';
 import { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import { createBallot, deleteBallot } from 'services/local';
 import { getAdminPosition } from 'services/prisma';
-import styled from 'styled-components';
 import { CandidateId } from 'types/graph';
 import { AdminPosition, UncreatedBallotItem } from 'types/types';
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 2rem;
-`;
-
-const CardWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  gap: 2rem;
-  align-items: flex-start;
-  flex-wrap: wrap;
-`;
-
-const Heading = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 0.2rem;
-  margin-top: 0;
-`;
-
-const EmptyText = styled.p`
-  margin: 0;
-  margin-top: 1rem;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-`;
-
-const CandidateList = styled.ul`
-  list-style: none;
-  margin: 0;
-  margin-top: 1rem;
-  padding: 0;
-`;
+import styles from './ballots.module.scss';
 
 interface Props {
   position: AdminPosition;
@@ -171,12 +133,12 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
   };
 
   return (
-    <Wrapper>
-      <CardWrapper>
+    <div className={styles.wrapper}>
+      <div className={styles.cardWrapper}>
         <Card variant="dark">
-          <Heading>Candidates</Heading>
+          <h2 className={styles.heading}>Candidates</h2>
           <Divider />
-          <CandidateList>
+          <ul className={styles.candidateList}>
             {position.candidates
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((candidate, index) => (
@@ -197,14 +159,14 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                   dimmed={candidateIsSelected(candidate.id)}
                 />
               ))}
-          </CandidateList>
+          </ul>
         </Card>
         <Card variant="dark">
-          <Heading>New Ballot</Heading>
+          <h2 className={styles.heading}>New Ballot</h2>
           <Divider />
           {ballot.length > 0 ? (
             <>
-              <CandidateList>
+              <ul className={styles.candidateList}>
                 {ballot.map((ballotItemCandidateId, index) => (
                   <ListItem
                     key={ballotItemCandidateId}
@@ -215,23 +177,25 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                     onClick={() => removeCandidate(index)}
                   />
                 ))}
-              </CandidateList>
-              <ButtonWrapper>
+              </ul>
+              <div className={styles.buttonWrapper}>
                 <Button onClick={onSubmitBallot}>Save ballot</Button>
-              </ButtonWrapper>
+              </div>
             </>
           ) : (
-            <EmptyText>
+            <span className={styles.emptyText}>
               Click the candidates in the list to the left in order of first
               choice first.
-            </EmptyText>
+            </span>
           )}
         </Card>
         {ballots.length > 0 && (
           <Card variant="dark">
-            <Heading>Latest ballot ({ballots.length} total)</Heading>
+            <h2 className={styles.heading}>
+              Latest ballot ({ballots.length} total)
+            </h2>
             <Divider />
-            <CandidateList>
+            <ul className={styles.candidateList}>
               {latestBallot.ballotItems.map((ballotItem) => (
                 <ListItem
                   key={ballotItem.id}
@@ -241,18 +205,18 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
                   subHeading={getShortId(ballotItem.candidateId)}
                 />
               ))}
-            </CandidateList>
-            <ButtonWrapper>
+            </ul>
+            <div className={styles.buttonWrapper}>
               <AlertButton onClick={() => handleDeleteBallot(latestBallot.id)}>
                 Delete ballot
               </AlertButton>
-            </ButtonWrapper>
+            </div>
           </Card>
         )}
 
         <LinkButton href={`./graph`}>Move on &gt;&gt;</LinkButton>
-      </CardWrapper>
-    </Wrapper>
+      </div>
+    </div>
   );
 };
 
