@@ -2,26 +2,12 @@ import { Ballot, Candidate, Position } from '@prisma/client';
 import {
   BallotWithItems,
   UncreatedBallotItem,
-  UncreatedCandidate,
-  UncreatedPosition
+  UncreatedCandidate
 } from 'types/types';
 
 const defaultHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json;charset=UTF-8'
-};
-
-export const createPosition = async (position: UncreatedPosition) => {
-  const url = '/api/positions';
-  const options: RequestInit = {
-    method: 'POST',
-    headers: defaultHeaders,
-    body: JSON.stringify(position)
-  };
-
-  const result = await fetch(url, options).then((r) => r.json());
-
-  return result as Position;
 };
 
 export const updatePosition = async (
@@ -94,4 +80,4 @@ export const selectWinner = async (positionId: string) => {
   const result = await fetch(url, options).then((r) => r.json());
 
   return result as string[];
-}
+};

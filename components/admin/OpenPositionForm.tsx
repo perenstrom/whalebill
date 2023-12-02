@@ -1,6 +1,6 @@
 import { Button } from 'components/Button';
 import { TextInput } from 'components/TextInput';
-import { FormEventHandler } from 'react';
+import { FormHTMLAttributes } from 'react';
 import styles from './OpenPositionForm.module.scss';
 
 export const OpenPositionForm: React.FC<{
@@ -8,10 +8,10 @@ export const OpenPositionForm: React.FC<{
     name: string;
     openSeats: string;
   };
-  onSubmit: FormEventHandler<HTMLFormElement>;
-}> = ({ defaultValues, onSubmit }) => {
+  action: FormHTMLAttributes<HTMLFormElement>['action'];
+}> = ({ defaultValues, action }) => {
   return (
-    <form method="post" onSubmit={onSubmit}>
+    <form action={action}>
       <div className={styles.inputWrapper}>
         <TextInput
           id="name"
