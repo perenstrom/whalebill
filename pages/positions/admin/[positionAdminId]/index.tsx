@@ -5,7 +5,6 @@ import { Divider } from 'components/Divider';
 import { LinkButton } from 'components/LinkButton';
 import { TextInput } from 'components/TextInput';
 import { ListItem } from 'components/admin/ListItem';
-import { OpenPositionForm } from 'components/admin/OpenPositionForm';
 import { getShortId } from 'helpers/copy';
 import { prismaContext } from 'lib/prisma';
 import { GetServerSideProps, NextPage } from 'next';
@@ -72,13 +71,25 @@ const PositionAdminPage: NextPage<Props> = ({ position }) => {
         <Card variant="dark">
           <h2 className={styles.heading}>Open position settings</h2>
           <Divider />
-          <OpenPositionForm
-            onSubmit={onSubmitSettings}
-            defaultValues={{
-              name: position.name,
-              openSeats: position.openSeats.toString()
-            }}
-          />
+          <form onSubmit={onSubmitSettings}>
+            <div className={styles.inputWrapper}>
+              <TextInput
+                id="name"
+                label="Position"
+                defaultValue={position.name}
+              />
+            </div>
+            <div className={styles.inputWrapper}>
+              <TextInput
+                id="openSeats"
+                label="Open seats"
+                defaultValue={position.openSeats.toString()}
+              />
+            </div>
+            <div className={styles.buttonWrapper}>
+              <Button type="submit">Save</Button>
+            </div>
+          </form>
         </Card>
         <Card variant="dark">
           <h2 className={styles.heading}>Candidates</h2>
