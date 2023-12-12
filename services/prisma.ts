@@ -1,6 +1,5 @@
 import { Position } from '@prisma/client';
 import { Context } from 'lib/prisma';
-import { cache } from 'react';
 import {
   UncreatedBallotItem,
   UncreatedCandidateWithPositionId,
@@ -18,7 +17,7 @@ export const createPosition = async (
   return result;
 };
 
-export const getAdminPosition = cache(async (ctx: Context, adminId: string) => {
+export const getAdminPosition = async (ctx: Context, adminId: string) => {
   const result = await ctx.prisma.position.findUnique({
     where: {
       adminId
@@ -39,78 +38,76 @@ export const getAdminPosition = cache(async (ctx: Context, adminId: string) => {
   });
 
   return result;
-});
+};
 
-export const getIncrementedCandidateId = cache(
-  async (ctx: Context, positionId: string) => {
-    const result = await ctx.prisma.candidate.findFirst({
-      where: {
-        positionId
-      },
-      orderBy: {
-        smallId: 'desc'
-      }
-    });
+export const getIncrementedCandidateId = async (
+  ctx: Context,
+  positionId: string
+) => {
+  const result = await ctx.prisma.candidate.findFirst({
+    where: {
+      positionId
+    },
+    orderBy: {
+      smallId: 'desc'
+    }
+  });
 
-    return (result?.smallId || 0) + 1;
-  }
-);
+  return (result?.smallId || 0) + 1;
+};
 
-export const updatePosition = cache(
-  async (ctx: Context, position: Position) => {
-    const result = await ctx.prisma.position.update({
-      where: {
-        id: position.id
-      },
-      data: { ...position, winnerPath: position.winnerPath || undefined }
-    });
+export const updatePosition = async (ctx: Context, position: Position) => {
+  const result = await ctx.prisma.position.update({
+    where: {
+      id: position.id
+    },
+    data: { ...position, winnerPath: position.winnerPath || undefined }
+  });
 
-    return result;
-  }
-);
+  return result;
+};
 
-export const createCandidate = cache(
-  async (ctx: Context, candidate: UncreatedCandidateWithPositionId) => {
-    const incrementedId = await getIncrementedCandidateId(
-      ctx,
-      candidate.positionId
-    );
+export const createCandidate = async (
+  ctx: Context,
+  candidate: UncreatedCandidateWithPositionId
+) => {
+  const incrementedId = await getIncrementedCandidateId(
+    ctx,
+    candidate.positionId
+  );
 
-    const newCandidate = {
-      ...candidate,
-      smallId: incrementedId
-    };
+  const newCandidate = {
+    ...candidate,
+    smallId: incrementedId
+  };
 
-    const result = await ctx.prisma.candidate.create({
-      data: newCandidate
-    });
+  const result = await ctx.prisma.candidate.create({
+    data: newCandidate
+  });
 
-    return result;
-  }
-);
+  return result;
+};
 
-export const createBallot = cache(
-  async (
-    ctx: Context,
-    positionId: string,
-    ballotItems: UncreatedBallotItem[]
-  ) => {
-    const result = await ctx.prisma.ballot.create({
-      data: {
-        positionId,
-        ballotItems: {
-          createMany: {
-            data: ballotItems
-          }
+export const createBallot = async (
+  ctx: Context,
+  positionId: string,
+  ballotItems: UncreatedBallotItem[]
+) => {
+  const result = await ctx.prisma.ballot.create({
+    data: {
+      positionId,
+      ballotItems: {
+        createMany: {
+          data: ballotItems
         }
       }
-    });
+    }
+  });
 
-    return result;
-  }
-);
+  return result;
+};
 
-export const deleteBallot = cache(async (ctx: Context, ballotId: string) => {
+export const deleteBallot = async (ctx: Context, ballotId: string) => {
   const result = await ctx.prisma.ballot.delete({
     where: {
       id: ballotId
@@ -118,29 +115,29 @@ export const deleteBallot = cache(async (ctx: Context, ballotId: string) => {
   });
 
   return result;
-});
+};
 
-export const createGraph = cache(
-  async (ctx: Context, positionId: string, graph: string) => {
-    const result = await ctx.prisma.graph.create({
-      data: {
-        positionId,
-        graph
-      }
-    });
+export const createGraph = async (
+  ctx: Context,
+  positionId: string,
+  graph: string
+) => {
+  const result = await ctx.prisma.graph.create({
+    data: {
+      positionId,
+      graph
+    }
+  });
 
-    return result;
-  }
-);
+  return result;
+};
 
-export const invalidateGraph = cache(
-  async (ctx: Context, positionId: string) => {
-    await ctx.prisma.graph.delete({
-      where: {
-        positionId
-      }
-    });
+export const invalidateGraph = async (ctx: Context, positionId: string) => {
+  await ctx.prisma.graph.delete({
+    where: {
+      positionId
+    }
+  });
 
-    return true;
-  }
-);
+  return true;
+};
