@@ -2,15 +2,17 @@ import { prismaContext } from 'lib/prisma';
 import { redirect } from 'next/navigation';
 
 import styles from './positionAdmin.module.scss';
-import { Button } from 'components/Button';
-import { Card } from 'components/Card';
-import { Divider } from 'components/Divider';
 import { LinkButton } from 'components/LinkButton';
-import { TextInput } from 'components/TextInput';
-import { createCandidate, getAdminPosition } from 'services/prisma';
+import {
+  createCandidate,
+  getAdminPosition,
+  updatePosition
+} from 'services/prisma';
 import { UncreatedCandidate } from 'types/types';
 import { revalidatePath } from 'next/cache';
 import { Candidates } from 'components/admin/Candidates';
+import { OpenPositionSettings } from 'components/admin/OpenPositionSettings';
+import { Position } from '@prisma/client';
 
 export default async function Page({
   params
@@ -30,9 +32,25 @@ export default async function Page({
     redirect('/create');
   }
 
-  /* const onSubmitSettings = async () => {
-    return;
-  }; */
+  const onSubmitSettings = async (formData: FormData) => {
+    'use server';
+
+    const newPosition: Position = {
+      id: position.id,
+      adminId: position.adminId,
+      name: formData.get('name') as string,
+      openSeats: parseInt(formData.get('openSeats') as string, 10),
+      winnerPath: null
+    };
+
+    try {
+      await updatePosition(prismaContext, newPosition);
+
+      revalidatePath('/positions/admin/[positionAdminId]/page', 'page');
+    } catch (error) {
+      console.log('Something went wrong');
+    }
+  };
 
   const onCreateCandidate = async (formData: FormData) => {
     'use server';
@@ -47,12 +65,10 @@ export default async function Page({
         positionId: position.id
       });
 
-      // form.reset();
       revalidatePath('/positions/admin/[positionAdminId]/page', 'page');
     } catch (error) {
       console.log('Something went wrong');
     }
-    return;
   };
 
   return (
@@ -62,29 +78,10 @@ export default async function Page({
         again without it.
       </div>
       <div className={styles.cardWrapper}>
-        <Card variant="dark">
-          <h2 className={styles.heading}>Open position settings</h2>
-          <Divider />
-          <form>
-            <div className={styles.inputWrapper}>
-              <TextInput
-                id="name"
-                label="Position"
-                defaultValue={position.name}
-              />
-            </div>
-            <div className={styles.inputWrapper}>
-              <TextInput
-                id="openSeats"
-                label="Open seats"
-                defaultValue={position.openSeats.toString()}
-              />
-            </div>
-            <div className={styles.buttonWrapper}>
-              <Button type="submit">Save</Button>
-            </div>
-          </form>
-        </Card>
+        <OpenPositionSettings
+          position={position}
+          saveSettings={onSubmitSettings}
+        />
         <Candidates position={position} createCandidate={onCreateCandidate} />
 
         <LinkButton href={`./${position.adminId}/ballots`}>
