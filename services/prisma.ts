@@ -1,5 +1,6 @@
 import { Position } from '@prisma/client';
 import { Context } from 'lib/prisma';
+import { cache } from 'react';
 import {
   UncreatedBallotItem,
   UncreatedCandidateWithPositionId,
@@ -17,7 +18,7 @@ export const createPosition = async (
   return result;
 };
 
-export const getAdminPosition = async (ctx: Context, adminId: string) => {
+export const getAdminPosition = cache(async (ctx: Context, adminId: string) => {
   const result = await ctx.prisma.position.findUnique({
     where: {
       adminId
@@ -38,7 +39,7 @@ export const getAdminPosition = async (ctx: Context, adminId: string) => {
   });
 
   return result;
-};
+});
 
 export const getIncrementedCandidateId = async (
   ctx: Context,

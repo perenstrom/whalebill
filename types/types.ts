@@ -24,6 +24,11 @@ export type AdminPosition = Prisma.PositionGetPayload<{
         ballotItems: true;
       };
     };
+    graph: {
+      select: {
+        graph: true;
+      };
+    };
   };
 }>;
 
@@ -54,3 +59,5 @@ export type BallotWithItems = Prisma.BallotGetPayload<{
     ballotItems: true;
   };
 }>;
+
+export type ServerAction = (formData: FormData) => void;
